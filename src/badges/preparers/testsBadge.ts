@@ -1,5 +1,4 @@
 import { spawnSync } from 'child_process'
-import { getPackageJson } from '../../packageJson'
 import { createURL, BadgeStyle } from '../badgesUtils'
 
 const config = {
@@ -33,7 +32,14 @@ interface TestsSummary {
  * @returns the number of tests passed and the total number of tests
  */
 function retrieveTestsSummary (): TestsSummary {
-  const testSummaryCommand = getPackageJson().scripts.testSummary
-  const process = spawnSync(testSummaryCommand)
-  return JSON.parse(process.stdout.toString()) as TestsSummary
+  try {
+    const process = spawnSync('npm run testSummary')
+    return JSON.parse(process.stdout.toString()) as TestsSummary
+  } catch (e) {
+    console.error(e)
+    return {
+      numPassedTests: 0,
+      numTotalTests: 0
+    }
+  }
 }
