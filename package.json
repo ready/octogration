@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest --config jestconfig.json",
     "testSummary": "jest --config jestconfig.json --reporters=\"<rootDir>/src/summary-reporter.js\"",
-    "lint": "ts-standard",
+    "lint": "ts-standard 2> /dev/null",
     "build": "tsc",
     "prepare": "npm run build && husky install",
     "prepublishOnly": "npm run lint && npm test",
