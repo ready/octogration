@@ -1,0 +1,102 @@
+name: version
+
+# This workflow runs whenever a branch gets merged into main
+# It updates the version number, the dynamic badges, and release changelog
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Ensure correct npm version
+        run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
+
+      - name: Ensure data directory exists for writing
+        run: mkdir -p ./.github/data
+
+      - name: Load our packages
+        run: |
+          npm i 2>./.github/data/install_log.txt
+          cat ./.github/data/install_log.txt
+
+      - run: npm install --save-dev @octokit/action
+
+      - name: Remove unneeded package lock data 
+        run: git reset --hard
+
+      - run: git fetch
+
+      - name: Store commit log
+        id: store_commits
+        run: |
+          OLDVERSION=$(npm pkg get version | tr -d '"')
+          LASTHASH=$(git log --pretty=format:"%H" --grep="^v${OLDVERSION}$")
+          git log ${LASTHASH}..HEAD --pretty=format:"%H %ae %s" > ./.github/data/commits.txt
+          echo $OLDVERSION
+          echo $LASTHASH
+          cat ./.github/data/commits.txt
+
+      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - run: git config user.name "$GITHUB_ACTOR"
+      - run: git checkout main
+
+      - name: Upgrade version of project
+        run: npm version patch -m "v%s"
+
+      - name: Update dynamic badges
+        run: npx ts-node -- ./.github/scripts/badges/badges.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git add .
+      - run: 'git commit -nm "chore: update dynamic badges"'
+      - run: VERSION=$(node -p "require('./package.json').version")
+      - run: git tag ${VERSION}
+      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
+      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+
+      - name: Load Version
+        id: load_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+
+      - name: Create Changelog Title
+        id: create_changelog_title
+        run: echo "::set-output name=title::$(npx ts-node -- ./.github/scripts/changelog/changelogTitle.ts)"
+
+      - run: npx ts-node -- ./.github/scripts/changelog/changelog.ts ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Changelog
+        id: create_changelog
+        run: |
+          CHANGELOG=$(cat ./.github/data/changelog.md)
+          echo $CHANGELOG
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.load_version.outputs.version }}
+          release_name: ${{ steps.create_changelog_title.outputs.title }}
+          body: ${{ env.CHANGELOG }}
+          draft: false
+          prerelease: false

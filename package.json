@@ -2,17 +2,18 @@
   "name": "octogration",
   "version": "0.0.0",
   "description": "Scripts to automate github integrations via Octokit",
-  "main": "index.js",
+  "main": "lib/index.js",
   "files": [
     "lib/**/*"
   ],
   "scripts": {
     "test": "jest --config jestconfig.json",
+    "testSummary": "jest --config jestconfig.json --reporters=\"<rootDir>/src/summary-reporter.js\"",
     "lint": "ts-standard",
     "build": "tsc",
-    "prepare" : "npm run build",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm test",
+    "preversion": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,8 @@
     "ts-jest": "^28.0.8",
     "ts-standard": "^11.0.0",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@octokit/action": "^4.0.6"
   }
 }

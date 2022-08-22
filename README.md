@@ -22,5 +22,12 @@
   <img alt="jestVersion" src="https://img.shields.io/static/v1?label=Jest%20Version&color=5c80f7&logo=Jest&logoColor=ffffff&style=for-the-badge&message=28.1.7" />&nbsp
   <img alt="tsVersion" src="https://img.shields.io/static/v1?label=Typescript%20Version&color=5c80f7&logo=TypeScript&logoColor=ffffff&style=for-the-badge&message=4.7.4" />&nbsp
 </p>
+<p align="center">
+  <br />
+  <b>We are currently trying to eliminate all linter errors from the project!</b>
+</p>
+<p align="center">
+  <img alt="linter" src="https://img.shields.io/static/v1?label=Linter%20Errors&color=cf3b36&logo=Integromat&logoColor=ffffff&style=for-the-badge&message=267" />
+</p>
 
 This repository contains Ready's scripts to automate Github integrations. It currently is not published.
