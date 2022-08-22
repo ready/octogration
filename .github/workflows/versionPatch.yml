@@ -56,8 +56,11 @@ jobs:
       - name: Upgrade version of project
         run: npm version patch -m "v%s"
 
+      - name: Build project
+        run: npm run build
+
       - name: Update dynamic badges
-        run: npx ts-node -- ./.github/scripts/badges/badges.ts
+        run: node ./lib/index.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -74,9 +77,9 @@ jobs:
 
       - name: Create Changelog Title
         id: create_changelog_title
-        run: echo "::set-output name=title::$(npx ts-node -- ./.github/scripts/changelog/changelogTitle.ts)"
+        run: echo "::set-output name=title::$(node ./lib/index.js title)"
 
-      - run: npx ts-node -- ./.github/scripts/changelog/changelog.ts ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
+      - run: node ./lib/index.js ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
