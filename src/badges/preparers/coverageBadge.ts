@@ -41,6 +41,20 @@ interface CoverageSummary {
  * @returns statistics about the tests coverage
  */
 function retrieveCoverageSummary (): CoverageSummary {
-  const file = readFileSync('./coverage/coverage-summary.json')
-  return JSON.parse(file.toString()) as CoverageSummary
+  try {
+    const file = readFileSync('./coverage/coverage-summary.json')
+    return JSON.parse(file.toString()) as CoverageSummary
+  } catch (e) {
+    console.error(e)
+    return {
+      total: {
+        statements: {
+          total: 0,
+          covered: 0,
+          skipped: 0,
+          pct: 0
+        }
+      }
+    }
+  }
 }
