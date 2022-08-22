@@ -1,0 +1,23 @@
+{
+  "name": "octogration",
+  "version": "0.0.0",
+  "description": "Scripts to automate github integrations via Octokit",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ready/octogration.git"
+  },
+  "keywords": [
+    "automation",
+    "Github"
+  ],
+  "author": "Ready",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ready/octogration/issues"
+  },
+  "homepage": "https://github.com/ready/octogration#readme"
+}
