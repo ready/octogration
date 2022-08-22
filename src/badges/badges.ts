@@ -62,7 +62,10 @@ export async function updateBadges (): Promise<void> {
     if (!badgesToUpdate.includes(currentType)) return oldBadge
 
     const preparer = preparers.get(currentType)
-    if (preparer === undefined) throw new Error(`Preparer not found for ${currentType}`)
+    if (preparer === undefined) {
+      console.error(`Preparer not found for ${currentType}`)
+      return ''
+    }
 
     const newBadge = await preparer(oldBadge)
     console.log(`Updated ${currentType} badge`)

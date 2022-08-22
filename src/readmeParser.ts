@@ -30,6 +30,7 @@ export function writeSources (alts: string[], sources: string[]): void {
   }
 
   alts.forEach((alt, index) => {
+    if (sources[index] === '') return
     const searchString = `alt="${alt}" src="${originalSources[index]}"`
     const replaceString = `alt="${alt}" src="${sources[index]}"`
     readmeFile = readmeFile.replace(searchString, replaceString)
