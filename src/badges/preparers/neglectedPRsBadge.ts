@@ -17,7 +17,7 @@ const config = {
  * Finds the number of stale branches and makes a badge for it
  * @returns the url encoding of the stale branches badge
  */
-export async function prepareStaleBranchesBadge (): Promise<string> {
+export async function prepareNeglectedPrsBadge (): Promise<string> {
   const numNeglectedPrs = await countNeglectedPrs()
 
   const color = numNeglectedPrs === 0 ? config.color : config.secondaryColor
