@@ -20,7 +20,7 @@
   <img alt="nodeVersion" src="https://img.shields.io/static/v1?label=Node%20Version&color=5c80f7&logo=ts-node&logoColor=ffffff&style=for-the-badge&message=16.16.0" />&nbsp
   <img alt="npmVersion" src="https://img.shields.io/static/v1?label=NPM%20Version&color=5c80f7&logo=npm&style=for-the-badge&message=8.3.1" />&nbsp
   <img alt="jestVersion" src="https://img.shields.io/static/v1?label=Jest%20Version&color=5c80f7&logo=Jest&logoColor=ffffff&style=for-the-badge&message=28.1.7" />&nbsp
-  <img alt="tsVersion" src="https://img.shields.io/static/v1?label=Typescript%20Version&color=5c80f7&logo=TS&logoColor=ffffff&style=for-the-badge&message=4.7.4" />&nbsp
+  <img alt="tsVersion" src="https://img.shields.io/static/v1?label=TS%20Version&color=5c80f7&logo=TypeScript&logoColor=ffffff&style=for-the-badge&message=4.7.4" />&nbsp
 </p>
 <p align="center">
   <br />
