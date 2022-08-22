@@ -24,11 +24,15 @@ knownVariables.set('commitLog', evaluateCommitLog)
 async function createChangelog (): Promise<void> {
   const variables = [...knownVariables.keys()]
   await Promise.all(variables.map(async variable => {
-    const evaluator = knownVariables.get(variable)
+    try {
+      const evaluator = knownVariables.get(variable)
 
-    if (formatFileHasVariable(variable)) {
-      const value = await (evaluator === undefined ? '' : evaluator())
-      replaceVariable(variable, value)
+      if (formatFileHasVariable(variable)) {
+        const value = await (evaluator === undefined ? '' : evaluator())
+        replaceVariable(variable, value)
+      }
+    } catch (e) {
+      console.error(e)
     }
   }))
 
