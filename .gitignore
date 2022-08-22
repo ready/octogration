@@ -118,3 +118,6 @@ public/antd-backup.css
 
 # Github actions data
 .github/data
+
+# Compiled JS
+/lib
