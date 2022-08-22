@@ -32,8 +32,6 @@ jobs:
           npm i 2>./.github/data/install_log.txt
           cat ./.github/data/install_log.txt
 
-      - run: npm install --save-dev @octokit/action
-
       - name: Remove unneeded package lock data 
         run: git reset --hard
 
