@@ -47,6 +47,6 @@ function guarenteeFormatFile (): void {
  * @returns the string verison of the file
  */
 function readMarkdownFormat (): string {
-  const formatFile = './.github/scripts/changelog/releaseFormat.md'
+  const formatFile = './src/changelog/releaseFormat.md'
   return readFileSync(formatFile).toString()
 }
