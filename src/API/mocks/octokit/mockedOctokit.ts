@@ -1,3 +1,4 @@
+import { findEndpointExecutor } from './mockedEndpoints'
 
 /**
  * An octokit request is formatted as
@@ -16,11 +17,15 @@ export interface MockedOctokitResponse<T> {
   data: T
 }
 
+/**
+ * Mocks any given request to the Octokit API
+ * @param request - an Octokit API request
+ * @returns mocked data or throws an error if the operation couldn't be completed
+ */
 export function mockOctokitRequest (request: string): MockedOctokitResponse<any> {
-  return {
-    status: 200,
-    data: parseOctokitRequest(request)
-  }
+  const parsedRequest = parseOctokitRequest(request)
+  const executor = findEndpointExecutor(parsedRequest)
+  return executor(parsedRequest)
 }
 
 /**

@@ -1,6 +1,17 @@
-import { testMockedOctokit } from './mockedOctokit'
+import { mockOctokitRequest, testMockedOctokit } from './mockedOctokit'
 
 const { parseOctokitRequest } = testMockedOctokit
+
+describe('Mocked Octokit requests', () => {
+  test('Invalid request endpoint throws error', () => {
+    expect(() => mockOctokitRequest('GET invalid/path')).toThrow('The endpoint invalid/path does not match any known endpoint')
+  })
+
+  test('commit endpoint provides data', () => {
+    const response = mockOctokitRequest('GET repos/ready/octogration/commits?author=git@ready.net')
+    expect(response.data.length).toBeGreaterThan(0)
+  })
+})
 
 describe('Mocked Octokit request parsing', () => {
   enum PaserErrorMsg {
