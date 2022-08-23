@@ -138,7 +138,7 @@ describe('Mocked Octokit request parsing', () => {
       const output = {
         type: 'GET',
         endpoint: ['repos', 'ready', 'octogration', 'commits'],
-        params: new Map<string, string>([['key', 'value']])
+        params: new Map([['key', 'value']])
       }
       expect(parseOctokitRequest(input)).toEqual(output)
     })
@@ -148,7 +148,7 @@ describe('Mocked Octokit request parsing', () => {
       const output = {
         type: 'GET',
         endpoint: ['repos', 'ready', 'octogration', 'commits'],
-        params: new Map<string, string>([['key', 'value']])
+        params: new Map([['key', 'value']])
       }
       expect(parseOctokitRequest(input)).toEqual(output)
     })
@@ -158,7 +158,7 @@ describe('Mocked Octokit request parsing', () => {
       const output = {
         type: 'POST',
         endpoint: ['some', 'endpoint', 'path'],
-        params: new Map<string, string>([['key1', 'value1'], ['key2', 'value2'], ['key3', 'value3']])
+        params: new Map([['key1', 'value1'], ['key2', 'value2'], ['key3', 'value3']])
       }
       expect(parseOctokitRequest(input)).toEqual(output)
     })
@@ -168,7 +168,7 @@ describe('Mocked Octokit request parsing', () => {
       const output = {
         type: 'POST',
         endpoint: [],
-        params: new Map<string, string>([['key1', 'value1'], ['key2', 'value2'], ['key3', 'value3']])
+        params: new Map([['key1', 'value1'], ['key2', 'value2'], ['key3', 'value3']])
       }
       expect(parseOctokitRequest(input)).toEqual(output)
     })
