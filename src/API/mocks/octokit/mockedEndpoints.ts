@@ -8,7 +8,7 @@ const endpointExecutors = new Map<string, EndpointExecutor>()
 endpointExecutors.set('repos/<org>/<repo>/commits', executeCommitsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls', executePullsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls/###/reviews', executePullsEndpoint)
-endpointExecutors.set('repos/<org>/<repo>/branches/</>', executePullsEndpoint)
+endpointExecutors.set('repos/<org>/<repo>/branches/<^>', executePullsEndpoint)
 
 /**
  * Searches the known endpoints to find the executor for a request
@@ -39,7 +39,7 @@ export function findEndpointExecutor (request: OctokitRequest): EndpointExecutor
 function isMatchingEndpoint (identifier: string, endpoint: string[]): boolean {
   const path = identifier.split('/')
   const lastPathStep = path[path.length - 1]
-  if (lastPathStep !== '</>' && path.length !== endpoint.length) return false
+  if (lastPathStep !== '<^>' && path.length !== endpoint.length) return false
 
   return endpoint.every((endStep, index) => {
     const pathStep = index >= path.length ? lastPathStep : path[index]
@@ -49,12 +49,12 @@ function isMatchingEndpoint (identifier: string, endpoint: string[]): boolean {
 
 /**
  * Checks if the endpoint step matches the rules defined by the path step
- * @param pathStep - a literal string, <str> (any string), ### (any number), or </> (remaining steps)
+ * @param pathStep - a literal string, <str> (any string), ### (any number), or <^> (remaining steps)
  * @param endpointStep - the string to check against the path rule
  * @returns true if the endpointStep is a match
  */
 function isMatchingStep (pathStep: string, endpointStep: string): boolean {
-  if (pathStep === '</>') return true
+  if (pathStep === '<^>') return true
   if (pathStep.startsWith('<') && pathStep.endsWith('>')) return true
   if (pathStep === '###') {
     const numericStep = parseInt(endpointStep)

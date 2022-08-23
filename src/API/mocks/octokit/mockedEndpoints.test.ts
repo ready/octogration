@@ -58,6 +58,30 @@ describe('Check matching endpoint', () => {
   test('complex path matches', () => {
     expect(isMatchingEndpoint('<g>/endpoint/###/<>/generic/###', ['oh hey', 'endpoint', '35', 'nice', 'generic', '650'])).toBe(true)
   })
+
+  test('remainder path matches nothing', () => {
+    expect(isMatchingEndpoint('endpoint/path/<^>', ['endpoint', 'path'])).toBe(true)
+  })
+
+  test('remainder path matches literal', () => {
+    expect(isMatchingEndpoint('endpoint/path/<^>', ['endpoint', 'path', 'yeah'])).toBe(true)
+  })
+
+  test('remainder path matches number', () => {
+    expect(isMatchingEndpoint('endpoint/path/<^>', ['endpoint', 'path', '454'])).toBe(true)
+  })
+
+  test('remainder path matches multiple steps', () => {
+    expect(isMatchingEndpoint('endpoint/path/<^>', ['endpoint', 'path', 'to', 'infinity', 'and', 'beyond'])).toBe(true)
+  })
+
+  test('remainder path does not act as remainder when not at end', () => {
+    expect(isMatchingEndpoint('endpoint/path/<^>/data', ['endpoint', 'path', 'to', 'infinity', 'and', 'beyond'])).toBe(false)
+  })
+
+  test('remainder path acts as normal literal when not at end', () => {
+    expect(isMatchingEndpoint('endpoint/path/<^>/data', ['endpoint', 'path', 'pqkduwbssalAJHjfja1', 'data'])).toBe(true)
+  })
 })
 
 describe('Check matching endpoint step', () => {
@@ -165,5 +189,13 @@ describe('Check matching endpoint step', () => {
 
   test('double <><> rule is generic', () => {
     expect(isMatchingStep('<>generic<>', 'anystring')).toBe(true)
+  })
+
+  test('remaining rule matches anything', () => {
+    expect(isMatchingStep('<^>', 'anystring')).toBe(true)
+  })
+
+  test('remaining rule matches numbers', () => {
+    expect(isMatchingStep('<^>', '111')).toBe(true)
   })
 })
