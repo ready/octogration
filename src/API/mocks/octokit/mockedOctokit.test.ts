@@ -19,73 +19,177 @@ describe('Mocked Octokit request parsing', () => {
     expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
   }
 
-  test('fails on empty string', () => {
-    testParserError('', PaserErrorMsg.Space)
+  describe('fails on', () => {
+    test('empty string', () => {
+      testParserError('', PaserErrorMsg.Space)
+    })
+
+    test('multiple spaces', () => {
+      testParserError('GET /repos/ready/octogration/pulls INVALID', PaserErrorMsg.Space)
+    })
+
+    test('double space', () => {
+      testParserError('GET  /repos/ready/octogration/pulls', PaserErrorMsg.Space)
+    })
+
+    test('leading space', () => {
+      testParserError(' GET /repos/ready/octogration/pulls', PaserErrorMsg.Space)
+    })
+
+    test('trailing space', () => {
+      testParserError('GET /repos/ready/octogration/pulls ', PaserErrorMsg.Space)
+    })
+
+    test('invalid type', () => {
+      testParserError('INVALID /repos/ready/octogration/pulls', PaserErrorMsg.Type)
+    })
+
+    test('multiple question marks', () => {
+      testParserError('GET /repos/ready/octogration/pulls?key=value?key=value', PaserErrorMsg.Question)
+    })
+
+    test('missing parameter key', () => {
+      const input = 'GET /repos/ready/octogration/pulls?key=value&=value'
+      const expectedError = `Mocked octokit request "${input}" has parameter "=value" missing key`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
+
+    test('missing parameter value', () => {
+      const input = 'GET /repos/ready/octogration/pulls?key=value&key='
+      const expectedError = `Mocked octokit request "${input}" has parameter "key=" missing value`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
+
+    test('too many equals', () => {
+      const input = 'GET /repos/ready/octogration/pulls?key=value=value2'
+      const expectedError = `Mocked octokit request "${input}" has parameter "key=value=value2" malformatted key=value`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
+
+    test('empty parameter', () => {
+      const input = 'GET /repos/ready/octogration/pulls?key=value&&key2=value2'
+      const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
+
+    test('leading &', () => {
+      const input = 'GET /repos/ready/octogration/pulls?&key=value'
+      const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
+
+    test('trailing &', () => {
+      const input = 'GET /repos/ready/octogration/pulls?key=value&'
+      const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
+
+    test('solo &', () => {
+      const input = 'GET /repos/ready/octogration/pulls?&'
+      const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
+      expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    })
   })
 
-  test('fails on multiple spaces', () => {
-    testParserError('GET /repos/ready/octogration/pulls INVALID', PaserErrorMsg.Space)
-  })
+  describe('succeeds with', () => {
+    test('GET', () => {
+      const input = 'GET /repos/ready/octogration/pulls'
+      const output = {
+        type: 'GET',
+        endpoint: ['repos', 'ready', 'octogration', 'pulls'],
+        params: new Map<string, string>()
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on double space', () => {
-    testParserError('GET  /repos/ready/octogration/pulls', PaserErrorMsg.Space)
-  })
+    test('POST', () => {
+      const input = 'POST /repos/ready/octogration/pulls'
+      const output = {
+        type: 'POST',
+        endpoint: ['repos', 'ready', 'octogration', 'pulls'],
+        params: new Map<string, string>()
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on leading space', () => {
-    testParserError(' GET /repos/ready/octogration/pulls', PaserErrorMsg.Space)
-  })
+    test('no leading /', () => {
+      const input = 'POST repos/ready/octogration/pulls'
+      const output = {
+        type: 'POST',
+        endpoint: ['repos', 'ready', 'octogration', 'pulls'],
+        params: new Map<string, string>()
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on trailing space', () => {
-    testParserError('GET /repos/ready/octogration/pulls ', PaserErrorMsg.Space)
-  })
+    test('trailing /', () => {
+      const input = 'GET /repos/ready/octogration/commits/?key=value'
+      const output = {
+        type: 'GET',
+        endpoint: ['repos', 'ready', 'octogration', 'commits'],
+        params: new Map<string, string>([['key', 'value']])
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on invalid type', () => {
-    testParserError('INVALID /repos/ready/octogration/pulls', PaserErrorMsg.Type)
-  })
+    test('single parameter', () => {
+      const input = 'GET /repos/ready/octogration/commits?key=value'
+      const output = {
+        type: 'GET',
+        endpoint: ['repos', 'ready', 'octogration', 'commits'],
+        params: new Map<string, string>([['key', 'value']])
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on multiple question marks', () => {
-    testParserError('GET /repos/ready/octogration/pulls?key=value?key=value', PaserErrorMsg.Question)
-  })
+    test('multiple parameters', () => {
+      const input = 'POST /some/endpoint/path?key1=value1&key2=value2&key3=value3'
+      const output = {
+        type: 'POST',
+        endpoint: ['some', 'endpoint', 'path'],
+        params: new Map<string, string>([['key1', 'value1'], ['key2', 'value2'], ['key3', 'value3']])
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on missing parameter key', () => {
-    const input = 'GET /repos/ready/octogration/pulls?key=value&=value'
-    const expectedError = `Mocked octokit request "${input}" has parameter "=value" missing key`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
-  })
+    test('no endpoint including parameters', () => {
+      const input = 'POST ?key1=value1&key2=value2&key3=value3'
+      const output = {
+        type: 'POST',
+        endpoint: [],
+        params: new Map<string, string>([['key1', 'value1'], ['key2', 'value2'], ['key3', 'value3']])
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on missing parameter value', () => {
-    const input = 'GET /repos/ready/octogration/pulls?key=value&key='
-    const expectedError = `Mocked octokit request "${input}" has parameter "key=" missing value`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
-  })
+    test('no endpoint excluding parameters', () => {
+      const input = 'POST '
+      const output = {
+        type: 'POST',
+        endpoint: [],
+        params: new Map<string, string>()
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on too many equals', () => {
-    const input = 'GET /repos/ready/octogration/pulls?key=value=value2'
-    const expectedError = `Mocked octokit request "${input}" has parameter "key=value=value2" malformatted key=value`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
-  })
+    test('solo endpoint', () => {
+      const input = 'GET endpoint'
+      const output = {
+        type: 'GET',
+        endpoint: ['endpoint'],
+        params: new Map<string, string>()
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
 
-  test('fails on empty parameter', () => {
-    const input = 'GET /repos/ready/octogration/pulls?key=value&&key2=value2'
-    const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
-  })
-
-  test('fails on leading &', () => {
-    const input = 'GET /repos/ready/octogration/pulls?&key=value'
-    const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
-  })
-
-  test('fails on trailing &', () => {
-    const input = 'GET /repos/ready/octogration/pulls?key=value&'
-    const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
-  })
-
-  test('fails on solo &', () => {
-    const input = 'GET /repos/ready/octogration/pulls?&'
-    const expectedError = `Mocked octokit request "${input}" has parameter "" malformatted key=value`
-    expect(() => parseOctokitRequest(input)).toThrowError(expectedError)
+    test('double /', () => {
+      const input = 'GET endpoint//path'
+      const output = {
+        type: 'GET',
+        endpoint: ['endpoint', 'path'],
+        params: new Map<string, string>()
+      }
+      expect(parseOctokitRequest(input)).toEqual(output)
+    })
   })
 })
