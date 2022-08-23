@@ -51,7 +51,7 @@ export function executePullsEndpoint (request: OctokitRequest): OctokitResponse<
   const stateFiltered = mockedPullData.filter(pr => state === undefined || pr.state === state)
 
   return {
-    status: 400,
+    status: 200,
     data: stateFiltered
   }
 }

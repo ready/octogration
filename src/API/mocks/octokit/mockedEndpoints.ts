@@ -7,6 +7,7 @@ type EndpointExecutor = (request: OctokitRequest) => OctokitResponse<any>
 const endpointExecutors = new Map<string, EndpointExecutor>()
 endpointExecutors.set('repos/<org>/<repo>/commits', executeCommitsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls', executePullsEndpoint)
+endpointExecutors.set('repos/<org>/<repo>/pulls/###/reviews', executePullsEndpoint)
 
 /**
  * Searches the known endpoints to find the executor for a request
