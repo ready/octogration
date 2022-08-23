@@ -1,7 +1,7 @@
 import { executeCommitsEndpoint } from './endpoints/commits'
-import { MockedOctokitResponse, OctokitRequest } from './mockedOctokit'
+import { OctokitResponse, OctokitRequest } from './mockedOctokit'
 
-type EndpointExecutor = (request: OctokitRequest) => MockedOctokitResponse<any>
+type EndpointExecutor = (request: OctokitRequest) => OctokitResponse<any>
 
 const endpointExecutors = new Map<string, EndpointExecutor>()
 endpointExecutors.set('repos/<org>/<repo>/commits', executeCommitsEndpoint)

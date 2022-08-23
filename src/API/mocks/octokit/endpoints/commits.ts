@@ -1,20 +1,26 @@
-import { MockedOctokitResponse, OctokitRequest } from '../mockedOctokit'
+import { OctokitResponse, OctokitRequest } from '../mockedOctokit'
 
 export interface MockedCommit {
-  author: string
-  username: string
-  avatar: string
+  author: {
+    email: string
+    login: string
+    avatar_url: string
+  }
 }
 
 const mockedCommitData: MockedCommit[] = [
   {
-    author: 'riverliway@gmail.com',
-    username: 'riverliway',
-    avatar: 'https://avatars.githubusercontent.com/u/82117023?s=200&v=4'
+    author: {
+      email: 'riverliway@gmail.com',
+      login: 'riverliway',
+      avatar_url: 'https://avatars.githubusercontent.com/u/82117023?s=200&v=4'
+    }
   }, {
-    author: 'git@ready.net',
-    username: 'ready',
-    avatar: 'https://avatars.githubusercontent.com/u/63874247?s=200&v=4'
+    author: {
+      email: 'git@ready.net',
+      login: 'ready',
+      avatar_url: 'https://avatars.githubusercontent.com/u/63874247?s=200&v=4'
+    }
   }
 ]
 
@@ -28,9 +34,9 @@ const mockedCommitData: MockedCommit[] = [
  * - username: the github username of the author
  * - avatar: the github avatar of the author
  */
-export function executeCommitsEndpoint (request: OctokitRequest): MockedOctokitResponse<MockedCommit[]> {
+export function executeCommitsEndpoint (request: OctokitRequest): OctokitResponse<MockedCommit[]> {
   const author = request.params.get('author')
-  const authorFilteredCommits = mockedCommitData.filter(c => author === undefined || c.author === author)
+  const authorFilteredCommits = mockedCommitData.filter(c => author === undefined || c.author.email === author)
 
   const perPage = request.params.get('per_page')
   const firstN = perPage === undefined ? authorFilteredCommits.length : parseInt(perPage)

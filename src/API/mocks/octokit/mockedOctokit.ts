@@ -12,7 +12,7 @@ export interface OctokitRequest {
   params: Map<string, string>
 }
 
-export interface MockedOctokitResponse<T> {
+export interface OctokitResponse<T> {
   status: number
   data: T
 }
@@ -22,7 +22,7 @@ export interface MockedOctokitResponse<T> {
  * @param request - an Octokit API request
  * @returns mocked data or throws an error if the operation couldn't be completed
  */
-export function mockOctokitRequest (request: string): MockedOctokitResponse<any> {
+export function mockOctokitRequest (request: string): OctokitResponse<any> {
   const parsedRequest = parseOctokitRequest(request)
   const executor = findEndpointExecutor(parsedRequest)
   return executor(parsedRequest)

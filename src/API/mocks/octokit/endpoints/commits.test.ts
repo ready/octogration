@@ -10,7 +10,7 @@ describe('Mocked commit endpoint', () => {
     })
 
     response.data.forEach(c => {
-      expect(c.author).toBe(author)
+      expect(c.author.email).toBe(author)
     })
   })
 
@@ -23,7 +23,7 @@ describe('Mocked commit endpoint', () => {
     })
 
     response.data.forEach(c => {
-      expect(c.author).toBe(author)
+      expect(c.author.email).toBe(author)
     })
   })
 

@@ -8,7 +8,7 @@ describe('Mocked Octokit requests', () => {
   })
 
   test('commit endpoint provides data', () => {
-    const response = mockOctokitRequest('GET repos/ready/octogration/commits?author=git@ready.net')
+    const response = mockOctokitRequest('GET /repos/ready/octogration/commits?author=git@ready.net')
     expect(response.data.length).toBeGreaterThan(0)
   })
 })
