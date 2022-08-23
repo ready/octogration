@@ -42,7 +42,7 @@ function parseOctokitRequest (request: string): OctokitRequest {
   }
 
   const urlFields = fields[1].split('?')
-  if (fields.length > 2) {
+  if (urlFields.length > 2) {
     throw new Error(`Mocked octokit request "${request}" has too many question marks`)
   }
 
@@ -62,7 +62,15 @@ function parseOctokitRequest (request: string): OctokitRequest {
   paramList.forEach(p => {
     const keyValue = p.split('=')
     if (keyValue.length !== 2) {
-      throw new Error(`Mocked octokit request "${request}" has parameter ${p} malformatted key=value`)
+      throw new Error(`Mocked octokit request "${request}" has parameter "${p}" malformatted key=value`)
+    }
+
+    if (keyValue[0].trim() === '') {
+      throw new Error(`Mocked octokit request "${request}" has parameter "${p}" missing key`)
+    }
+
+    if (keyValue[1].trim() === '') {
+      throw new Error(`Mocked octokit request "${request}" has parameter "${p}" missing value`)
     }
 
     params.set(keyValue[0], keyValue[1])
@@ -73,4 +81,8 @@ function parseOctokitRequest (request: string): OctokitRequest {
     endpoint,
     params
   }
+}
+
+export const testMockedOctokit = {
+  parseOctokitRequest
 }
