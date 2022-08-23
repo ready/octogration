@@ -47,6 +47,16 @@ function isMatchingEndpoint (identifier: string, endpoint: string[]): boolean {
  */
 function isMatchingStep (pathStep: string, endpointStep: string): boolean {
   if (pathStep.startsWith('<') && pathStep.endsWith('>')) return true
-  if (pathStep === '###' && !isNaN(parseInt(endpointStep))) return true
+  if (pathStep === '###') {
+    const numericStep = parseInt(endpointStep)
+    if (isNaN(numericStep)) return false
+    return numericStep.toString() === endpointStep
+  }
+
   return pathStep === endpointStep
+}
+
+export const testMockedEndpoints = {
+  isMatchingEndpoint,
+  isMatchingStep
 }
