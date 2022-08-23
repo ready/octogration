@@ -10,5 +10,5 @@ if (process.argv.length === 4) {
 } else if (process.argv.length === 3) {
   changelogTitle()
 } else {
-  console.log('not valid')
+  console.log('octogration <subprocess>')
 }
