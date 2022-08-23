@@ -11,6 +11,7 @@ import { prepareLinterBadge } from './preparers/linterBadge'
 import { prepareDeprecationsBadge } from './preparers/deprecationsBadge'
 import { prepareStaleBranchesBadge } from './preparers/staleBranchesBadge'
 import { prepareNeglectedPrsBadge } from './preparers/neglectedPRsBadge'
+import { prepareLastProdBadge } from './preparers/lastProdBadge'
 
 const HELP_MSG = `
 This badges script will modify the README.md file in the root directory of the current project.
@@ -26,6 +27,7 @@ enum ValidBadgeType {
   Version = 'version',
   StaleBranches = 'staleBranches',
   NeglectedPRs = 'neglectedPrs',
+  LastProd = 'lastProd',
   Tests = 'tests',
   Coverage = 'coverage',
   Vulnerabilities = 'vulnerabilities',
@@ -41,6 +43,7 @@ const preparers = new Map<ValidBadgeType, (oldBadge: string) => (string | Promis
 preparers.set(ValidBadgeType.Version, prepareVersionBadge)
 preparers.set(ValidBadgeType.StaleBranches, prepareStaleBranchesBadge)
 preparers.set(ValidBadgeType.NeglectedPRs, prepareNeglectedPrsBadge)
+preparers.set(ValidBadgeType.LastProd, prepareLastProdBadge)
 preparers.set(ValidBadgeType.Tests, prepareTestsBadge)
 preparers.set(ValidBadgeType.Coverage, prepareCoverageBadge)
 preparers.set(ValidBadgeType.Vulnerabilities, prepareVulnerabilitiesBadge)
