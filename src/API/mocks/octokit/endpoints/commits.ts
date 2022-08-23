@@ -33,10 +33,10 @@ export function executeCommitsEndpoint (request: OctokitRequest): MockedOctokitR
   const authorFilteredCommits = mockedCommitData.filter(c => author === undefined || c.author === author)
 
   const perPage = request.params.get('per_page')
-  const firstN = perPage === undefined ? undefined : parseInt(perPage)
-
+  const firstN = perPage === undefined ? authorFilteredCommits.length : parseInt(perPage)
+  const endSlice = Math.max(Math.min(firstN, authorFilteredCommits.length), 0)
   return {
     status: 200,
-    data: authorFilteredCommits.slice(0, firstN)
+    data: authorFilteredCommits.slice(0, endSlice)
   }
 }
