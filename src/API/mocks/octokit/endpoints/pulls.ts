@@ -22,7 +22,7 @@ export const mockedPullData: MockedPR[] = [
     id: 10,
     submitted_at: (new Date('7/2/22')).toISOString(),
     state: 'open',
-    reviewAuthors: []
+    reviewAuthors: ['ready']
   }, {
     id: 12,
     submitted_at: (new Date('8/2/22')).toISOString(),
