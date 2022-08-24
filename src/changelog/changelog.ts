@@ -43,7 +43,7 @@ async function createChangelog (): Promise<void> {
  * Checks arguments and then either prints the help message
  * or calls the create changelog function
  */
-export function main (): void {
+export function changelog (): void {
   if (process.argv.length !== 4) {
     help()
     process.exit(1)
@@ -51,7 +51,6 @@ export function main (): void {
     void createChangelog()
   }
 }
-main()
 
 /**
  * Prints the help message to console

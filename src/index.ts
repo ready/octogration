@@ -1,14 +1,39 @@
 import { updateBadges } from './badges/badges'
-import { main as changelog } from './changelog/changelog'
-import { main as changelogTitle } from './changelog/changelogTitle'
+import { changelog } from './changelog/changelog'
+import { changelogTitle } from './changelog/changelogTitle'
 
-// Temporary solution to adding both the badges and changelog to the same file
-if (process.argv.length === 4) {
-  changelog()
-} else if (process.argv.length === 2) {
-  void updateBadges()
-} else if (process.argv.length === 3) {
-  changelogTitle()
-} else {
-  console.log('octogration <subprocess>')
+export const HELP_MSG = `
+octogration <subprocess> <...params>
+
+Valid subprocesses are
+- changelog
+- changelogTitle
+- badges
+`
+
+/**
+ * Calls the appropriate subprocess based on the parameter passed in
+ * Prints the help message if the subprocess isn't known
+ * @param subprocess - which subprocess to call
+ */
+function callSubprocess (subprocess: string): void {
+  switch (subprocess) {
+    case 'changelog': changelog(); break
+    case 'changelogTitle': changelogTitle(); break
+    case 'badges': void updateBadges(); break
+    default: console.log(HELP_MSG)
+  }
 }
+
+/**
+ * Checks arguments and then either prints the help message
+ * or runs the subprocess
+ */
+export function main (): void {
+  if (process.argv.length < 3) {
+    console.log(HELP_MSG)
+  } else {
+    callSubprocess(process.argv[2])
+  }
+}
+main()

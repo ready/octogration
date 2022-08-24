@@ -84,7 +84,6 @@ export async function updateBadges (): Promise<void> {
 
   writeSources(badgeTypes, updatedBadges)
 }
-void updateBadges()
 
 /**
  * Parses and validates all of the parameters sent to the process via CLI.

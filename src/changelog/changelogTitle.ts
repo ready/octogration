@@ -33,14 +33,13 @@ function evaluateEnvDeploy (): 'Production' | 'Dev' {
  * Checks arguments and then either prints the help message
  * or calls the create changelog function
  */
-export function main (): void {
+export function changelogTitle (): void {
   if (process.argv.length !== 2) {
     help()
   } else {
     createChangelogTitle()
   }
 }
-main()
 
 /**
  * Prints the help message to console
