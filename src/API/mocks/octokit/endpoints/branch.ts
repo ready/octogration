@@ -35,7 +35,7 @@ export const mockedBranchData: MockedBranchData[] = [
  * - name: the name of the branch, may contain /
  * - commit.commit.date: the date of the most recent commit on the branch
  */
-export function executeBranchEndpoint (request: OctokitRequest): OctokitResponse<MockedBranchData> {
+export function executeBranchEndpoint (request: OctokitRequest): OctokitResponse<MockedBranchData | undefined> {
   const endpointPath = request.endpoint.join('/')
   if (request.endpoint.length <= 4) {
     throw new Error(`Branch endpoint "${endpointPath}" is missing branch name`)
@@ -45,7 +45,10 @@ export function executeBranchEndpoint (request: OctokitRequest): OctokitResponse
   const branch = mockedBranchData.find(b => b.name === branchName)
 
   if (branch === undefined) {
-    throw new Error(`Branch endpoint "${endpointPath}" did not find branch named "${branchName}"`)
+    return {
+      status: 404,
+      data: undefined
+    }
   }
 
   return {
