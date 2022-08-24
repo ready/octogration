@@ -58,7 +58,7 @@ jobs:
         run: npm run build
 
       - name: Update dynamic badges
-        run: node ./lib/badges/badges.js
+        run: node ./lib/index.js badges
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -75,9 +75,9 @@ jobs:
 
       - name: Create Changelog Title
         id: create_changelog_title
-        run: echo "::set-output name=title::$(node ./lib/changelog/changelogTitle.js)"
+        run: echo "::set-output name=title::$(node ./lib/index.js changelogTitle)"
 
-      - run: node ./lib/changelog/changelog.js ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
+      - run: node ./lib/index.js changelog ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
