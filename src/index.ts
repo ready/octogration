@@ -36,7 +36,11 @@ export function main (): void {
     callSubprocess(process.argv[2])
   }
 }
-main()
+
+// If we are not running in test mode, launch main
+if (process.env.JEST_WORKER_ID === undefined || process.env.NODE_ENV !== 'test') {
+  main()
+}
 
 /**
  * Exits the program with failing status code after printing help message
