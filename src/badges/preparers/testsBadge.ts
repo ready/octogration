@@ -1,4 +1,4 @@
-import { execSync } from 'child_process'
+import { spawnSync } from 'child_process'
 import { createURL, BadgeStyle } from '../badgesUtils'
 
 const config = {
@@ -32,8 +32,9 @@ interface TestsSummary {
  * @returns the number of tests passed and the total number of tests
  */
 function retrieveTestsSummary (): TestsSummary {
-  const process = execSync('npm run testSummary')
-  const outputLines = process.toString().split('\n')
+  const process = spawnSync('npm', ['run', 'testSummary'])
+  const output = process.stdout.toString()
+  const outputLines = output.split('\n')
 
   // The output may contain more than just the JSON that we need
   // Check every line to see which one has the JSON summary
@@ -58,5 +59,5 @@ function retrieveTestsSummary (): TestsSummary {
     }
   }
 
-  throw new Error(`Tests summary did not contain valid JSON: ${process.toString()}`)
+  throw new Error(`Tests summary did not contain valid JSON: ${output}`)
 }
