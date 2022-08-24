@@ -3,7 +3,7 @@ import { changelog } from './changelog/changelog'
 import { changelogTitle } from './changelog/changelogTitle'
 
 export const HELP_MSG = `
-octogration <subprocess> <...params>
+Usage: octogration <subprocess> <...params>
 
 Valid subprocesses are
 - changelog
@@ -21,7 +21,7 @@ function callSubprocess (subprocess: string): void {
     case 'changelog': changelog(); break
     case 'changelogTitle': changelogTitle(); break
     case 'badges': void updateBadges(); break
-    default: console.log(HELP_MSG)
+    default: help()
   }
 }
 
@@ -31,9 +31,17 @@ function callSubprocess (subprocess: string): void {
  */
 export function main (): void {
   if (process.argv.length < 3) {
-    console.log(HELP_MSG)
+    help()
   } else {
     callSubprocess(process.argv[2])
   }
 }
 main()
+
+/**
+ * Exits the program with failing status code after printing help message
+ */
+function help (): void {
+  console.log(HELP_MSG)
+  process.exit(1)
+}

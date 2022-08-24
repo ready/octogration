@@ -1,6 +1,8 @@
 import { getPackageJson } from '../packageJson'
 
 const HELP_MSG = `
+Usage: octogration changelogTitle
+
 This changelog title will read the version number from package.json
 and then format and print the changelog title
 `
@@ -34,7 +36,7 @@ function evaluateEnvDeploy (): 'Production' | 'Dev' {
  * or calls the create changelog function
  */
 export function changelogTitle (): void {
-  if (process.argv.length !== 2) {
+  if (process.argv.length !== 3) {
     help()
   } else {
     createChangelogTitle()
@@ -42,8 +44,9 @@ export function changelogTitle (): void {
 }
 
 /**
- * Prints the help message to console
+ * Prints the help message to console and exits with failing status code
  */
 function help (): void {
   console.log(HELP_MSG)
+  process.exit(1)
 }
