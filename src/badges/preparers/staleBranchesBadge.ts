@@ -1,8 +1,8 @@
-import { Octokit } from '@octokit/action'
+import { OctokitWrapper } from '../../API/octokitWrapper'
 import { getRepo } from '../../changelog/getGithubAvatar'
 import { createURL, BadgeStyle } from '../badgesUtils'
 
-const octokit = new Octokit()
+const octokit = new OctokitWrapper()
 
 const config = {
   label: 'Stale Branches',
