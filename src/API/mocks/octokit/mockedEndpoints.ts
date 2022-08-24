@@ -25,12 +25,7 @@ export function findEndpointExecutor (request: OctokitRequest): EndpointExecutor
     throw new Error(`The endpoint ${request.endpoint.join('/')} does not match any known endpoint`)
   }
 
-  const executor = endpointExecutors.get(matchingIdentifier)
-  if (executor === undefined) {
-    throw new Error(`The endpoint ${request.endpoint.join('/')} could not be located`)
-  }
-
-  return executor
+  return endpointExecutors.get(matchingIdentifier) as EndpointExecutor
 }
 
 /**
