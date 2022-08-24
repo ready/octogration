@@ -32,7 +32,7 @@ export async function prepareStaleBranchesBadge (): Promise<string> {
 async function countStaleBranches (): Promise<number> {
   const STALE_AGE = 120
 
-  const branches = await getBranches()
+  const branches = await getBranchNames()
   const ages = await Promise.all(branches.map(async b => await getBranchAge(b)))
   const staleAges = ages.filter(a => a > STALE_AGE)
 
@@ -56,17 +56,9 @@ async function getBranchAge (branchName: string): Promise<number> {
 /**
  * @returns a list of branch names for the current repository
  */
-async function getBranches (): Promise<string[]> {
-  const repo = getRepo().split('/')
-  const branches = await octokit.paginate(
-    octokit.repos.listBranches,
-    {
-      owner: repo[0],
-      repo: repo[1],
-      protected: false,
-      per_page: 100
-    },
-    (response) => response.data
-  )
-  return branches.map(b => b.name)
+async function getBranchNames (): Promise<string[]> {
+  const repo = getRepo()
+  const endpoint = `GET /repos/${repo}/branches?protected=false&per_page=100`
+  const branches = await octokit.request(endpoint)
+  return branches.data.map((b: any) => b.name)
 }

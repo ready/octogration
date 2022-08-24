@@ -2,6 +2,7 @@ import { executeListBranchesEndpoint } from './endpoints/listBranches'
 import { executeCommitsEndpoint } from './endpoints/commits'
 import { executePullsEndpoint } from './endpoints/pulls'
 import { OctokitResponse, OctokitRequest } from './mockedOctokit'
+import { executeBranchEndpoint } from './endpoints/branch'
 
 type EndpointExecutor = (request: OctokitRequest) => OctokitResponse<any>
 
@@ -10,7 +11,7 @@ endpointExecutors.set('repos/<org>/<repo>/commits', executeCommitsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls', executePullsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls/###/reviews', executePullsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/branches', executeListBranchesEndpoint)
-endpointExecutors.set('repos/<org>/<repo>/branches/<^>', executePullsEndpoint)
+endpointExecutors.set('repos/<org>/<repo>/branches/<^>', executeBranchEndpoint)
 
 /**
  * Searches the known endpoints to find the executor for a request
