@@ -21,7 +21,7 @@ export function prepareCoverageBadge (): string {
   const boundedPercent = Math.min(Math.max(bufferedPercent, 0), 1)
   const color = interpolateProgessColor(boundedPercent)
 
-  const message = summary.total.statements.pct.toFixed(2) + '%'
+  const message = formatPercent(summary.total.statements.pct)
   return createURL({ ...config, message, color })
 }
 
@@ -57,4 +57,20 @@ function retrieveCoverageSummary (): CoverageSummary {
       }
     }
   }
+}
+
+/**
+ * Formats a string as a percent with two decimal places
+ * If the number is rounded to an integer, the trailing zeros aren't shown
+ * @param num - the number to format
+ * @returns a string like 84.32% or 99%
+ */
+function formatPercent (num: number): string {
+  const fixed = num.toFixed(2)
+  const fields = fixed.split('.')
+  if (fields[1] === '00') {
+    return `${fields[0]}%`
+  }
+
+  return `${fields[0]}.${fields[1]}%`
 }
