@@ -1,4 +1,4 @@
-import { spawnSync } from 'child_process'
+import { execSync } from 'child_process'
 import { createURL, BadgeStyle } from '../badgesUtils'
 
 const config = {
@@ -32,14 +32,31 @@ interface TestsSummary {
  * @returns the number of tests passed and the total number of tests
  */
 function retrieveTestsSummary (): TestsSummary {
-  try {
-    const process = spawnSync('npm run testSummary')
-    return JSON.parse(process.stdout.toString()) as TestsSummary
-  } catch (e) {
-    console.error(e)
-    return {
-      numPassedTests: 0,
-      numTotalTests: 0
+  const process = execSync('npm run testSummary')
+  const outputLines = process.toString().split('\n')
+
+  // The output may contain more than just the JSON that we need
+  // Check every line to see which one has the JSON summary
+  for (let i = 0; i < outputLines.length; i++) {
+    try {
+      const json = JSON.parse(outputLines[i])
+      if ('numPassedTests' in json && 'numTotalTests' in json) {
+        if (typeof json.numPassedTests === 'number' && typeof json.numTotalTests === 'number') {
+          return json
+        }
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        const erroredFunction = e.stack?.split('\n')[1]
+        if (erroredFunction?.includes('at JSON.parse') === true) {
+          continue
+        }
+      }
+
+      // If the error is not a JSON parsing error, throw it up the stack
+      throw e
     }
   }
+
+  throw new Error(`Tests summary did not contain valid JSON: ${process.toString()}`)
 }

@@ -1,7 +1,7 @@
-import { Octokit } from '@octokit/action'
+import { OctokitWrapper } from '../API/octokitWrapper'
 import { getGitRemoteURL } from '../gitRemoteOrigin'
 
-const octokit = new Octokit()
+const octokit = new OctokitWrapper()
 
 interface GithubUserInfo {
   username: string
