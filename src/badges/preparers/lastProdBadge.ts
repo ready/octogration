@@ -1,6 +1,6 @@
 import { getPackageJson } from '../../packageJson'
 import { createURL, BadgeStyle } from '../badgesUtils'
-import { interpolateProgessColor } from '../interpolateColor'
+import { interpolateProgessColor } from '../../utils/interpolateColor'
 
 const config = {
   label: 'Last Prod',
