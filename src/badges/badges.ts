@@ -1,4 +1,4 @@
-import { readSources, writeSources } from '../readmeParser'
+import { getSource, setSource, writeSources } from '../utils/readmeParser'
 import { prepareVersionBadge } from './preparers/versionBadge'
 import { prepareTestsBadge } from './preparers/testsBadge'
 import { prepareCoverageBadge } from './preparers/coverageBadge'
@@ -58,31 +58,37 @@ preparers.set(ValidBadgeType.Linter, prepareLinterBadge)
  * Updates the badges in the README.md file
  */
 export async function updateBadges (): Promise<void> {
-  const badgeTypes = Object.values(ValidBadgeType)
-  const sourcedBadges = readSources(badgeTypes)
-
   const badgesToUpdate = parseParams(process.argv)
-  const updatedBadges = await Promise.all(sourcedBadges.map(async (oldBadge, index) => {
-    const currentType = badgeTypes[index]
-    if (!badgesToUpdate.includes(currentType)) return oldBadge
 
-    const preparer = preparers.get(currentType)
-    if (preparer === undefined) {
-      console.error(`Preparer not found for ${currentType}`)
-      return ''
-    }
+  await Promise.all(badgesToUpdate.map(async badgeName => {
+    const originalSource = getSource(badgeName)
 
-    try {
-      const newBadge = await preparer(oldBadge)
-      console.log(`Updated ${currentType} badge`)
-      return newBadge
-    } catch (e) {
-      console.error(e)
-      return ''
+    if (originalSource !== undefined) {
+      await updateBadge(badgeName, originalSource)
     }
   }))
 
-  writeSources(badgeTypes, updatedBadges)
+  writeSources()
+}
+
+/**
+ * Updates the badge and sets it in the readme
+ * @param badgeName - the name of the badge to update
+ * @param originalSource - the old version of the badge
+ */
+async function updateBadge (badgeName: ValidBadgeType, originalSource: string): Promise<void> {
+  const preparer = preparers.get(badgeName)
+  if (preparer === undefined) {
+    console.error(`Preparer not found for ${badgeName}`)
+    return
+  }
+
+  try {
+    const newSource = await preparer(originalSource)
+    setSource(badgeName, newSource)
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 /**
