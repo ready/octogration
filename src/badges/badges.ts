@@ -17,7 +17,7 @@ const HELP_MSG = `
 This badges script will modify the README.md file in the root directory of the current project.
 It updates the badges to be consistent with the latest version of the project.
 
-Useage: badges.ts <badgeList?>
+Useage: octogration badges <badgeList?>
 The badgeList parameter is optional and should be in the format: type,type,type,...
 Where each type is a valid badge type to be updated. 
 When the badge list parameter has not been provided, all badges are updated.
@@ -84,7 +84,6 @@ export async function updateBadges (): Promise<void> {
 
   writeSources(badgeTypes, updatedBadges)
 }
-void updateBadges()
 
 /**
  * Parses and validates all of the parameters sent to the process via CLI.
@@ -93,14 +92,14 @@ void updateBadges()
  */
 function parseParams (params: string[]): ValidBadgeType[] {
   const validBadgeTypes = Object.values(ValidBadgeType)
-  if (params.length === 2) {
+  if (params.length === 3) {
     return validBadgeTypes
-  } else if (params.length !== 3) {
+  } else if (params.length !== 4) {
     help()
     return []
   }
 
-  const badgeNames = params[2].split(',')
+  const badgeNames = params[3].split(',')
   try {
     return badgeNames.map(badgeName => {
       const badgeType = validBadgeTypes.find(bt => bt.toString() === badgeName)
@@ -115,9 +114,11 @@ function parseParams (params: string[]): ValidBadgeType[] {
 
 /**
  * Prints the help message to console with a list of all valid badge types
+ * and then exits with a failing status code
  */
 function help (): void {
   const badgeNames = Object.values(ValidBadgeType).map(v => v.toString())
   const helpMessage = badgeNames.reduce((message, next) => `${message}\n * ${next}`, HELP_MSG)
   console.log(helpMessage)
+  process.exit(1)
 }

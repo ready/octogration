@@ -5,8 +5,8 @@ import { getGitRemoteURL } from '../../gitRemoteOrigin'
  * @return a markdown formatted version of the branch
  */
 export function evaluateBranch (): string {
-  const number = process.argv[2]
-  const name = process.argv[3]
+  const number = process.argv[3]
+  const name = process.argv[4]
 
   const mainURL = getGitRemoteURL()
   const prURL = getPrURL(number)

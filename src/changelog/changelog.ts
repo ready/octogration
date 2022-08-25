@@ -6,7 +6,8 @@ import { evaluateCommitLog } from './variables/commitLog'
 import { evaluateDatetime } from './variables/dateTime'
 
 const HELP_MSG = `
-Usage: ts-node changelog.ts <prNumber> <branchName>
+Usage: octogration changelog <prNumber> <branchName>
+
 This changelog script reads from the file .github/data/commits.txt
 and parses the commit messages to create a changelog for release.
 It uses the format described in releaseFormat.md and substitutes the values as necessary
@@ -43,19 +44,19 @@ async function createChangelog (): Promise<void> {
  * Checks arguments and then either prints the help message
  * or calls the create changelog function
  */
-export function main (): void {
-  if (process.argv.length !== 4) {
+export function changelog (): void {
+  if (process.argv.length !== 5) {
     help()
-    process.exit(1)
   } else {
     void createChangelog()
   }
 }
-main()
 
 /**
  * Prints the help message to console
+ * and then exits with failing status code
  */
 function help (): void {
   console.log(HELP_MSG)
+  process.exit(1)
 }
