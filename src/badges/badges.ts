@@ -1,4 +1,4 @@
-import { readSources, writeSources } from '../readmeParser'
+import { readSources, writeSources } from '../utils/readmeParser'
 import { prepareVersionBadge } from './preparers/versionBadge'
 import { prepareTestsBadge } from './preparers/testsBadge'
 import { prepareCoverageBadge } from './preparers/coverageBadge'
