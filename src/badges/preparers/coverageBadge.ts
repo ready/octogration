@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { createURL, BadgeStyle } from '../badgesUtils'
-import { interpolateProgessColor } from '../interpolateColor'
+import { interpolateProgessColor } from '../../utils/interpolateColor'
 
 const config = {
   label: 'Coverage',

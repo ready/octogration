@@ -5,19 +5,21 @@
  * @returns a 6 digit hexcolor code string without the leading #
  */
 export function interpolateProgessColor (percent: number): string {
+  const p = Math.min(Math.max(percent, 0), 1)
+
   const good = { red: 51, green: 171, blue: 83 }
   const ok = { red: 221, green: 255, blue: 54 }
   const bad = { red: 207, green: 59, blue: 54 }
 
-  if (percent > 0.5) {
+  if (p > 0.5) {
     // Interpolate between yellow and green
-    const newPercent = (percent - 0.5) * 2
+    const newPercent = (p - 0.5) * 2
     const color = interpolateColor(newPercent, ok, good)
     return rgbToHex(color)
   }
 
   // Interpolate between red and yellow
-  const newPercent = percent * 2
+  const newPercent = p * 2
   const color = interpolateColor(newPercent, bad, ok)
   return rgbToHex(color)
 }
@@ -64,4 +66,9 @@ function interpolateColor (percent: number, color1: RGB, color2: RGB): RGB {
 function linearInterp (percent: number, point1: number, point2: number): number {
   const range = point2 - point1
   return percent * range + point1
+}
+
+export const testInterpolateColor = {
+  interpolateColor,
+  linearInterp
 }
