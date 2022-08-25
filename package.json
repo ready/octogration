@@ -31,9 +31,11 @@
   "homepage": "https://github.com/ready/octogration#readme",
   "devDependencies": {
     "@types/jest": "^28.1.7",
+    "@types/madge": "^5.0.0",
     "commitlint": "^17.0.3",
     "husky": "^8.0.1",
     "jest": "^28.1.3",
+    "madge": "^5.0.1",
     "ts-jest": "^28.0.8",
     "ts-standard": "^11.0.0",
     "typescript": "^4.7.4"
