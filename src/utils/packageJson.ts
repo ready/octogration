@@ -6,10 +6,10 @@ interface PackageJson {
     testSummary: string
   }
   dependencies: {
-    react: string
+    [key: string]: string
   }
   devDependencies: {
-    vite: string
+    [key: string]: string
   }
 }
 

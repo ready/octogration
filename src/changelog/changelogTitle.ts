@@ -1,4 +1,4 @@
-import { getPackageJson } from '../packageJson'
+import { getPackageJson } from '../utils/packageJson'
 
 const HELP_MSG = `
 Usage: octogration changelogTitle
