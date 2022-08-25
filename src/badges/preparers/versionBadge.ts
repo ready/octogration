@@ -1,4 +1,4 @@
-import { getPackageJson } from '../../packageJson'
+import { getPackageJson } from '../../utils/packageJson'
 import { createURL, BadgeConfig, cleanVersionNumber } from '../badgesUtils'
 
 const config: BadgeConfig = {

@@ -1,6 +1,7 @@
 import { updateBadges } from './badges/badges'
 import { changelog } from './changelog/changelog'
 import { changelogTitle } from './changelog/changelogTitle'
+import { executeLive } from './utils/executeLive'
 
 export const HELP_MSG = `
 Usage: octogration <subprocess> <...params>
@@ -37,10 +38,8 @@ export function main (): void {
   }
 }
 
-// If we are not running in test mode, launch main
-if (process.env.JEST_WORKER_ID === undefined || process.env.NODE_ENV !== 'test') {
-  main()
-}
+// Only execute main if we're not in test mode
+executeLive(main)
 
 /**
  * Exits the program with failing status code after printing help message
