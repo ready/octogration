@@ -21,7 +21,6 @@ export function getGitRemoteURL (): string {
 function retrieveGitRemoteURL (): string {
   const output = execSync('git remote -v').toString()
   const lines = output.split('\n')
-  if (lines.length === 0) throw new Error('git remote command failed')
 
   const originSection = lines[0].split('\t')
   if (originSection.length !== 2) throw new Error('git origin fields malformatted')
@@ -50,4 +49,8 @@ function parseGitAddress (gitAddress: string): string {
   const gitURL = gitAddress.slice(prefix.length, gitAddress.length - suffix.length)
   const remoteURL = gitURL.replace(':', '/')
   return `https://${remoteURL}`
+}
+
+export const testGitRemoteOrigin = {
+  retrieveGitRemoteURL
 }
