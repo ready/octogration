@@ -1,4 +1,4 @@
-import { getPackageJson } from '../../packageJson'
+import { getPackageJson } from '../../utils/packageJson'
 import { createURL, BadgeStyle } from '../badgesUtils'
 import { interpolateProgessColor } from '../../utils/interpolateColor'
 
