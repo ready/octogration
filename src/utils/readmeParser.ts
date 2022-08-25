@@ -1,59 +1,51 @@
 import { readFileSync, writeFileSync } from 'fs'
 
-// These are held here to make the process of writing the new sources easier
-let readmeFile = ''
-let originalSources = [] as string[]
+let readmeFile: undefined | string
+const sources = new Map<string, string>()
 
 /**
- * Reads the source tags for a list of alt tags from the readme file
- * @param alts - a list of alt texts to search for
- * @returns a list of source texts
+ * Grabs an image source from the readme file given the alt text
+ * Caches the readme file internally and can be written with `writeSources()`
+ * @param alt - The alt text of the image to find
+ * @returns the image source, or undefined if not found
  */
-export function readSources (alts: string[]): string[] {
-  readmeFile = readReadMeFile()
-  originalSources = parseAltSources(readmeFile, alts)
-  return originalSources
+export function getSource (alt: string): string | undefined {
+  if (readmeFile === undefined) {
+    readmeFile = readReadMeFile()
+  }
+
+  const source = searchForAltSource(readmeFile, alt)
+  if (source !== undefined) sources.set(alt, source)
+  return source
 }
 
 /**
- * Overwrites the readme file with new sources for each alt
- * Throw error if the alts and sources are not the same length
- * @param alts - A list of alt texts to replace with new sources
- * @param sources - A list of the new sources to write into the file
+ * Replaces all image sources with a given alt text in the readme file
+ * @param alt - the alt text of the image to set
+ * @param source - the new source to replace with
  */
-export function writeSources (alts: string[], sources: string[]): void {
-  if (alts.length !== sources.length) {
-    throw new Error('Writing sources requires the alts and sources list to be the same length')
-  }
-  if (alts.length !== originalSources.length) {
-    throw new Error('Writing sources requires the alts and original sources list to be the same length')
+export function setSource (alt: string, source: string): void {
+  if (readmeFile === undefined) {
+    throw new Error('The alt text was not gotten before attempting to set')
   }
 
-  alts.forEach((alt, index) => {
-    if (sources[index] === '') return
-    const searchString = `alt="${alt}" src="${originalSources[index]}"`
-    const replaceString = `alt="${alt}" src="${sources[index]}"`
-    readmeFile = readmeFile.replace(searchString, replaceString)
-  })
+  const oldSource = sources.get(alt)
+  if (oldSource === undefined) {
+    throw new Error('The alt text was not gotten before attempting to set')
+  }
 
-  writeReadMeFile(readmeFile)
+  sources.set(alt, source)
+  readmeFile.replaceAll(htmlify(alt, oldSource), htmlify(alt, source))
 }
 
 /**
- * Looks through a file to search for the specific format:
- * alt="<some alt text>" src="<the source>"[space]
- * If multiple alts with the same text are found, the first source is returned
- * If no alts are found, an empty string is returned
- * @param file - the string version of the file to search through
- * @param alts - a list of alt strings to look for
- * @returns a list of source strings that match the alts provided
+ * Writes the sources to the readme file
  */
-function parseAltSources (file: string, alts: string[]): string[] {
-  const sources = [] as string[]
-  alts.forEach(alt => {
-    sources.push(searchForAltSource(file, alt))
-  })
-  return sources
+export function writeSources (): void {
+  if (readmeFile === undefined) {
+    throw new Error('No sources have been read before attempting to write')
+  }
+  writeFileSync('README.md', readmeFile)
 }
 
 /**
@@ -63,23 +55,32 @@ function parseAltSources (file: string, alts: string[]): string[] {
  * If no alts are found, an empty string is returned
  * @param file - the string version of the file to search through
  * @param alt - the alt text to search for
- * @returns the source string for the matching alt
+ * @returns the source string for the matching alt, or undefined if not found
  */
-function searchForAltSource (file: string, alt: string): string {
-  const altSearchString = `alt="${alt}"`
+function searchForAltSource (file: string, alt: string): string | undefined {
+  const altSearchString = `<img alt="${alt}"`
   const altLocation = file.indexOf(altSearchString)
-  if (altLocation === -1) return ''
+  if (altLocation === -1) return undefined
 
   // Once the alt location is found, we need to search for the next space
   const beginSpaceSearchIndex = altLocation + altSearchString.length + 1
   const nextSpaceLocation = file.indexOf(' ', beginSpaceSearchIndex)
-  if (nextSpaceLocation === -1) return ''
+  if (nextSpaceLocation === -1) return undefined
 
   // We need to set the bounds so that it doesn't include the src=""
-  const beginSource = beginSpaceSearchIndex + 5
+  const beginSource = beginSpaceSearchIndex + 'src="'.length
   const endSource = nextSpaceLocation - 1
 
   return file.substring(beginSource, endSource)
+}
+
+/**
+ * @param alt - the alt string
+ * @param source - the source
+ * @returns an image tag formatted as HTML
+ */
+function htmlify (alt: string, source: string): string {
+  return `<img alt="${alt}" src="${source}" `
 }
 
 /**
@@ -87,11 +88,4 @@ function searchForAltSource (file: string, alt: string): string {
  */
 function readReadMeFile (): string {
   return readFileSync('README.md').toString()
-}
-
-/**
- * @param file - the string version of the file to overwrite with
- */
-function writeReadMeFile (file: string): void {
-  writeFileSync('README.md', file)
 }
