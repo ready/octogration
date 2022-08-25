@@ -1,4 +1,4 @@
-import { getGitRemoteURL } from '../../gitRemoteOrigin'
+import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
 
 /**
  * Fetches the branch name and PR number from the CLI arguments

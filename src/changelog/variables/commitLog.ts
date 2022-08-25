@@ -1,4 +1,4 @@
-import { getGitRemoteURL } from '../../gitRemoteOrigin'
+import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
 import { Commit, getCommitsByType } from '../commitParser'
 import { getGithubUserInfo } from '../getGithubAvatar'
 
