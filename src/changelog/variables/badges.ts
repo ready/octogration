@@ -1,4 +1,4 @@
-import { readSources } from '../../readmeParser'
+import { getSource } from '../../utils/readmeParser'
 
 /**
  * @returns an HTML block of badges to display from the README.md file
@@ -10,11 +10,13 @@ export function evaluateBadges (): string {
     'vulnerabilities',
     'deprecations'
   ]
-  const badgeSources = readSources(badgeAlts)
 
   let badgeSection = '<p align="center">\n'
-  badgeAlts.forEach((alt, index) => {
-    badgeSection += '  ' + htmlifyBadge(alt, badgeSources[index]) + '\n'
+  badgeAlts.forEach(badgeName => {
+    const src = getSource(badgeName)
+    if (src === undefined) return
+
+    badgeSection += '  ' + htmlifyBadge(badgeName, src) + '\n'
   })
   badgeSection += '</p>'
 
