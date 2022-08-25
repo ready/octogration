@@ -14,6 +14,9 @@ export function getSource (alt: string): string | undefined {
     readmeFile = readReadMeFile()
   }
 
+  const cachedSource = sources.get(alt)
+  if (cachedSource !== undefined) return cachedSource
+
   const source = searchForAltSource(readmeFile, alt)
   if (source !== undefined) sources.set(alt, source)
   return source
@@ -35,7 +38,7 @@ export function setSource (alt: string, source: string): void {
   }
 
   sources.set(alt, source)
-  readmeFile.replaceAll(htmlify(alt, oldSource), htmlify(alt, source))
+  readmeFile = readmeFile.replaceAll(htmlify(alt, oldSource), htmlify(alt, source))
 }
 
 /**
@@ -67,8 +70,13 @@ function searchForAltSource (file: string, alt: string): string | undefined {
   const nextSpaceLocation = file.indexOf(' ', beginSpaceSearchIndex)
   if (nextSpaceLocation === -1) return undefined
 
-  // We need to set the bounds so that it doesn't include the src=""
-  const beginSource = beginSpaceSearchIndex + 'src="'.length
+  // Verify the source is formatted as src="<source>"
+  const srcPrefix = 'src="'
+  const quotedSource = file.substring(beginSpaceSearchIndex, nextSpaceLocation)
+  if (!quotedSource.startsWith(srcPrefix)) return undefined
+  if (quotedSource.charAt(quotedSource.length - 1) !== '"') return undefined
+
+  const beginSource = beginSpaceSearchIndex + srcPrefix.length
   const endSource = nextSpaceLocation - 1
 
   return file.substring(beginSource, endSource)
