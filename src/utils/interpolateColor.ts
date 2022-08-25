@@ -24,7 +24,7 @@ export function interpolateProgessColor (percent: number): string {
   return rgbToHex(color)
 }
 
-interface RGB {
+export interface RGB {
   red: number
   green: number
   blue: number
@@ -35,9 +35,13 @@ interface RGB {
  * @returns the equivalent hex color code as a string
  */
 function rgbToHex (color: RGB): string {
-  const red = color.red.toString(16)
-  const green = color.green.toString(16)
-  const blue = color.blue.toString(16)
+  const pad = (hex: string): string => {
+    return hex.length === 1 ? `0${hex}` : hex
+  }
+
+  const red = pad(color.red.toString(16))
+  const green = pad(color.green.toString(16))
+  const blue = pad(color.blue.toString(16))
   return red + green + blue
 }
 
@@ -69,6 +73,7 @@ function linearInterp (percent: number, point1: number, point2: number): number 
 }
 
 export const testInterpolateColor = {
+  rgbToHex,
   interpolateColor,
   linearInterp
 }
