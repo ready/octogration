@@ -51,6 +51,16 @@ jobs:
       - run: git config user.name "$GITHUB_ACTOR"
       - run: git checkout main
 
+      - name: Store commit log again
+        id: store_commits2
+        run: |
+          OLDVERSION2=$(npm pkg get version | tr -d '"')
+          LASTHASH2=$(git log --pretty=format:"%H" --grep="^v${OLDVERSION2}$")
+          git log ${LASTHASH2}..HEAD --pretty=format:"%H %ae %s" > ./.github/data/commits2.txt
+          echo $OLDVERSION2
+          echo $LASTHASH2
+          cat ./.github/data/commits2.txt
+
       - name: Upgrade version of project
         run: npm version patch -m "v%s"
 
