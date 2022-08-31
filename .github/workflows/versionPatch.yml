@@ -36,30 +36,9 @@ jobs:
         run: git reset --hard
 
       - run: git fetch
-
-      - name: Store commit log
-        id: store_commits
-        run: |
-          OLDVERSION=$(npm pkg get version | tr -d '"')
-          LASTHASH=$(git log --pretty=format:"%H" --grep="^v${OLDVERSION}$")
-          git log ${LASTHASH}..HEAD --pretty=format:"%H %ae %s" > ./.github/data/commits.txt
-          echo $OLDVERSION
-          echo $LASTHASH
-          cat ./.github/data/commits.txt
-
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: git config user.name "$GITHUB_ACTOR"
       - run: git checkout main
-
-      - name: Store commit log again
-        id: store_commits2
-        run: |
-          OLDVERSION2=$(npm pkg get version | tr -d '"')
-          LASTHASH2=$(git log --pretty=format:"%H" --grep="^v${OLDVERSION2}$")
-          git log ${LASTHASH2}..HEAD --pretty=format:"%H %ae %s" > ./.github/data/commits2.txt
-          echo $OLDVERSION2
-          echo $LASTHASH2
-          cat ./.github/data/commits2.txt
 
       - name: Upgrade version of project
         run: npm version patch -m "v%s"
