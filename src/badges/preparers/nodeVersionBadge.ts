@@ -1,5 +1,6 @@
 import { spawnSync } from 'child_process'
-import { createURL, BadgeConfig, cleanVersionNumber } from '../badgesUtils'
+import { createURL, BadgeConfig } from '../badgesUtils'
+import { cleanVersionNumber } from '../../utils/version'
 
 const config: BadgeConfig = {
   label: 'Node Version',

@@ -1,5 +1,6 @@
 import { getPackageJson } from '../../utils/packageJson'
-import { createURL, BadgeConfig, cleanVersionNumber } from '../badgesUtils'
+import { createURL, BadgeConfig } from '../badgesUtils'
+import { cleanVersionNumber } from '../../utils/version'
 
 const config: BadgeConfig = {
   label: 'React Version',
