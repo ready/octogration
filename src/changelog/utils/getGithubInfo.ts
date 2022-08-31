@@ -1,5 +1,5 @@
-import { OctokitWrapper } from '../API/octokitWrapper'
-import { getGitRemoteURL } from '../utils/gitRemoteOrigin'
+import { OctokitWrapper } from '../../API/octokitWrapper'
+import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
 
 const octokit = new OctokitWrapper()
 
