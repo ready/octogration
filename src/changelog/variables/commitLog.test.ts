@@ -7,18 +7,21 @@ describe('Commit log', () => {
     expect(commitLog.includes('# Bug Fixes')).toBe(false)
     expect(commitLog.includes('# Tests')).toBe(false)
     expect(commitLog.includes('# Meta')).toBe(false)
+    expect(console.log).not.toBeCalled()
   })
 
   test('does have used section headers', async () => {
     const commitLog = await evaluateCommitLog()
     expect(commitLog.includes('# Features')).toBe(true)
     expect(commitLog.includes('# Cleaning')).toBe(true)
+    expect(console.log).not.toBeCalled()
   })
 
   test('does not have chore or typos', async () => {
     const commitLog = await evaluateCommitLog()
     expect(commitLog.includes('<b>chore</b>')).toBe(false)
     expect(commitLog.includes('<b>typo</b>')).toBe(false)
+    expect(console.log).not.toBeCalled()
   })
 
   test('empty on no used commits', async () => {
@@ -30,6 +33,7 @@ describe('Commit log', () => {
     ]
     const commitLog = await evaluateCommitLog()
     expect(commitLog).toBe('')
+    expect(console.log).toBeCalledWith('No significant changes have been added to this release')
   })
 })
 
@@ -61,4 +65,16 @@ jest.mock('../../API/CLI/gitLog', () => ({
 // we need to reset the cached parsed commits
 afterEach(() => {
   testCommitParser.reset()
+})
+
+// Mock console log
+let consoleSpy: jest.SpyInstance
+beforeAll(() => {
+  consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+})
+afterAll(() => {
+  consoleSpy.mockRestore()
+})
+afterEach(() => {
+  consoleSpy.mockClear()
 })
