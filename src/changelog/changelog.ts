@@ -1,5 +1,5 @@
-import { writeFileSync } from 'fs'
 import { formatFileHasVariable, getFormatFile, replaceVariable } from './releaseFormatParser'
+import { createRelease } from './utils/createRelease'
 import { evaluateBadges } from './variables/badges'
 import { evaluateBranch } from './variables/branch'
 import { evaluateCommitLog } from './variables/commitLog'
@@ -37,7 +37,7 @@ async function createChangelog (): Promise<void> {
     }
   }))
 
-  writeFileSync('./.github/data/changelog.md', getFormatFile())
+  await createRelease(getFormatFile())
 }
 
 /**

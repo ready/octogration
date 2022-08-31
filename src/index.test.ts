@@ -1,7 +1,6 @@
 import { HELP_MSG, main } from './index'
 import { updateBadges } from './badges/badges'
 import { changelog } from './changelog/changelog'
-import { changelogTitle } from './changelog/changelogTitle'
 
 // Mock imports from subprocessors
 jest.mock('./badges/badges', () => ({
@@ -9,9 +8,6 @@ jest.mock('./badges/badges', () => ({
 }))
 jest.mock('./changelog/changelog', () => ({
   changelog: jest.fn()
-}))
-jest.mock('./changelog/changelogTitle', () => ({
-  changelogTitle: jest.fn()
 }))
 
 // Mock console log
@@ -60,8 +56,7 @@ interface SubprocessData {
 
 const subprocesses: SubprocessData[] = [
   { name: 'badges', executor: updateBadges },
-  { name: 'changelog', executor: changelog },
-  { name: 'changelogTitle', executor: changelogTitle }
+  { name: 'changelog', executor: changelog }
 ]
 
 subprocesses.forEach(subprocess => {

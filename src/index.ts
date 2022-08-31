@@ -1,6 +1,5 @@
 import { updateBadges } from './badges/badges'
 import { changelog } from './changelog/changelog'
-import { changelogTitle } from './changelog/changelogTitle'
 import { executeLive } from './utils/executeLive'
 
 export const HELP_MSG = `
@@ -8,7 +7,6 @@ Usage: octogration <subprocess> <...params>
 
 Valid subprocesses are
 - changelog
-- changelogTitle
 - badges
 `
 
@@ -20,7 +18,6 @@ Valid subprocesses are
 function callSubprocess (subprocess: string): void {
   switch (subprocess) {
     case 'changelog': changelog(); break
-    case 'changelogTitle': changelogTitle(); break
     case 'badges': void updateBadges(); break
     default: help()
   }
