@@ -61,6 +61,7 @@ jobs:
         run: |
           git add .
           git commit -nm "chore: update dynamic badges"
+          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
 
       - name: Load Version
         id: load_version
