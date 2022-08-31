@@ -3,7 +3,7 @@ import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
 
 const octokit = new OctokitWrapper()
 
-interface GithubUserInfo {
+export interface GithubUserInfo {
   username: string
   avatar: string
 }

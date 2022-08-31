@@ -1,6 +1,6 @@
 import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
 import { Commit, getCommitsByType } from '../parsers/commitParser'
-import { getGithubUserInfo } from '../utils/getGithubInfo'
+import { getGithubUserInfo, GithubUserInfo } from '../utils/getGithubInfo'
 
 // Which commit types belong under which section header
 const commitLogGrouping = new Map<string, string[]>()
@@ -10,8 +10,6 @@ commitLogGrouping.set('Cleaning', ['refact', 'docs', 'style'])
 commitLogGrouping.set('Tests', ['test'])
 commitLogGrouping.set('Meta', ['build', 'ci'])
 
-const EMPTY_RELEASE = '**No significant changes have been added to this release**'
-
 /**
  * @returns all of the commits organized into sections based on type
  * and formatted into markdown for use in the release
@@ -19,14 +17,16 @@ const EMPTY_RELEASE = '**No significant changes have been added to this release*
 export async function evaluateCommitLog (): Promise<string> {
   const headers = [...commitLogGrouping.keys()]
   const sections = await Promise.all(headers.map(async header => {
-    const types = commitLogGrouping.get(header)
-    if (types === undefined) return ''
+    const types = commitLogGrouping.get(header) as string[]
 
     return await evaluateCommitSection(header, types)
   }))
 
   const commitLog = sections.reduce((log, sec) => `${log}${sec}`, '')
-  return commitLog === '' ? EMPTY_RELEASE : commitLog
+  if (commitLog === '') {
+    console.log('No significant changes have been added to this release')
+  }
+  return commitLog
 }
 
 /**
@@ -42,40 +42,28 @@ async function evaluateCommitSection (header: string, types: string[]): Promise<
   if (commits.length === 0) return ''
 
   const sectionHeader = '# ' + header + '\n\n'
-  const changes = await Promise.all(commits.map(async (c) => await formatCommit(c)))
+  const changes = await Promise.all(commits.map(async (c) => {
+    const githubUserInfo = await getGithubUserInfo(c.email)
+    return htmlifyCommit(githubUserInfo, c)
+  }))
   const sec = changes.reduce((log, current) => `${log}${current}\n`, sectionHeader)
   return sec + '\n'
 }
 
 /**
- * Formats a commit as:
- * " * [shortHash](linkToRemoteCommit) message"
- * @param commit - the commit line sent from the git log
- * @returns markdown formatted the changelog line
+ * Formats the line in the changelog into html for the markdown release
+ * @param userInfo - the GitHub user information
+ * @param commit - the commit information parsed from the git log
+ * @returns the html code to place into the release body
  */
-async function formatCommit (commit: Commit): Promise<string> {
-  const { hash, email, type, scope, subject } = commit
-  const shortHash = hash.substring(0, 7)
-  const remoteCommitURL = `${getGitRemoteURL()}/commit/${hash}`
-  const avatar = await formatAvatar(email)
-
-  const gv = '`'
-  const hashLink = `[${gv}${shortHash}${gv}](${remoteCommitURL})`
-  const scopeText = scope === undefined ? '' : `(${scope})`
-  return `${avatar} ${hashLink} **${type}**${scopeText}: ${subject}`
-}
-
-/**
- * Formats the avatar image into markdown
- * @param email - the user's email to fetch the image from
- * @returns a markdown image
- */
-async function formatAvatar (email: string): Promise<string> {
-  const size = '20'
-  const userInfo = await getGithubUserInfo(email)
-
-  const sizedImageUrl = `https://images.weserv.nl/?url=${userInfo.avatar}&w=${size}&h=${size}&fit=cover&mask=circle`
-  const userUrl = `https://github.com/${userInfo.username}`
-  const imageMarkdown = `![${userInfo.username}](${sizedImageUrl})`
-  return `[${imageMarkdown}](${userUrl})`
-}
+const htmlifyCommit = (userInfo: GithubUserInfo, commit: Commit): string =>
+`<div>
+  <a href="https://github.com/${userInfo.username}">
+    <img valign="middle" alt="${userInfo.username}" src="https://images.weserv.nl/?url=${userInfo.avatar}?v=4&w=20&h=20&fit=cover&mask=circle" />
+  </a>
+  <span>
+    <code><a href="${getGitRemoteURL()}/commit/${commit.hash}">${commit.hash.substring(0, 7)}</a></code>
+    <b>${commit.type}</b>${commit.scope === undefined ? '' : `(${commit.scope})`}:
+    ${commit.subject}
+  </span>
+</div>`
