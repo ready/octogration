@@ -24,6 +24,23 @@ jobs:
       - name: Ensure correct npm version
         run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
 
+      - name: Configure github
+        run: |
+          git fetch
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+          git checkout main
+
+      - name: Upgrade version of project
+        run: npm version patch -m "v%s"
+
+      - name: Send version upgrade commit to github
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git tag ${VERSION}
+          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
+          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+
       - name: Ensure data directory exists for writing
         run: mkdir -p ./.github/data
 
@@ -35,49 +52,15 @@ jobs:
       - name: Remove unneeded package lock data 
         run: git reset --hard
 
-      - run: git fetch
-
-      - name: Store commit log
-        id: store_commits
-        run: |
-          OLDVERSION=$(npm pkg get version | tr -d '"')
-          LASTHASH=$(git log --pretty=format:"%H" --grep="^v${OLDVERSION}$")
-          git log ${LASTHASH}..HEAD --pretty=format:"%H %ae %s" > ./.github/data/commits.txt
-          echo $OLDVERSION
-          echo $LASTHASH
-          cat ./.github/data/commits.txt
-
-      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - run: git config user.name "$GITHUB_ACTOR"
-      - run: git checkout main
-
-      - name: Store commit log again
-        id: store_commits2
-        run: |
-          OLDVERSION2=$(npm pkg get version | tr -d '"')
-          LASTHASH2=$(git log --pretty=format:"%H" --grep="^v${OLDVERSION2}$")
-          git log ${LASTHASH2}..HEAD --pretty=format:"%H %ae %s" > ./.github/data/commits2.txt
-          echo $OLDVERSION2
-          echo $LASTHASH2
-          cat ./.github/data/commits2.txt
-
-      - name: Upgrade version of project
-        run: npm version patch -m "v%s"
-
-      - name: Build project
-        run: npm run build
-
       - name: Update dynamic badges
         run: node ./lib/index.js badges
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: git add .
-      - run: 'git commit -nm "chore: update dynamic badges"'
-      - run: VERSION=$(node -p "require('./package.json').version")
-      - run: git tag ${VERSION}
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+      - name: Send dynamic badges commit to github
+        run: |
+          git add .
+          git commit -nm "chore: update dynamic badges"
 
       - name: Load Version
         id: load_version
