@@ -64,6 +64,6 @@ jobs:
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
 
       - name: Create changelog
-        run: node ./lib/index.js changelog ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
+        run: node ./lib/index.js changelog ${{ github.event.pull_request.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

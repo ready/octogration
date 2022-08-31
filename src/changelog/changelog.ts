@@ -6,7 +6,7 @@ import { evaluateCommitLog } from './variables/commitLog'
 import { evaluateDatetime } from './variables/dateTime'
 
 const HELP_MSG = `
-Usage: octogration changelog <prNumber> <branchName>
+Usage: octogration changelog <prNumber>
 
 This changelog script reads from the file .github/data/commits.txt
 and parses the commit messages to create a changelog for release.
@@ -45,7 +45,7 @@ async function createChangelog (): Promise<void> {
  * or calls the create changelog function
  */
 export function changelog (): void {
-  if (process.argv.length !== 5) {
+  if (process.argv.length !== 4) {
     help()
   } else {
     void createChangelog()
