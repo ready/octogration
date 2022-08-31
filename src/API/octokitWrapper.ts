@@ -1,4 +1,5 @@
 import { Octokit } from '@octokit/action'
+import { executeLive } from '../utils/executeLive'
 import { mockOctokitRequest, OctokitResponse } from './mocks/octokit/mockedOctokit'
 
 /**
@@ -12,7 +13,9 @@ export class OctokitWrapper {
 
   constructor () {
     try {
-      this.octokit = new Octokit()
+      executeLive(() => {
+        this.octokit = new Octokit()
+      })
     } catch (e) {
       this.octokit = undefined
     }
@@ -22,12 +25,14 @@ export class OctokitWrapper {
    * If the live github API is available, it sends the request
    * If not, it provides mocked data instead
    * @param request - The request to serve
+   * @param data - a package of data to send with the request
+   * The format of the data expected depends on the request endpoint
    * @returns live or mocked data
    */
-  async request (request: string): Promise<OctokitResponse<any>> {
+  async request (request: string, data?: any): Promise<OctokitResponse<any>> {
     if (this.octokit === undefined) {
-      return mockOctokitRequest(request)
+      return mockOctokitRequest(request, data)
     }
-    return await this.octokit.request(request)
+    return await this.octokit.request(request, data)
   }
 }

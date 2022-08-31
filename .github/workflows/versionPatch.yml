@@ -63,35 +63,7 @@ jobs:
           git commit -nm "chore: update dynamic badges"
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
 
-      - name: Load Version
-        id: load_version
-        run: echo "::set-output name=version::v$(node -p "require('./package.json').version")"
-
-      - name: Create Changelog Title
-        id: create_changelog_title
-        run: echo "::set-output name=title::$(node ./lib/index.js changelogTitle)"
-
-      - run: node ./lib/index.js changelog ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
+      - name: Create changelog
+        run: node ./lib/index.js changelog ${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Changelog
-        id: create_changelog
-        run: |
-          CHANGELOG=$(cat ./.github/data/changelog.md)
-          echo $CHANGELOG
-          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-          echo "$CHANGELOG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.load_version.outputs.version }}
-          release_name: ${{ steps.create_changelog_title.outputs.title }}
-          body: ${{ env.CHANGELOG }}
-          draft: false
-          prerelease: false
