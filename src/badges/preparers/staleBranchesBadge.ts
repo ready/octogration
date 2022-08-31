@@ -1,5 +1,5 @@
 import { OctokitWrapper } from '../../API/octokitWrapper'
-import { getRepo } from '../../changelog/getGithubAvatar'
+import { getRepo } from '../../changelog/utils/getGithubInfo'
 import { createURL, BadgeStyle } from '../badgesUtils'
 
 const octokit = new OctokitWrapper()

@@ -1,6 +1,6 @@
 import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
-import { Commit, getCommitsByType } from '../commitParser'
-import { getGithubUserInfo } from '../getGithubAvatar'
+import { Commit, getCommitsByType } from '../parsers/commitParser'
+import { getGithubUserInfo } from '../utils/getGithubInfo'
 
 // Which commit types belong under which section header
 const commitLogGrouping = new Map<string, string[]>()

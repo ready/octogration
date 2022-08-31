@@ -43,11 +43,3 @@ function parseUrlParams (params: BadgeConfig & { message: string }): UrlParams {
     message: params.message
   }
 }
-
-/**
- * @param version - a version number that may have extra formatting
- * @returns a semver style version number in format X.Y.Z with no extra formatting
- */
-export function cleanVersionNumber (version: string): string {
-  return version.replace(/[^0-9.]/g, '')
-}

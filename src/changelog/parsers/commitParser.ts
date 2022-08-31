@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { retrieveRawCommits } from '../../API/CLI/gitLog'
 
 export interface Commit {
   hash: string
@@ -11,8 +11,8 @@ export interface Commit {
 // The cached commits so the parser only runs once
 const commitsByType = new Map<string, Commit[]>()
 
-// A flag to determine if the file has already been read and parsed
-let readFile = false
+// A flag to determine if the commits have already been retrieve and parsed
+let retrieved = false
 
 /**
  * Consults the commit log and grabs all of the commits of a certain type
@@ -21,7 +21,7 @@ let readFile = false
  * @returns all commits corresponding to the given type
  */
 export function getCommitsByType (type: string): Commit[] {
-  if (!readFile) {
+  if (!retrieved) {
     parseCommits()
   }
   return commitsByType.get(type) ?? []
@@ -32,7 +32,9 @@ export function getCommitsByType (type: string): Commit[] {
  * Sorts the commits into the `commitsByType` map
  */
 function parseCommits (): void {
-  const commits = readCommitsFromFile()
+  const commits = retrieveRawCommits()
+  retrieved = true
+
   commits.forEach(commitLine => {
     try {
       const commit = parseCommit(commitLine)
@@ -58,7 +60,7 @@ function parseCommits (): void {
  * @param commit - a line in the format <hash> <email> <type>(<scope?>): <subject>
  * @returns a commit object
  */
-export function parseCommit (commit: string): Commit {
+function parseCommit (commit: string): Commit {
   const endHashLocation = commit.indexOf(' ')
   if (endHashLocation === -1) throw new Error('invalid commit format')
 
@@ -97,13 +99,4 @@ export function parseCommit (commit: string): Commit {
     scope,
     subject
   }
-}
-
-/**
- * @returns an array of commit messages read from the commits file
- */
-function readCommitsFromFile (): string[] {
-  const file = readFileSync('./.github/data/commits.txt').toString()
-  readFile = true
-  return file.split('\n')
 }
