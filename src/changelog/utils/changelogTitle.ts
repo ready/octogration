@@ -1,12 +1,12 @@
 import { getPackageJson } from '../../utils/packageJson'
 
 /**
- * Formats and prints the change log title
+ * @returns the formatted change log title
  */
-export function createChangelogTitle (): void {
+export function createChangelogTitle (): string {
   const version = getPackageJson().version
   const deploy = evaluateEnvDeploy()
-  console.log(`${deploy} Deploy v${version}`)
+  return `${deploy} Deploy v${version}`
 }
 
 /**
@@ -16,10 +16,8 @@ export function createChangelogTitle (): void {
 function evaluateEnvDeploy (): 'Production' | 'Dev' {
   const version = getPackageJson().version
   const versionFields = version.split('.')
-  if (versionFields.length !== 3) {
-    throw new Error('Version number not in semver format')
-  }
+  const patch = versionFields[versionFields.length - 1]
 
-  const isProductionVersion = versionFields[2] === '0'
+  const isProductionVersion = patch === '0'
   return isProductionVersion ? 'Production' : 'Dev'
 }
