@@ -15,22 +15,29 @@ const config = {
  */
 export function prepareCoverageBadge (): string {
   const summary = retrieveCoverageSummary()
+  const coverage = getMinCoverage(summary)
 
-  const percent = summary.total.statements.pct / 100
+  const percent = coverage / 100
   const bufferedPercent = percent * 1.2 - 0.1
   const boundedPercent = Math.min(Math.max(bufferedPercent, 0), 1)
   const color = interpolateProgessColor(boundedPercent)
 
-  const message = formatPercent(summary.total.statements.pct)
+  const message = formatPercent(coverage)
   return createURL({ ...config, message, color })
 }
 
 interface CoverageSummary {
   total: {
     statements: {
-      total: number
-      covered: number
-      skipped: number
+      pct: number
+    }
+    lines: {
+      pct: number
+    }
+    functions: {
+      pct: number
+    }
+    branches: {
       pct: number
     }
   }
@@ -49,14 +56,31 @@ function retrieveCoverageSummary (): CoverageSummary {
     return {
       total: {
         statements: {
-          total: 0,
-          covered: 0,
-          skipped: 0,
+          pct: 0
+        },
+        lines: {
+          pct: 0
+        },
+        functions: {
+          pct: 0
+        },
+        branches: {
           pct: 0
         }
       }
     }
   }
+}
+
+/**
+ * Finds the minimum amount covered by all of the statistics
+ * @param summary - The coverage report from Jest
+ * @returns the smallest coverage stat
+ */
+function getMinCoverage (summary: CoverageSummary): number {
+  const total = summary.total
+  const coverages = [total.branches.pct, total.functions.pct, total.lines.pct, total.statements.pct]
+  return Math.min(...coverages)
 }
 
 /**
