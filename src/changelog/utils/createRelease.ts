@@ -12,15 +12,20 @@ const octokit = new OctokitWrapper()
  */
 export async function createRelease (body: string): Promise<void> {
   const version = cleanVersionNumber(getPackageJson().version)
-
-  const repo = getRepo()
-  const endpoint = `POST /repos/${repo}/releases`
-  await octokit.request(endpoint, {
+  const data = {
     tag_name: `v${version}`,
     name: createChangelogTitle(),
     body,
     draft: false,
     prerelease: false,
     generate_release_notes: false
-  })
+  }
+
+  const repo = getRepo()
+  const endpoint = `POST /repos/${repo}/releases`
+  const response = await octokit.request(endpoint, data)
+
+  if (response.data !== true) {
+    console.error('Unable to create github release notes, data sent: ', data, 'and data returned', response.data)
+  }
 }

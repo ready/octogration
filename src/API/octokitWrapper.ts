@@ -1,4 +1,5 @@
 import { Octokit } from '@octokit/action'
+import { executeLive } from '../utils/executeLive'
 import { mockOctokitRequest, OctokitResponse } from './mocks/octokit/mockedOctokit'
 
 /**
@@ -12,7 +13,9 @@ export class OctokitWrapper {
 
   constructor () {
     try {
-      this.octokit = new Octokit()
+      executeLive(() => {
+        this.octokit = new Octokit()
+      })
     } catch (e) {
       this.octokit = undefined
     }
@@ -28,7 +31,7 @@ export class OctokitWrapper {
    */
   async request (request: string, data?: any): Promise<OctokitResponse<any>> {
     if (this.octokit === undefined) {
-      return mockOctokitRequest(request)
+      return mockOctokitRequest(request, data)
     }
     return await this.octokit.request(request, data)
   }

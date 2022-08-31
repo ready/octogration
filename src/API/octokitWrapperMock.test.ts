@@ -7,13 +7,18 @@ jest.mock('@octokit/action', () => ({
 
 describe('Octokit Wrapper class mocked', () => {
   test('octokit is not undefined', () => {
+    // Need to change the environment so the live executor will let our mocked octokit through
+    process.env.NODE_ENV = '~MOCKED~'
     const octokit = new OctokitWrapper()
     expect(octokit.octokit).not.toBe(undefined)
+    process.env.NODE_ENV = 'test'
   })
 
   test('requests go to octokit in live mode', async () => {
+    process.env.NODE_ENV = '~MOCKED~'
     const octokit = new OctokitWrapper()
     await octokit.request('')
     expect(octokit.octokit?.request).toBeCalled()
+    process.env.NODE_ENV = 'test'
   })
 })
