@@ -9,7 +9,7 @@ export interface Commit {
 }
 
 // The cached commits so the parser only runs once
-const commitsByType = new Map<string, Commit[]>()
+let commitsByType = new Map<string, Commit[]>()
 
 // A flag to determine if the commits have already been retrieve and parsed
 let retrieved = false
@@ -98,5 +98,12 @@ function parseCommit (commit: string): Commit {
     type,
     scope,
     subject
+  }
+}
+
+export const testCommitParser = {
+  reset: () => {
+    retrieved = false
+    commitsByType = new Map<string, Commit[]>()
   }
 }

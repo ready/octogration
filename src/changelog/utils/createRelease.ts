@@ -11,6 +11,8 @@ const octokit = new OctokitWrapper()
  * @param body - the body of the release, may be multiple lines
  */
 export async function createRelease (body: string): Promise<void> {
+  console.log('changelog generated: ', body)
+
   const version = cleanVersionNumber(getPackageJson().version)
   const data = {
     tag_name: `v${version}`,
