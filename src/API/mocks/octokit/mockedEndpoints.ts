@@ -5,6 +5,7 @@ import { OctokitResponse, OctokitRequest } from './mockedOctokit'
 import { executeBranchEndpoint } from './endpoints/branch'
 import { executeReviewsEndpoint } from './endpoints/reviews'
 import { executeCreateReleaseEndpoint } from './endpoints/createRelease'
+import { executeGetPullEndpoint } from './endpoints/getPull'
 
 type EndpointExecutor = (request: OctokitRequest) => OctokitResponse<any>
 
@@ -12,6 +13,7 @@ const endpointExecutors = new Map<string, EndpointExecutor>()
 endpointExecutors.set('repos/<org>/<repo>/commits', executeCommitsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls', executePullsEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/pulls/###/reviews', executeReviewsEndpoint)
+endpointExecutors.set('repos/<org>/<repo>/pulls/###', executeGetPullEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/branches', executeListBranchesEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/branches/<^>', executeBranchEndpoint)
 endpointExecutors.set('repos/<org>/<repo>/releases', executeCreateReleaseEndpoint)
