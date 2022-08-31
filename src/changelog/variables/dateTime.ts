@@ -1,9 +1,9 @@
-import { execSync } from 'child_process'
+import { getPackageJson } from '../../utils/packageJson'
 
 /**
  * @returns the current formatted datetime
  */
 export function evaluateDatetime (): string {
-  const process = execSync("TZ='America/Los_Angeles' date '+%A %D %l:%M %p %Z'")
-  return process.toString()
+  const config = getPackageJson().config
+  return (new Date()).toLocaleString(config.datetimeLocal, config.datetimeOptions)
 }
