@@ -33,7 +33,8 @@ describe('Commit log with sections', () => {
     ]
     const commitLog = await evaluateCommitLog()
     expect(commitLog).toBe('')
-    expect(console.log).toBeCalledWith('No significant changes have been added to this release')
+    expect(console.log).toBeCalledWith('Skipping: No significant changes have been added to this release')
+    expect(process.exit).toBeCalled()
   })
 })
 
@@ -114,4 +115,16 @@ afterAll(() => {
 })
 afterEach(() => {
   consoleSpy.mockClear()
+})
+
+// Mock process exit
+let processSpy: jest.SpyInstance
+beforeAll(() => {
+  processSpy = jest.spyOn(process, 'exit').mockImplementation(_code => 0 as never)
+})
+afterAll(() => {
+  processSpy.mockRestore()
+})
+afterEach(() => {
+  processSpy.mockClear()
 })
