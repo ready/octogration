@@ -8,20 +8,20 @@
 <p align="center">
   <img alt="staleBranches" src="https://img.shields.io/static/v1?label=Stale%20Branches&color=33ab53&labelColor=555555&logo=Git&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
   <img alt="neglectedPrs" src="https://img.shields.io/static/v1?label=Neglected%20PRs&color=33ab53&labelColor=555555&logo=Git Extensions&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
-  <img alt="lastProd" src="https://img.shields.io/static/v1?label=Last%20Prod&color=cf3b36&labelColor=555555&logo=Android Auto&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=8/22/22" /> &nbsp;
+  <img alt="lastProd" src="https://img.shields.io/static/v1?label=Last%20Prod&color=cf3b36&labelColor=555555&logo=Android Auto&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=8/22/22" />
 </p>
 <p align="center">
   <img alt="tests" src="https://img.shields.io/static/v1?label=Tests&color=33ab53&labelColor=555555&logo=TestCafe&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=435" /> &nbsp;
   <img alt="coverage" src="https://img.shields.io/static/v1?label=Coverage&color=bcef3c&labelColor=555555&logo=Buffer&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=58.09%" /> &nbsp;
   <img alt="linter" src="https://img.shields.io/static/v1?label=Linter&color=33ab53&labelColor=555555&logo=Integromat&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
   <img alt="vulnerabilities" src="https://img.shields.io/static/v1?label=Vulnerabilities&color=33ab53&labelColor=555555&logo=Amazon%20Cloudwatch&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
-  <img alt="deprecations" src="https://img.shields.io/static/v1?label=Deprecations&color=cf3b36&labelColor=555555&logo=Git%20LFS&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=1" /> &nbsp;
+  <img alt="deprecations" src="https://img.shields.io/static/v1?label=Deprecations&color=cf3b36&labelColor=555555&logo=Git%20LFS&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=1" />
 </p>
 <p align="center">
   <img alt="nodeVersion" src="https://img.shields.io/static/v1?label=Node%20Version&color=5c80f7&labelColor=555555&logo=Node.js&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=16.17.0" /> &nbsp;
   <img alt="npmVersion" src="https://img.shields.io/static/v1?label=NPM%20Version&color=5c80f7&labelColor=555555&logo=npm&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=8.3.1" /> &nbsp;
   <img alt="jestVersion" src="https://img.shields.io/static/v1?label=Jest%20Version&color=5c80f7&labelColor=555555&logo=Jest&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=28.1.3" /> &nbsp;
-  <img alt="typescriptVersion" src="https://img.shields.io/static/v1?label=TS%20Version&color=5c80f7&labelColor=555555&logo=TypeScript&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=4.7.4" /> &nbsp;
+  <img alt="typescriptVersion" src="https://img.shields.io/static/v1?label=TS%20Version&color=5c80f7&labelColor=555555&logo=TypeScript&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=4.7.4" />
 </p>
 
 This repository contains Ready's scripts to automate Github integrations. It currently is not published.
