@@ -1,5 +1,5 @@
 {
-  "name": "octogration",
+  "name": "@readynet/octogration",
   "version": "0.0.27",
   "description": "Scripts to automate github integrations via Octokit",
   "main": "lib/index.js",
