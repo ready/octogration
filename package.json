@@ -1,6 +1,6 @@
 {
   "name": "octogration",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "Scripts to automate github integrations via Octokit",
   "main": "lib/index.js",
   "files": [
@@ -44,11 +44,25 @@
   },
   "@ready/octogration": {
     "commitSections": {
-      "Features": ["feat", "perf"],
-      "Bug Fixes": ["fix"],
-      "Cleaning": ["refact", "docs", "style"],
-      "Tests": ["test"],
-      "Meta": ["build", "ci"]
+      "Features": [
+        "feat",
+        "perf"
+      ],
+      "Bug Fixes": [
+        "fix"
+      ],
+      "Cleaning": [
+        "refact",
+        "docs",
+        "style"
+      ],
+      "Tests": [
+        "test"
+      ],
+      "Meta": [
+        "build",
+        "ci"
+      ]
     }
   },
   "commitlint": {
