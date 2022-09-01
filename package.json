@@ -42,6 +42,15 @@
   "dependencies": {
     "@octokit/action": "^4.0.6"
   },
+  "@ready/octogration": {
+    "commitSections": {
+      "Features": ["feat", "perf"],
+      "Bug Fixes": ["fix"],
+      "Cleaning": ["refact", "docs", "style"],
+      "Tests": ["test"],
+      "Meta": ["build", "ci"]
+    }
+  },
   "commitlint": {
     "rules": {
       "subject-max-length": [

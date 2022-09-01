@@ -71,3 +71,66 @@ test('Setting config to nonobject yields default config', () => {
   const packageJson = getPackageJson()
   expect(packageJson).toEqual(defaultPackageJson)
 })
+
+test('Not setting commit section yields default false value', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {}
+  const commitSections = getPackageJson().config.commitSections
+  expect(commitSections).toBe(false)
+})
+
+test('Setting commit section to true is valid', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    commitSections: true
+  }
+  const commitSections = getPackageJson().config.commitSections
+  expect(commitSections).toBe(true)
+})
+
+test('Setting commit section to empty object is valid', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    commitSections: {}
+  }
+  const commitSections = getPackageJson().config.commitSections
+  expect(commitSections).toEqual({})
+})
+
+test('Setting commit section with normal sections is valid', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    commitSections: {
+      Features: ['feat', 'perf'],
+      'Bug Fixes': ['fix']
+    }
+  }
+  const commitSections = getPackageJson().config.commitSections
+  expect(commitSections).toEqual({
+    Features: ['feat', 'perf'],
+    'Bug Fixes': ['fix']
+  })
+})
+
+test('Setting commit section with non-array type gets filtered out', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    commitSections: {
+      Features: ['feat', 'perf', 'cool'],
+      Fixes: 'fix'
+    }
+  }
+  const commitSections = getPackageJson().config.commitSections
+  expect(commitSections).toEqual({
+    Features: ['feat', 'perf', 'cool']
+  })
+})
+
+test('Setting commit section with non-string types gets filtered out', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    commitSections: {
+      Features: ['feat', 'perf', 'nice'],
+      Tests: [{}, 'test', false, 55, NaN, ['nice']]
+    }
+  }
+  const commitSections = getPackageJson().config.commitSections
+  expect(commitSections).toEqual({
+    Features: ['feat', 'perf', 'nice'],
+    Tests: ['test']
+  })
+})

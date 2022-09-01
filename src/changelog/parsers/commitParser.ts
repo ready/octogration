@@ -27,6 +27,27 @@ export function getCommitsByType (type: string): Commit[] {
   return commitsByType.get(type) ?? []
 }
 
+export interface RawCommit {
+  hash: string
+  email: string
+  message: string
+}
+
+/**
+ * @returns all commits regardless of type. Not cached.
+ */
+export function getAllCommits (): RawCommit[] {
+  const commits = retrieveRawCommits()
+  return commits.map(commit => {
+    const fields = commit.split(' ')
+    return {
+      hash: fields[0],
+      email: fields[1],
+      message: fields.slice(2).join(' ')
+    }
+  })
+}
+
 /**
  * Reads in the commits from file and determines their type
  * Sorts the commits into the `commitsByType` map

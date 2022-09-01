@@ -17,6 +17,7 @@ export interface PackageJson {
 interface OctogrationConfig {
   datetimeLocal: string
   datetimeOptions: Intl.DateTimeFormatOptions
+  commitSections: boolean | { [type: string]: string[] }
 }
 
 let packageJson = undefined as undefined | PackageJson
@@ -58,7 +59,8 @@ export const defaultConfig: OctogrationConfig = {
     hour12: true,
     timeZone: 'America/Los_Angeles',
     timeZoneName: 'short'
-  }
+  },
+  commitSections: false
 }
 
 /**
@@ -72,6 +74,7 @@ function validateConfig (packageJson: any): OctogrationConfig {
   const config = typeof packageConfig === 'object' ? packageConfig : {}
 
   validateDatetime(config)
+  validateCommitSections(config)
 
   return config
 }
@@ -83,6 +86,32 @@ function validateConfig (packageJson: any): OctogrationConfig {
 function validateDatetime (config: any): void {
   if (!isValidField(config, 'datetimeLocal', 'string')) config.datetimeLocal = defaultConfig.datetimeLocal
   if (!isValidField(config, 'datetimeOptions', 'object')) config.datetimeOptions = defaultConfig.datetimeOptions
+}
+
+/**
+ * Validates the commit sections fields in the config and sets defaults if needed
+ * Also filters out any invalid type arrays
+ * @param config - the config to validate and potentially edit
+ */
+function validateCommitSections (config: any): void {
+  if (!isValidField(config, 'commitSections', 'boolean')) {
+    if (!isValidField(config, 'commitSections', 'object')) {
+      config.commitSections = defaultConfig.commitSections
+    } else {
+      const sections = Object.keys(config.commitSections)
+      const newCommitSections: { [type: string]: string[] } = {}
+      sections.forEach(section => {
+        const types = config.commitSections[section]
+        if (!(types instanceof Array)) return
+
+        const validTypes = types.filter((t): t is string => typeof t === 'string')
+        if (validTypes.length > 0) {
+          newCommitSections[section] = validTypes
+        }
+      })
+      config.commitSections = newCommitSections
+    }
+  }
 }
 
 /**
