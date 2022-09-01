@@ -5,13 +5,13 @@ import { prepareCoverageBadge } from './preparers/coverageBadge'
 import { prepareVulnerabilitiesBadge } from './preparers/vulnerabilitiesBadge'
 import { prepareNodeVersionBadge } from './preparers/nodeVersionBadge'
 import { prepareNPMVersionBadge } from './preparers/npmVersionBadge'
-import { prepareViteVersionBadge } from './preparers/viteVersionBadge'
-import { prepareReactVersionBadge } from './preparers/reactVersionBadge'
 import { prepareLinterBadge } from './preparers/linterBadge'
 import { prepareDeprecationsBadge } from './preparers/deprecationsBadge'
 import { prepareStaleBranchesBadge } from './preparers/staleBranchesBadge'
 import { prepareNeglectedPrsBadge } from './preparers/neglectedPRsBadge'
 import { prepareLastProdBadge } from './preparers/lastProdBadge'
+import { getPackageJson } from '../utils/packageJson'
+import { preparePackageVersionBadge } from './preparers/packageVersionBadge'
 
 const HELP_MSG = `
 This badges script will modify the README.md file in the root directory of the current project.
@@ -34,8 +34,6 @@ enum ValidBadgeType {
   Deprecations = 'deprecations',
   NodeVersion = 'nodeVersion',
   NPMVersion = 'npmVersion',
-  ViteVersion = 'viteVersion',
-  ReactVersion = 'reactVersion',
   Linter = 'linter'
 }
 
@@ -50,8 +48,6 @@ preparers.set(ValidBadgeType.Vulnerabilities, prepareVulnerabilitiesBadge)
 preparers.set(ValidBadgeType.Deprecations, prepareDeprecationsBadge)
 preparers.set(ValidBadgeType.NodeVersion, prepareNodeVersionBadge)
 preparers.set(ValidBadgeType.NPMVersion, prepareNPMVersionBadge)
-preparers.set(ValidBadgeType.ViteVersion, prepareViteVersionBadge)
-preparers.set(ValidBadgeType.ReactVersion, prepareReactVersionBadge)
 preparers.set(ValidBadgeType.Linter, prepareLinterBadge)
 
 /**
@@ -67,6 +63,8 @@ export async function updateBadges (): Promise<void> {
       await updateBadge(badgeName, originalSource)
     }
   }))
+
+  updatePackageVersionBadges()
 
   writeSources()
 }
@@ -89,6 +87,26 @@ async function updateBadge (badgeName: ValidBadgeType, originalSource: string): 
   } catch (e) {
     console.error(e)
   }
+}
+
+/**
+ * The package version badges are a bit unqiue,
+ * so they need to be updated separately
+ */
+function updatePackageVersionBadges (): void {
+  const updateDeps = (deps: { [key: string]: string }): void => {
+    for (const [name, version] of Object.entries(deps)) {
+      const badgeName = `${name}Version`
+      const originalSource = getSource(badgeName)
+      if (originalSource !== undefined) {
+        const badge = preparePackageVersionBadge(name, version)
+        setSource(badgeName, badge)
+      }
+    }
+  }
+
+  updateDeps(getPackageJson().dependencies)
+  updateDeps(getPackageJson().devDependencies)
 }
 
 /**
