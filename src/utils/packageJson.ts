@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs'
+import { getDefaultBadgeConfigs } from './badgeConfig'
 
 export interface PackageJson {
   version: string
@@ -18,6 +19,21 @@ interface OctogrationConfig {
   datetimeLocal: string
   datetimeOptions: Intl.DateTimeFormatOptions
   commitSections: boolean | { [type: string]: string[] }
+  badgeConfigs: {
+    [name: string]: BadgeConfig
+  }
+}
+
+export interface BadgeConfig {
+  label: string
+  labelColor: string
+  primaryColor: string
+  secondaryColor: string
+  gradient?: [number, number]
+  logo: string
+  logoColor: string
+  logoWidth: string
+  style: string
 }
 
 let packageJson = undefined as undefined | PackageJson
@@ -60,7 +76,8 @@ export const defaultConfig: OctogrationConfig = {
     timeZone: 'America/Los_Angeles',
     timeZoneName: 'short'
   },
-  commitSections: false
+  commitSections: false,
+  badgeConfigs: getDefaultBadgeConfigs()
 }
 
 /**
@@ -75,6 +92,7 @@ function validateConfig (packageJson: any): OctogrationConfig {
 
   validateDatetime(config)
   validateCommitSections(config)
+  validateBadgeConfigs(config)
 
   return config
 }
@@ -111,6 +129,61 @@ function validateCommitSections (config: any): void {
       })
       config.commitSections = newCommitSections
     }
+  }
+}
+
+/**
+ * Validates the badge configs in the config and sets defaults if needed
+ * @param config - the config to validate and potentially edit
+ */
+function validateBadgeConfigs (config: any): void {
+  if (!isValidField(config, 'badgeConfigs', 'object')) {
+    config.badgeConfigs = defaultConfig.badgeConfigs
+    return
+  }
+
+  const overrideField = (badgeName: string, field: string): void => {
+    const defaultBadgeConfig = defaultConfig.badgeConfigs[badgeName] as any
+    config.badgeConfigs[badgeName][field] = defaultBadgeConfig[field]
+  }
+
+  // Validate every field of every badge config
+  for (const [badgeName, badgeConfigValue] of Object.entries(config.badgeConfigs)) {
+    if (!(badgeName in defaultConfig.badgeConfigs)) {
+      // Don't validate fields of variables not included in the default config
+      continue
+    }
+
+    if (typeof badgeConfigValue !== 'object') {
+      config.badgeConfigs[badgeName] = defaultConfig.badgeConfigs[badgeName]
+      continue
+    }
+
+    const badgeConfig = badgeConfigValue as any
+    const validateBadgeField = (field: string): void => {
+      if (!isValidField(badgeConfig, field, 'string')) overrideField(badgeName, field)
+    }
+
+    validateBadgeField('label')
+    validateBadgeField('labelColor')
+    validateBadgeField('primaryColor')
+    validateBadgeField('secondaryColor')
+    validateBadgeField('logo')
+    validateBadgeField('logoWidth')
+    validateBadgeField('style')
+
+    if ('gradient' in badgeConfig) {
+      if (!(badgeConfig.gradient instanceof Array)) overrideField(badgeName, 'gradient')
+      if (badgeConfig.gradient.length !== 2) overrideField(badgeName, 'gradient')
+      if (badgeConfig.gradient.every((n: any) => typeof n === 'number') !== true) overrideField(badgeName, 'gradient')
+    } else {
+      overrideField(badgeName, 'gradient')
+    }
+  }
+
+  // If a default badge config isn't included at all, it should be added
+  for (const [badgeName, badgeConfig] of Object.entries(defaultConfig.badgeConfigs)) {
+    if (!(badgeName in config.badgeConfigs)) config.badgeConfigs[badgeName] = badgeConfig
   }
 }
 

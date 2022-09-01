@@ -1,21 +1,20 @@
 
-export type BadgeStyle = 'plastic' | 'flat' | 'flat-square' | 'for-the-badge' | 'social'
-export interface BadgeConfig {
+export interface BadgeParams {
   label: string
   color: string
-  labelColor?: string
-  logo?: string
-  logoColor?: string
-  logoWidth?: string
-  style?: BadgeStyle
-  secondaryColor?: string
+  labelColor: string
+  logo: string
+  logoColor: string
+  logoWidth: string
+  style: string
+  message: string
 }
 
 /**
  * @param params - The parameters passed by the preparation function
  * @returns the URL encoded with the necessary parameters
  */
-export function createURL (params: BadgeConfig & { message: string }): string {
+export function createURL (params: BadgeParams): string {
   const sendableParams = parseUrlParams(params)
   const keys = Object.keys(sendableParams)
   const stringifiedParams = keys.map(param => sendableParams[param] === undefined ? '' : `${param}=${sendableParams[param] ?? ''}`)
@@ -31,7 +30,7 @@ interface UrlParams {
  * @param params - The parameters passed by the preparation function
  * @returns the filtered parameters that will be encoded into the URL
  */
-function parseUrlParams (params: BadgeConfig & { message: string }): UrlParams {
+function parseUrlParams (params: BadgeParams): UrlParams {
   return {
     label: params.label,
     color: params.color,

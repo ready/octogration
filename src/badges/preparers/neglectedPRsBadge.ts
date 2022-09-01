@@ -1,26 +1,19 @@
 import { OctokitWrapper } from '../../API/octokitWrapper'
 import { getRepo } from '../../changelog/utils/getGithubInfo'
-import { createURL, BadgeStyle } from '../badgesUtils'
+import { getPackageJson } from '../../utils/packageJson'
+import { createURL } from '../badgesUtils'
 
 const octokit = new OctokitWrapper()
-
-const config = {
-  label: 'Neglected PRs',
-  color: '33ab53',
-  secondaryColor: 'cf3b36',
-  logo: 'Git Extensions',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
 
 /**
  * Finds the number of stale branches and makes a badge for it
  * @returns the url encoding of the stale branches badge
  */
 export async function prepareNeglectedPrsBadge (): Promise<string> {
+  const config = getPackageJson().config.badgeConfigs.neglectedPrs
   const numNeglectedPrs = await countNeglectedPrs()
 
-  const color = numNeglectedPrs === 0 ? config.color : config.secondaryColor
+  const color = numNeglectedPrs === 0 ? config.primaryColor : config.secondaryColor
   const message = numNeglectedPrs.toFixed(0)
   return createURL({ ...config, message, color })
 }

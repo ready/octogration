@@ -63,6 +63,16 @@
         "build",
         "ci"
       ]
+    },
+    "badgeConfigs": {
+      "typescriptVersion": {
+        "label": "TypeScript Version",
+        "logo": "TypeScript"
+      },
+      "jestVersion": {
+        "label": "Jest Version",
+        "logo": "Jest"
+      }
     }
   },
   "commitlint": {

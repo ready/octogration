@@ -1,21 +1,13 @@
 import { getPackageJson } from '../../utils/packageJson'
-import { createURL, BadgeStyle } from '../badgesUtils'
+import { createURL } from '../badgesUtils'
 import { interpolateProgessColor } from '../../utils/interpolateColor'
-
-const config = {
-  label: 'Last Prod',
-  color: '33ab53',
-  secondaryColor: 'cf3b36',
-  logo: 'Android Auto',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
 
 /**
  * Uses the verison number to determine the date of last prod release
  * @returns the url encoding of the last production badge
  */
 export function prepareLastProdBadge (oldBadge: string): string {
+  const config = getPackageJson().config.badgeConfigs.lastProd
   const MAX_AGE = 60
   const lastProdDate = getLastProdDate(oldBadge)
   const age = lastProdDate === '?/?/??' ? MAX_AGE : daysOld(lastProdDate)
@@ -31,23 +23,27 @@ export function prepareLastProdBadge (oldBadge: string): string {
  * @returns the date of the last production release in 1/1/11 format
  */
 function getLastProdDate (oldBadge: string): string {
-  const version = getPackageJson().version
-  const isProdRelease = version.split('.')[2] === '0'
+  try {
+    const version = getPackageJson().version
+    const isProdRelease = version.split('.')[2] === '0'
 
-  // If this release is a production release,
-  // then today is the newest release
-  if (isProdRelease) {
-    return todayLocalDate()
+    // If this release is a production release,
+    // then today is the newest release
+    if (isProdRelease) {
+      return todayLocalDate()
+    }
+
+    // If this release isn't production
+    // then we can just use the old date
+    const urlFields = oldBadge.split('?')
+    const config = urlFields[1].split('&')
+    const oldDateField = config.find(p => p.startsWith('message='))
+    const oldDate = oldDateField?.split('=')[1] ?? '?/?/??'
+
+    return oldDate
+  } catch {
+    return '?/?/??'
   }
-
-  // If this release isn't production
-  // then we can just use the old date
-  const urlFields = oldBadge.split('?')
-  const config = urlFields[1].split('&')
-  const oldDateField = config.find(p => p.startsWith('message='))
-  const oldDate = oldDateField?.split('=')[1] ?? '?/?/??'
-
-  return oldDate
 }
 
 /**

@@ -1,23 +1,17 @@
 import { spawnSync } from 'child_process'
-import { createURL, BadgeConfig } from '../badgesUtils'
+import { createURL } from '../badgesUtils'
 import { cleanVersionNumber } from '../../utils/version'
-
-const config: BadgeConfig = {
-  label: 'Node Version',
-  color: '5c80f7',
-  style: 'for-the-badge',
-  logo: 'ts-node',
-  logoColor: 'ffffff'
-}
+import { getPackageJson } from '../../utils/packageJson'
 
 /**
  * Determines the current version of node and creates the badge for it
  * @returns the url encoding of the node version badge
  */
 export function prepareNodeVersionBadge (): string {
+  const config = getPackageJson().config.badgeConfigs.nodeVersion
   const nodeVersion = retrieveNodeVersion()
   const version = cleanVersionNumber(nodeVersion)
-  return createURL({ ...config, message: version })
+  return createURL({ ...config, message: version, color: config.primaryColor })
 }
 
 /**

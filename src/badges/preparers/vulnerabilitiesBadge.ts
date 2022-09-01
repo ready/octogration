@@ -1,25 +1,18 @@
 import { spawnSync } from 'child_process'
-import { createURL, BadgeStyle } from '../badgesUtils'
-
-const config = {
-  label: 'Vulnerabilities',
-  color: '33ab53',
-  secondaryColor: 'cf3b36',
-  logo: 'Amazon Cloudwatch',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
+import { getPackageJson } from '../../utils/packageJson'
+import { createURL } from '../badgesUtils'
 
 /**
  * Runs an audit to find the number of vulnerabilities and creates the badge
  * @returns the url encoding of the vulnerabilities badge
  */
 export function prepareVulnerabilitiesBadge (): string {
+  const config = getPackageJson().config.badgeConfigs.vulnerabilities
   const summary = retrieveAuditSummary()
   const vuln = summary.metadata.vulnerabilities
   const totalVulnerabilities = vuln.low + vuln.moderate + vuln.high + vuln.critical
 
-  const color = totalVulnerabilities === 0 ? config.color : config.secondaryColor
+  const color = totalVulnerabilities === 0 ? config.primaryColor : config.secondaryColor
   const message = totalVulnerabilities.toFixed(0)
   return createURL({ ...config, message, color })
 }

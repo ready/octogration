@@ -1,22 +1,15 @@
 import { spawnSync } from 'child_process'
-import { createURL, BadgeStyle } from '../badgesUtils'
-
-const config = {
-  label: 'Linter',
-  color: '33ab53',
-  secondaryColor: 'cf3b36',
-  logo: 'Integromat',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
+import { getPackageJson } from '../../utils/packageJson'
+import { createURL } from '../badgesUtils'
 
 /**
  * Runs `ts-standard` and counts the number of linter errors to create the badge
  * @returns the url encoding of the linter badge
  */
 export function prepareLinterBadge (): string {
+  const config = getPackageJson().config.badgeConfigs.linter
   const errors = retrieveLinterErrors()
-  const color = errors === 0 ? config.color : config.secondaryColor
+  const color = errors === 0 ? config.primaryColor : config.secondaryColor
   const message = errors.toFixed(0)
   return createURL({ ...config, message, color })
 }
