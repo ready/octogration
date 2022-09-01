@@ -1,5 +1,0 @@
-<!-- dateTime -->
-<!-- branch -->
-<!-- badges -->
-
-<!-- commitLog -->

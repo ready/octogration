@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs'
 
 let formatFile = ''
 let readFile = false
@@ -46,7 +45,9 @@ function guarenteeFormatFile (): void {
  * Reads the release format from file
  * @returns the string verison of the file
  */
-function readMarkdownFormat (): string {
-  const formatFile = './src/changelog/releaseFormat.md'
-  return readFileSync(formatFile).toString()
-}
+const readMarkdownFormat = (): string =>
+`<!-- dateTime -->
+<!-- branch -->
+<!-- badges -->
+
+<!-- commitLog -->`
