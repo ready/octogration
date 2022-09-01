@@ -15,7 +15,8 @@ export async function evaluateCommitLog (): Promise<string> {
   const commitLog = await (evalAll ? evaluateAllCommits() : evaluateAllSections(commitLogGrouping))
 
   if (commitLog === '') {
-    console.log('No significant changes have been added to this release')
+    console.log('Skipping: No significant changes have been added to this release')
+    process.exit(0)
   }
   return commitLog
 }
