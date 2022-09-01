@@ -2,7 +2,7 @@ import { spawnSync } from 'child_process'
 import { createURL, BadgeStyle } from '../badgesUtils'
 
 const config = {
-  label: 'Linter Errors',
+  label: 'Linter',
   color: '33ab53',
   secondaryColor: 'cf3b36',
   logo: 'Integromat',
