@@ -1,23 +1,16 @@
 import { readFileSync } from 'fs'
-import { createURL, BadgeStyle } from '../badgesUtils'
-
-const config = {
-  label: 'Deprecations',
-  color: '33ab53',
-  secondaryColor: 'cf3b36',
-  logo: 'Git LFS',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
+import { getPackageJson } from '../../utils/packageJson'
+import { createURL } from '../badgesUtils'
 
 /**
  * Counts the number of deprecations and then creates the badge for it
  * @returns the url encoding of the deprecations badge
  */
 export function prepareDeprecationsBadge (): string {
+  const config = getPackageJson().config.badgeConfigs.deprecations
   const numDeprecations = countDeprecations()
 
-  const color = numDeprecations === 0 ? config.color : config.secondaryColor
+  const color = numDeprecations === 0 ? config.primaryColor : config.secondaryColor
   const message = numDeprecations.toFixed(0)
   return createURL({ ...config, message, color })
 }

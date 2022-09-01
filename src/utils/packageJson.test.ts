@@ -134,3 +134,102 @@ test('Setting commit section with non-string types gets filtered out', () => {
     Tests: ['test']
   })
 })
+
+test('Not setting the badge config still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {}
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.version.label).toBe('Version')
+})
+
+test('Setting the badge config to non-object still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: 'invalid configurations'
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.version.label).toBe('Version')
+})
+
+test('Setting the badge config fields to non-object still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      version: 'invalid configurations'
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.version.label).toBe('Version')
+})
+
+test('Setting the version badge config overrides defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      version: {
+        label: 'Version Badge'
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.version.label).toBe('Version Badge')
+  expect(badgeConfigs.version.label).not.toBe(defaultConfig.badgeConfigs.version.label)
+})
+
+test('Setting the version badge config allows defaults to populate other fields', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      version: {
+        label: 'Version Badge',
+        primaryColor: 'ffffff'
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.version.primaryColor).toBe('ffffff')
+  expect(badgeConfigs.version.secondaryColor).toBe(defaultConfig.badgeConfigs.version.secondaryColor)
+})
+
+test('Setting the badge config gradient to non-object still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      coverage: {
+        gradient: 'bad gradient'
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.coverage.gradient).toEqual(defaultConfig.badgeConfigs.coverage.gradient)
+})
+
+test('Setting the badge config gradient to long array still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      coverage: {
+        gradient: [1, 2, 3]
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.coverage.gradient).toEqual(defaultConfig.badgeConfigs.coverage.gradient)
+})
+
+test('Setting the badge config gradient to short array still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      coverage: {
+        gradient: [0]
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.coverage.gradient).toEqual(defaultConfig.badgeConfigs.coverage.gradient)
+})
+
+test('Setting the badge config gradient to non integer array still has the defaults', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      coverage: {
+        gradient: ['6', '14']
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs.coverage.gradient).toEqual(defaultConfig.badgeConfigs.coverage.gradient)
+})

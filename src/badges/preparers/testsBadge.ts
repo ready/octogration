@@ -1,14 +1,6 @@
 import { spawnSync } from 'child_process'
-import { createURL, BadgeStyle } from '../badgesUtils'
-
-const config = {
-  label: 'Tests',
-  color: '33ab53',
-  secondaryColor: 'cf3b36',
-  logo: 'TestCafe',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
+import { getPackageJson } from '../../utils/packageJson'
+import { createURL } from '../badgesUtils'
 
 /**
  * Runs the unit tests to find out how many passed
@@ -16,8 +8,9 @@ const config = {
  * @returns the url encoding of the tests badge
  */
 export function prepareTestsBadge (): string {
+  const config = getPackageJson().config.badgeConfigs.tests
   const summary = retrieveTestsSummary()
-  const color = summary.numPassedTests === summary.numTotalTests ? config.color : config.secondaryColor
+  const color = summary.numPassedTests === summary.numTotalTests ? config.primaryColor : config.secondaryColor
   const message = summary.numPassedTests.toFixed(0)
   return createURL({ ...config, message, color })
 }

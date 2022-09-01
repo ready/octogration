@@ -1,19 +1,14 @@
 import { readFileSync } from 'fs'
-import { createURL, BadgeStyle } from '../badgesUtils'
+import { createURL } from '../badgesUtils'
 import { interpolateProgessColor } from '../../utils/interpolateColor'
-
-const config = {
-  label: 'Coverage',
-  logo: 'Buffer',
-  logoColor: 'ffffff',
-  style: 'for-the-badge' as BadgeStyle
-}
+import { getPackageJson } from '../../utils/packageJson'
 
 /**
  * Reads the coverage summary file from most recent run and creates the badge
  * @returns the url encoding of the coverage badge
  */
 export function prepareCoverageBadge (): string {
+  const config = getPackageJson().config.badgeConfigs.coverage
   const summary = retrieveCoverageSummary()
   const coverage = getMinCoverage(summary)
 
