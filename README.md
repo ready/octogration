@@ -13,6 +13,7 @@
 <p align="center">
   <img alt="tests" src="https://img.shields.io/static/v1?label=Tests&color=33ab53&logo=TestCafe&logoColor=ffffff&style=for-the-badge&message=419" />&nbsp
   <img alt="coverage" src="https://img.shields.io/static/v1?label=Coverage&color=c2f23b&logo=Buffer&logoColor=ffffff&style=for-the-badge&message=56.64%" />&nbsp
+  <img alt="linter" src="https://img.shields.io/static/v1?label=Linter%20Errors&color=33ab53&logo=Integromat&logoColor=ffffff&style=for-the-badge&message=0" />&nbsp
   <img alt="vulnerabilities" src="https://img.shields.io/static/v1?label=Vulnerabilities&color=33ab53&logo=Amazon%20Cloudwatch&logoColor=ffffff&style=for-the-badge&message=0" />&nbsp
   <img alt="deprecations" src="https://img.shields.io/static/v1?label=Deprecations&color=cf3b36&logo=Git%20LFS&logoColor=ffffff&style=for-the-badge&message=1" />&nbsp
 </p>
@@ -21,13 +22,6 @@
   <img alt="npmVersion" src="https://img.shields.io/static/v1?label=NPM%20Version&color=5c80f7&logo=npm&style=for-the-badge&message=8.3.1" />&nbsp
   <img alt="jestVersion" src="https://img.shields.io/static/v1?label=Jest%20Version&color=5c80f7&logo=Jest&logoColor=ffffff&style=for-the-badge&message=28.1.7" />&nbsp
   <img alt="tsVersion" src="https://img.shields.io/static/v1?label=TS%20Version&color=5c80f7&logo=TypeScript&logoColor=ffffff&style=for-the-badge&message=4.7.4" />&nbsp
-</p>
-<p align="center">
-  <br />
-  <b>We are currently trying to eliminate all linter errors from the project!</b>
-</p>
-<p align="center">
-  <img alt="linter" src="https://img.shields.io/static/v1?label=Linter%20Errors&color=33ab53&logo=Integromat&logoColor=ffffff&style=for-the-badge&message=0" />
 </p>
 
 This repository contains Ready's scripts to automate Github integrations. It currently is not published.
