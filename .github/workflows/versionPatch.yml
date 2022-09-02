@@ -36,8 +36,6 @@ jobs:
 
       - name: Send version upgrade commit to github
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          git tag ${VERSION}
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
 
