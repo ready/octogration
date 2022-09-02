@@ -19,7 +19,7 @@ export function createURL (params: BadgeParams): string {
   const keys = Object.keys(sendableParams)
   const stringifiedParams = keys.map(param => sendableParams[param] === undefined ? '' : `${param}=${sendableParams[param] ?? ''}`)
   const encodedParams = stringifiedParams.reduce((url, nextParam) => nextParam === '' ? url : `${url}&${nextParam}`)
-  return `https://img.shields.io/static/v1?${encodedParams}`.replace(' ', '%20')
+  return `https://img.shields.io/static/v1?${encodedParams}`.replaceAll(' ', '%20')
 }
 
 interface UrlParams {
