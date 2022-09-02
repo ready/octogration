@@ -49,5 +49,7 @@ const readMarkdownFormat = (): string =>
 `<!-- dateTime -->
 <!-- branch -->
 <!-- badges -->
+<!-- prTitle -->
+<!-- prBody -->
 
 <!-- commitLog -->`

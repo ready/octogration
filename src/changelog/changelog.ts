@@ -4,6 +4,8 @@ import { evaluateBadges } from './variables/badges'
 import { evaluateBranch } from './variables/branch'
 import { evaluateCommitLog } from './variables/commitLog'
 import { evaluateDatetime } from './variables/dateTime'
+import { evaluatePrBody } from './variables/prBody'
+import { evaluatePrTitle } from './variables/prTitle'
 
 const HELP_MSG = `
 Usage: octogration changelog <prNumber>
@@ -17,6 +19,8 @@ const knownVariables = new Map<string, () => string | Promise<string>>()
 knownVariables.set('dateTime', evaluateDatetime)
 knownVariables.set('branch', evaluateBranch)
 knownVariables.set('badges', evaluateBadges)
+knownVariables.set('prTitle', evaluatePrTitle)
+knownVariables.set('prBody', evaluatePrBody)
 knownVariables.set('commitLog', evaluateCommitLog)
 
 /**

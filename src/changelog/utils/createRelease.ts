@@ -1,5 +1,4 @@
 import { OctokitWrapper } from '../../API/octokitWrapper'
-import { executeLive } from '../../utils/executeLive'
 import { getPackageJson } from '../../utils/packageJson'
 import { cleanVersionNumber } from '../../utils/version'
 import { createChangelogTitle } from './changelogTitle'
@@ -12,8 +11,8 @@ const octokit = new OctokitWrapper()
  * @param body - the body of the release, may be multiple lines
  */
 export async function createRelease (body: string): Promise<void> {
-  // When run in the github action, print changelog for debugging
-  executeLive(() => console.log('changelog generated: ', body))
+  // Print changelog for debugging
+  console.log('changelog generated: ', body)
 
   const version = cleanVersionNumber(getPackageJson().version)
   const data = {
