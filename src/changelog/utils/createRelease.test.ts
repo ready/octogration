@@ -6,7 +6,7 @@ test('Create release works on valid body', async () => {
   expect(console.error).not.toBeCalled()
 })
 
-test('Create release works on valid body', async () => {
+test('Create release fails on invalid body', async () => {
   mockedChangelogTitle = 10
   await createRelease('this is a valid body')
   expect(console.error).toBeCalled()
@@ -22,6 +22,18 @@ afterAll(() => {
 })
 afterEach(() => {
   consoleSpy.mockClear()
+})
+
+// Mock console log
+let consoleLogSpy: jest.SpyInstance
+beforeAll(() => {
+  consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+})
+afterAll(() => {
+  consoleLogSpy.mockRestore()
+})
+afterEach(() => {
+  consoleLogSpy.mockClear()
 })
 
 // We want the changelog to fail when we return a number as the title

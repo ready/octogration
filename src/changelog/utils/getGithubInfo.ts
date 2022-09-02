@@ -69,7 +69,7 @@ export function getRepo (): string {
   const remoteURL = getGitRemoteURL()
 
   if (!remoteURL.startsWith(prefix)) {
-    throw new Error(`Malformed URL ${remoteURL} does not begin with ${prefix}`)
+    throw new Error(`Malformed URL "${remoteURL}" does not begin with "${prefix}"`)
   }
 
   return remoteURL.substring(prefix.length)

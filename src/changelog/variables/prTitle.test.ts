@@ -1,16 +1,16 @@
-import { evaluatePrBody } from './prBody'
+import { evaluatePrTitle } from './prTitle'
 
-describe('Evaluate PR body', () => {
-  test('able to get mocked PR body', async () => {
+describe('Evaluate PR title', () => {
+  test('able to get mocked PR title', async () => {
     process.argv = ['node', 'octogration', 'changelog', '1']
-    const prBody = await evaluatePrBody()
-    expect(prBody).toBe('Mocked PR body 1')
+    const prTitle = await evaluatePrTitle()
+    expect(prTitle).toBe('# Mocked PR title 1')
   })
 
   test('unable to get invalid PR', async () => {
     process.argv = ['node', 'octogration', 'changelog', '1914841']
-    const prBody = await evaluatePrBody()
-    expect(prBody).toBe('')
+    const prTitle = await evaluatePrTitle()
+    expect(prTitle).toBe('')
   })
 })
 
