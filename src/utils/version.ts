@@ -22,3 +22,18 @@ export function decrementPatch (version: string): string {
   fields[fields.length - 1] = Math.max(patch - 1, 0).toString()
   return fields.join('.')
 }
+
+/**
+ * Decrements the minor (second number in semver format)
+ * Doesn't decrement below zero
+ * Resets the patch to zero
+ * @param version - the clean semver number to decrement
+ * @returns a semver number one less than the input
+ */
+export function decrementMinor (version: string): string {
+  const fields = version.split('.')
+  fields[fields.length - 1] = '0'
+  const minor = parseInt(fields[1])
+  fields[1] = Math.max(minor - 1, 0).toString()
+  return fields.join('.')
+}

@@ -1,5 +1,5 @@
 import testmap from '../test/testmap'
-import { cleanVersionNumber, decrementPatch } from './version'
+import { cleanVersionNumber, decrementMinor, decrementPatch } from './version'
 
 describe('Clean version number', () => {
   const versionTests: Array<[string, string]> = [
@@ -29,4 +29,18 @@ describe('Decrement patch number', () => {
   ]
 
   testmap(versionTests, '%s', decrementPatch)
+})
+
+describe('Decrement minor number', () => {
+  const versionTests: Array<[string, string]> = [
+    ['0.0.0', '0.0.0'],
+    ['0.0.1', '0.0.0'],
+    ['0.1.0', '0.0.0'],
+    ['1.0.0', '1.0.0'],
+    ['23.0.6', '23.0.0'],
+    ['1.99.14993', '1.98.0'],
+    ['83.2.0', '83.1.0']
+  ]
+
+  testmap(versionTests, '%s', decrementMinor)
 })
