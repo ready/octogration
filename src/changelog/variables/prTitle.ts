@@ -1,4 +1,6 @@
 import { OctokitWrapper } from '../../API/octokitWrapper'
+import { getPackageJson } from '../../utils/packageJson'
+import { evaluateEnvDeploy } from '../utils/changelogTitle'
 import { getRepo } from '../utils/getGithubInfo'
 
 const octokit = new OctokitWrapper()
@@ -7,6 +9,13 @@ const octokit = new OctokitWrapper()
  * @returns the title of the PR linked to this changelog
  */
 export async function evaluatePrTitle (): Promise<string> {
+  const env = evaluateEnvDeploy()
+  const includePrTitleDev = getPackageJson().config.includePrTitleDev
+  const includePrTitleProd = getPackageJson().config.includePrTitleProd
+
+  if (env === 'Production' && !includePrTitleProd) return ''
+  if (env === 'Dev' && !includePrTitleDev) return ''
+
   try {
     const number = process.argv[3]
     const title = await retrieveGithubPrTitle(number)
