@@ -44,7 +44,6 @@ async function evaluateAllSections (commitSections: { [type: string]: string[] }
   const headers = Object.keys(commitSections)
   const sections = await Promise.all(headers.map(async header => {
     const types = commitSections[header]
-
     return await evaluateCommitSection(header, types)
   }))
 
