@@ -72,4 +72,5 @@ jobs:
 
       - uses: OSDKDev/unlock-issues@v1.1
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
