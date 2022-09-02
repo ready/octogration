@@ -1,8 +1,16 @@
 import { OctokitWrapper } from './octokitWrapper'
 
 // When the Github octokit package is mocked, it should act like in an action
+let mockedOctokitThrowError = false
 jest.mock('@octokit/action', () => ({
-  Octokit: jest.fn().mockImplementation(() => ({ request: jest.fn() }))
+  Octokit: jest.fn().mockImplementation(() => {
+    if (mockedOctokitThrowError) {
+      throw new Error('mocked error')
+    }
+    return {
+      request: jest.fn()
+    }
+  })
 }))
 
 describe('Octokit Wrapper class mocked', () => {
@@ -19,6 +27,14 @@ describe('Octokit Wrapper class mocked', () => {
     const octokit = new OctokitWrapper()
     await octokit.request('')
     expect(octokit.octokit?.request).toBeCalled()
+    process.env.NODE_ENV = 'test'
+  })
+
+  test('when octokit throws an error, the mock takes over', async () => {
+    process.env.NODE_ENV = '~MOCKED~'
+    mockedOctokitThrowError = true
+    const octokit = new OctokitWrapper()
+    expect(octokit.octokit).toBe(undefined)
     process.env.NODE_ENV = 'test'
   })
 })
