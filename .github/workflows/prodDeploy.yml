@@ -1,0 +1,31 @@
+name: prodDeploy
+
+# This workflow runs whenever a branch gets merged into prod from stage
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - prod
+
+jobs:
+  prod_release:
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'stage'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Ensure correct npm version
+        run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
+
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_SECRET }}
+          access: public
