@@ -11,6 +11,8 @@ export interface MockedPR {
   base: {
     ref: string
   }
+  title: string
+  body: string
 }
 
 export const mockedPullData: MockedPR[] = [
@@ -20,35 +22,45 @@ export const mockedPullData: MockedPR[] = [
     state: 'open',
     reviewAuthors: [],
     head: { ref: 'some-branch' },
-    base: { ref: 'main' }
+    base: { ref: 'main' },
+    title: 'Mocked PR title 1',
+    body: 'Mocked PR body 1'
   }, {
     id: 6,
     submitted_at: (new Date(Date.now() - 24 * 3600 * 1000)).toISOString(),
     state: 'open',
     reviewAuthors: [],
     head: { ref: 'some-branch2' },
-    base: { ref: 'main' }
+    base: { ref: 'main' },
+    title: 'Mocked PR title 6',
+    body: 'Mocked PR body 6'
   }, {
     id: 10,
     submitted_at: (new Date('7/2/22')).toISOString(),
     state: 'open',
     reviewAuthors: ['ready'],
     head: { ref: 'some-branch3' },
-    base: { ref: 'main' }
+    base: { ref: 'main' },
+    title: 'Mocked PR title 10',
+    body: 'Mocked PR body 10'
   }, {
     id: 12,
     submitted_at: (new Date('8/2/22')).toISOString(),
     state: 'closed',
     reviewAuthors: ['ready'],
     head: { ref: 'some-branch4' },
-    base: { ref: 'main' }
+    base: { ref: 'main' },
+    title: 'Mocked PR title 12',
+    body: 'Mocked PR body 12'
   }, {
     id: 13,
     submitted_at: (new Date(Date.now() - 24 * 3600 * 1000 * 2)).toISOString(),
     state: 'closed',
     reviewAuthors: ['ready', 'riverliway', 'ready'],
     head: { ref: 'some-branch5' },
-    base: { ref: 'some-branch4' }
+    base: { ref: 'some-branch4' },
+    title: 'Mocked PR title 13',
+    body: 'Mocked PR body 13'
   }
 ]
 
