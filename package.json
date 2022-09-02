@@ -73,7 +73,9 @@
         "label": "Jest Version",
         "logo": "Jest"
       }
-    }
+    },
+    "includePrTitleDev": false,
+    "includePrBodyDev": false
   },
   "commitlint": {
     "rules": {

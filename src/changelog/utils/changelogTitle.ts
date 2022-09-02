@@ -13,7 +13,7 @@ export function createChangelogTitle (): string {
  * Determines if this version is a production deploy or a dev deploy
  * @returns 'Production' or 'Dev'
  */
-function evaluateEnvDeploy (): 'Production' | 'Dev' {
+export function evaluateEnvDeploy (): 'Production' | 'Dev' {
   const version = getPackageJson().version
   const versionFields = version.split('.')
   const patch = versionFields[versionFields.length - 1]

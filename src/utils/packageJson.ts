@@ -22,6 +22,10 @@ interface OctogrationConfig {
   badgeConfigs: {
     [name: string]: BadgeConfig
   }
+  includePrTitleDev: boolean
+  includePrTitleProd: boolean
+  includePrBodyDev: boolean
+  includePrBodyProd: boolean
 }
 
 export interface BadgeConfig {
@@ -77,7 +81,11 @@ export const defaultConfig: OctogrationConfig = {
     timeZoneName: 'short'
   },
   commitSections: false,
-  badgeConfigs: getDefaultBadgeConfigs()
+  badgeConfigs: getDefaultBadgeConfigs(),
+  includePrTitleDev: true,
+  includePrTitleProd: true,
+  includePrBodyDev: true,
+  includePrBodyProd: true
 }
 
 /**
@@ -93,6 +101,7 @@ function validateConfig (packageJson: any): OctogrationConfig {
   validateDatetime(config)
   validateCommitSections(config)
   validateBadgeConfigs(config)
+  validateIncludePrContent(config)
 
   return config
 }
@@ -185,6 +194,17 @@ function validateBadgeConfigs (config: any): void {
   for (const [badgeName, badgeConfig] of Object.entries(defaultConfig.badgeConfigs)) {
     if (!(badgeName in config.badgeConfigs)) config.badgeConfigs[badgeName] = badgeConfig
   }
+}
+
+/**
+ * Validates the include PR content flags in the config and sets defaults if needed
+ * @param config - the config to validate and potentially edit
+ */
+function validateIncludePrContent (config: any): void {
+  if (!isValidField(config, 'includePrTitleDev', 'boolean')) config.includePrTitleDev = defaultConfig.includePrTitleDev
+  if (!isValidField(config, 'includePrTitleProd', 'boolean')) config.includePrTitleProd = defaultConfig.includePrTitleProd
+  if (!isValidField(config, 'includePrBodyDev', 'boolean')) config.includePrBodyDev = defaultConfig.includePrBodyDev
+  if (!isValidField(config, 'includePrBodyProd', 'boolean')) config.includePrBodyProd = defaultConfig.includePrBodyProd
 }
 
 /**
