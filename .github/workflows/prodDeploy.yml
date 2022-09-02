@@ -25,6 +25,8 @@ jobs:
       - name: Ensure correct npm version
         run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
 
+      - run: npm install
+
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_SECRET }}
