@@ -12,7 +12,7 @@
     "lint": "ts-standard 2> /dev/null",
     "build": "tsc",
     "prepare": "npm run build && husky install",
-    "prepublishOnly": "npm run lint && npm test"
+    "ci": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
