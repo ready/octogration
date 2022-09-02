@@ -50,7 +50,12 @@ function getLastProdDate (oldBadge: string): string {
  * @returns today's date in 1/1/11 format
  */
 function todayLocalDate (): string {
-  return (new Date()).toLocaleDateString('en-US')
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    year: '2-digit',
+    month: 'numeric',
+    day: 'numeric'
+  }
+  return (new Date()).toLocaleDateString('en-US', dateOptions)
 }
 
 /**
@@ -60,5 +65,6 @@ function todayLocalDate (): string {
 function daysOld (date: string): number {
   const currentTime = (new Date()).getTime()
   const dateTime = (new Date(date)).getTime()
-  return (currentTime - dateTime) / (1000 * 3600 * 24)
+  const daysOld = (currentTime - dateTime) / (1000 * 3600 * 24)
+  return daysOld < 1 ? 0 : daysOld
 }
