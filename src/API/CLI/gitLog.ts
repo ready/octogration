@@ -1,6 +1,6 @@
 import { execSync } from 'child_process'
 import { getPackageJson } from '../../utils/packageJson'
-import { cleanVersionNumber, decrementPatch } from '../../utils/version'
+import { cleanVersionNumber, decrementMinor, decrementPatch } from '../../utils/version'
 
 /**
  * Queries the git log to retrieve the commits since the last version
@@ -30,7 +30,7 @@ function getOldVersion (): string {
   const vFields = version.split('.')
   const isProd = vFields[vFields.length - 1] === '0'
 
-  return isProd ? [...vFields.slice(0, -1), '0'].join('.') : decrementPatch(version)
+  return isProd ? decrementMinor(version) : decrementPatch(version)
 }
 
 /**
