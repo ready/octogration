@@ -5,13 +5,13 @@ name: prodDeploy
 on:
   pull_request:
     types:
-      - opened
+      - closed
     branches:
       - prod
 
 jobs:
   prod_release:
-    if: github.event.pull_request.head.ref == 'stage'
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'stage'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,9 +24,6 @@ jobs:
 
       - name: Ensure correct npm version
         run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
-
-      - name: Load our packages
-        run: npm install
 
       - uses: JS-DevTools/npm-publish@v1
         with:
