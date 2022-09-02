@@ -10,7 +10,7 @@ export async function evaluatePrTitle (): Promise<string> {
   try {
     const number = process.argv[3]
     const title = await retrieveGithubPrTitle(number)
-    return `# ${title}`
+    return `\n# ${title}`
   } catch {
     return ''
   }

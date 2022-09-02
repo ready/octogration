@@ -10,15 +10,27 @@ import { cleanVersionNumber, decrementPatch } from '../../utils/version'
  */
 export function retrieveRawCommits (): string[] {
   try {
-    const version = getPackageJson().version
-    const oldVersion = decrementPatch(cleanVersionNumber(version))
-
+    const oldVersion = getOldVersion()
     const hash = retrieveCommitHash(`v${oldVersion}`)
     return retrieveCommitsSinceHash(hash)
   } catch (e) {
     console.error(e)
     return retrieveCommitsSinceHash(undefined)
   }
+}
+
+/**
+ * Determines which version number it should go back to fetch commits from
+ * If this is a prod deploy, it returns the last minor update
+ * If this is a dev deploy, it returns the last patch update
+ * @returns a version number
+ */
+function getOldVersion (): string {
+  const version = cleanVersionNumber(getPackageJson().version)
+  const vFields = version.split('.')
+  const isProd = vFields[vFields.length - 1] === '0'
+
+  return isProd ? [...vFields.slice(0, -1), '0'].join('.') : decrementPatch(version)
 }
 
 /**
