@@ -1,4 +1,4 @@
-name: version
+name: versionPatch
 
 # This workflow runs whenever a branch gets merged into main
 # It updates the version number, the dynamic badges, and release changelog
