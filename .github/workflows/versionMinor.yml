@@ -1,4 +1,4 @@
-name: version
+name: versionMinor
 
 # This workflow runs whenever a pull request is opened from main into stage
 # It updates the minor version number, the dynamic badges, and release changelog
@@ -42,6 +42,9 @@ jobs:
           git tag ${VERSION}
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+
+      - run: npm install --omit=dev
+      - run: npm run build
 
       - name: Update dynamic badges
         run: node ./lib/index.js badges version,lastProd
