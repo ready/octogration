@@ -7,10 +7,12 @@ on:
   pull_request:
     types:
       - opened
+    branches:
+      - stage
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.base.ref == 'stage' && github.event.pull_request.head.ref == 'main'
+  prod_release:
+    if: github.event.pull_request.head.ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
