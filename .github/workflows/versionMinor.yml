@@ -10,6 +10,9 @@ on:
     branches:
       - stage
 
+concurrency:
+  group: octogration
+
 jobs:
   prod_release:
     if: github.event.pull_request.head.ref == 'main'
