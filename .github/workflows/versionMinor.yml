@@ -31,7 +31,6 @@ jobs:
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             number: ${{ github.event.pull_request.number }}
-            lock-reason: Updating Version
 
       - name: Ensure correct npm version
         run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
