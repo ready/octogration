@@ -1,0 +1,62 @@
+name: versionMinor
+
+# This workflow runs whenever a pull request is opened from main into stage
+# It updates the minor version number, the dynamic badges, and release changelog
+
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - stage
+
+jobs:
+  prod_release:
+    if: github.event.pull_request.head.ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Ensure correct npm version
+        run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
+
+      - name: Configure github
+        run: |
+          git fetch
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+          git checkout main
+
+      - name: Upgrade version of project
+        run: npm version minor -m "v%s"
+
+      - name: Send version upgrade commit to github
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git tag ${VERSION}
+          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
+          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+
+      - run: npm install
+
+      - name: Update dynamic badges
+        run: node ./lib/index.js badges version,lastProd
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send dynamic badges commit to github
+        run: |
+          git add .
+          git commit -nm "chore: update dynamic badges"
+          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+
+      - name: Create changelog
+        run: node ./lib/index.js changelog ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
