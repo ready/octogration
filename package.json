@@ -1,6 +1,6 @@
 {
   "name": "@ready.net/octogration",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Scripts to automate github integrations via Octokit",
   "main": "lib/index.js",
   "files": [
