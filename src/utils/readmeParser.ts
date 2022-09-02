@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 
 let readmeFile: undefined | string
-const sources = new Map<string, string>()
+let sources = new Map<string, string>()
 
 /**
  * Grabs an image source from the readme file given the alt text
@@ -96,4 +96,11 @@ function htmlify (alt: string, source: string): string {
  */
 function readReadMeFile (): string {
   return readFileSync('README.md').toString()
+}
+
+export const testReadmeParser = {
+  reset: () => {
+    readmeFile = undefined
+    sources = new Map<string, string>()
+  }
 }
