@@ -43,8 +43,7 @@ jobs:
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
 
-      - run: npm install --omit=dev
-      - run: npm run build
+      - run: npm install
 
       - name: Update dynamic badges
         run: node ./lib/index.js badges version,lastProd
