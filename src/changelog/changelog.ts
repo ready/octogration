@@ -1,4 +1,4 @@
-import { formatFileHasVariable, getFormatFile, replaceVariable } from './releaseFormatParser'
+import { formatFileHasVariable, getFormatFile, replaceVariable } from './parsers/releaseFormatParser'
 import { createRelease } from './utils/createRelease'
 import { evaluateBadges } from './variables/badges'
 import { evaluateBranch } from './variables/branch'

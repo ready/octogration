@@ -41,3 +41,15 @@ let mockedChangelogTitle: string | number
 jest.mock('./changelogTitle', () => ({
   createChangelogTitle: () => mockedChangelogTitle
 }))
+
+// Mock writing files so running tests doesn't write to files
+jest.mock('./writePost', () => ({
+  writeChangelogPost: () => {}
+}))
+
+// Mock package JSON
+jest.mock('../../utils/packageJson', () => ({
+  getPackageJson: () => ({
+    version: '1.2.3'
+  })
+}))

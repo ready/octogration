@@ -3,6 +3,7 @@ import { getPackageJson } from '../../utils/packageJson'
 import { cleanVersionNumber } from '../../utils/version'
 import { createChangelogTitle } from './changelogTitle'
 import { getRepo } from './getGithubInfo'
+import { writeChangelogPost } from './writePost'
 
 const octokit = new OctokitWrapper()
 
@@ -30,5 +31,7 @@ export async function createRelease (body: string): Promise<void> {
 
   if (response.data !== true) {
     console.error('Unable to create github release notes, data sent: ', data, 'and data returned', response.data)
+  } else {
+    await writeChangelogPost()
   }
 }

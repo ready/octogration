@@ -233,3 +233,28 @@ test('Setting the badge config gradient to non integer array still has the defau
   const badgeConfigs = getPackageJson().config.badgeConfigs
   expect(badgeConfigs.coverage.gradient).toEqual(defaultConfig.badgeConfigs.coverage.gradient)
 })
+
+test('Setting the badge config with property that does not exist allows through', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      coverage: {
+        something: 'hello'
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  const defaultC = defaultConfig.badgeConfigs.coverage
+  expect(badgeConfigs.coverage).toEqual({ ...defaultC, something: 'hello' })
+})
+
+test('Setting a badge config that does not exist allows through', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    badgeConfigs: {
+      madeUpBadge: {
+        something: 'hello'
+      }
+    }
+  }
+  const badgeConfigs = getPackageJson().config.badgeConfigs
+  expect(badgeConfigs).toEqual({ ...defaultConfig.badgeConfigs, madeUpBadge: { something: 'hello' } })
+})
