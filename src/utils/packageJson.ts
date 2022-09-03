@@ -26,6 +26,8 @@ interface OctogrationConfig {
   includePrTitleProd: boolean
   includePrBodyDev: boolean
   includePrBodyProd: boolean
+  writeChangelogToFile: boolean
+  changelogFileName: string
 }
 
 export interface BadgeConfig {
@@ -85,7 +87,9 @@ export const defaultConfig: OctogrationConfig = {
   includePrTitleDev: true,
   includePrTitleProd: true,
   includePrBodyDev: true,
-  includePrBodyProd: true
+  includePrBodyProd: true,
+  writeChangelogToFile: true,
+  changelogFileName: 'automatic_changelog.json'
 }
 
 /**
@@ -102,6 +106,7 @@ function validateConfig (packageJson: any): OctogrationConfig {
   validateCommitSections(config)
   validateBadgeConfigs(config)
   validateIncludePrContent(config)
+  validateChangelogFile(config)
 
   return config
 }
@@ -205,6 +210,15 @@ function validateIncludePrContent (config: any): void {
   if (!isValidField(config, 'includePrTitleProd', 'boolean')) config.includePrTitleProd = defaultConfig.includePrTitleProd
   if (!isValidField(config, 'includePrBodyDev', 'boolean')) config.includePrBodyDev = defaultConfig.includePrBodyDev
   if (!isValidField(config, 'includePrBodyProd', 'boolean')) config.includePrBodyProd = defaultConfig.includePrBodyProd
+}
+
+/**
+ * Validates the changelog file name in the config and sets defaults if needed
+ * @param config - the config to validate and potentially edit
+ */
+function validateChangelogFile (config: any): void {
+  if (!isValidField(config, 'writeChangelogToFile', 'string')) config.writeChangelogToFile = defaultConfig.writeChangelogToFile
+  if (!isValidField(config, 'changelogFileName', 'string')) config.changelogFileName = defaultConfig.changelogFileName
 }
 
 /**
