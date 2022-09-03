@@ -183,6 +183,7 @@ function validateBadgeConfigs (config: any): void {
     validateBadgeField('primaryColor')
     validateBadgeField('secondaryColor')
     validateBadgeField('logo')
+    validateBadgeField('logoColor')
     validateBadgeField('logoWidth')
     validateBadgeField('style')
 
