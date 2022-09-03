@@ -26,31 +26,42 @@ interface TestsSummary {
  */
 function retrieveTestsSummary (): TestsSummary {
   const process = spawnSync('npm', ['run', 'testSummary'])
-  const output = process.stdout.toString()
-  const outputLines = output.split('\n')
-
-  // The output may contain more than just the JSON that we need
-  // Check every line to see which one has the JSON summary
-  for (let i = 0; i < outputLines.length; i++) {
-    try {
-      const json = JSON.parse(outputLines[i])
-      if ('numPassedTests' in json && 'numTotalTests' in json) {
-        if (typeof json.numPassedTests === 'number' && typeof json.numTotalTests === 'number') {
-          return json
-        }
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        const erroredFunction = e.stack?.split('\n')[1]
-        if (erroredFunction?.includes('at JSON.parse') === true) {
-          continue
-        }
-      }
-
-      // If the error is not a JSON parsing error, throw it up the stack
-      throw e
-    }
+  const output = process.stderr.toString()
+  let summary = {
+    numPassedTests: 0,
+    numTotalTests: 0
   }
 
-  throw new Error(`Tests summary did not contain valid JSON: ${output}`)
+  output.split('\n').forEach(line => {
+    const parsedSummary = parseTestLine(line)
+    if (parsedSummary !== undefined) summary = parsedSummary
+  })
+
+  return summary
+}
+
+/**
+ * Attempts to parse a line of the output, expecting the Jest summary format
+ * @param line - a line of the child process output
+ * @returns the parsed summary or undefined
+ */
+function parseTestLine (line: string): TestsSummary | undefined {
+  const fields = line.split(' ').filter(f => f !== '')
+  if (fields[0] !== 'Tests:') return undefined
+
+  const passedIndex = fields.findIndex(f => f === 'passed,')
+  if (passedIndex === -1) return undefined
+
+  const totalIndex = fields.findIndex(f => f === 'total')
+  if (totalIndex === -1) return undefined
+
+  const numPassedTests = parseInt(fields[passedIndex - 1])
+  if (isNaN(numPassedTests)) return undefined
+  const numTotalTests = parseInt(fields[totalIndex - 1])
+  if (isNaN(numTotalTests)) return undefined
+
+  return {
+    numPassedTests,
+    numTotalTests
+  }
 }
