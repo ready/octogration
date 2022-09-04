@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { updateBadges } from './badges/badges'
 import { changelog } from './changelog/changelog'
 import { executeLive } from './utils/executeLive'
