@@ -1,4 +1,4 @@
-import { formatFileHasVariable, getFormatFile, replaceVariable } from './releaseFormatParser'
+import { formatFileHasVariable, getFormatFile, replaceVariable } from './parsers/releaseFormatParser'
 import { createRelease } from './utils/createRelease'
 import { evaluateBadges } from './variables/badges'
 import { evaluateBranch } from './variables/branch'
@@ -15,7 +15,8 @@ and parses the commit messages to create a changelog for release.
 It uses the format described in releaseFormat.md and substitutes the values as necessary
 `
 
-const knownVariables = new Map<string, () => string | Promise<string>>()
+type Evaluator = () => string | Promise<string>
+const knownVariables = new Map<string, Evaluator>()
 knownVariables.set('dateTime', evaluateDatetime)
 knownVariables.set('branch', evaluateBranch)
 knownVariables.set('badges', evaluateBadges)
@@ -30,13 +31,14 @@ async function createChangelog (): Promise<void> {
   const variables = [...knownVariables.keys()]
   await Promise.all(variables.map(async variable => {
     try {
-      const evaluator = knownVariables.get(variable)
+      const evaluator = knownVariables.get(variable) as Evaluator
 
       if (formatFileHasVariable(variable)) {
-        const value = await (evaluator === undefined ? '' : evaluator())
+        const value = await evaluator()
         replaceVariable(variable, value)
       }
     } catch (e) {
+      console.error('oh no')
       console.error(e)
     }
   }))
@@ -48,11 +50,11 @@ async function createChangelog (): Promise<void> {
  * Checks arguments and then either prints the help message
  * or calls the create changelog function
  */
-export function changelog (): void {
+export async function changelog (): Promise<void> {
   if (process.argv.length !== 4) {
     help()
   } else {
-    void createChangelog()
+    await createChangelog()
   }
 }
 

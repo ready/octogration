@@ -1,87 +1,150 @@
-import { getCommitsByType } from './commitParser'
+import { getCommitsByType, testCommitParser } from './commitParser'
 import { retrieveRawCommits } from '../../API/CLI/gitLog'
+const { parseCommit } = testCommitParser
 
-test('Parsed feature commits', () => {
-  const parsedCommits = [{
-    hash: 'd777f320a1c818eb07847d474723e2c30fb90e01',
-    email: 'riverliway@gmail.com',
-    type: 'feat',
-    scope: '#1',
-    subject: 'mocked feature commit'
-  }, {
-    hash: 'dafed8ea28de9706d3f9d68195a3d3711e5c9970',
-    email: 'riverliway@gmail.com',
-    type: 'feat',
-    scope: '#2',
-    subject: 'mocked feature commit'
-  }, {
-    hash: 'c96870a1e925de3755fdd01811dd81db464a28d8',
-    email: 'riverliway@gmail.com',
-    type: 'feat',
-    scope: '#3',
-    subject: 'mocked feature commit'
-  }, {
-    hash: 'a4ef2cc53d993f5e03cf0be8237d2cfc21d09240',
-    email: 'riverliway@gmail.com',
-    type: 'feat',
-    scope: '',
-    subject: 'mocked empty scope feature commit'
-  }, {
-    hash: 'aa90c29f92b29c8f2ba900ba3cebbeca12d1076b',
-    email: 'riverliway@gmail.com',
-    type: 'feat',
-    subject: 'mocked emptier scope feature commit'
-  }]
+describe('Get commits by type', () => {
+  test('Parsed feature commits', () => {
+    const parsedCommits = [{
+      hash: 'd777f320a1c818eb07847d474723e2c30fb90e01',
+      email: 'riverliway@gmail.com',
+      type: 'feat',
+      scope: '#1',
+      subject: 'mocked feature commit'
+    }, {
+      hash: 'dafed8ea28de9706d3f9d68195a3d3711e5c9970',
+      email: 'riverliway@gmail.com',
+      type: 'feat',
+      scope: '#2',
+      subject: 'mocked feature commit'
+    }, {
+      hash: 'c96870a1e925de3755fdd01811dd81db464a28d8',
+      email: 'riverliway@gmail.com',
+      type: 'feat',
+      scope: '#3',
+      subject: 'mocked feature commit'
+    }, {
+      hash: 'a4ef2cc53d993f5e03cf0be8237d2cfc21d09240',
+      email: 'riverliway@gmail.com',
+      type: 'feat',
+      scope: '',
+      subject: 'mocked empty scope feature commit'
+    }, {
+      hash: 'aa90c29f92b29c8f2ba900ba3cebbeca12d1076b',
+      email: 'riverliway@gmail.com',
+      type: 'feat',
+      subject: 'mocked emptier scope feature commit'
+    }]
 
-  expect(getCommitsByType('feat')).toStrictEqual(parsedCommits)
-  expect(retrieveRawCommits).toBeCalledTimes(1)
+    expect(getCommitsByType('feat')).toStrictEqual(parsedCommits)
+    expect(retrieveRawCommits).toBeCalledTimes(1)
+  })
+
+  test('Parsed typo commits', () => {
+    const parsedCommits = [{
+      hash: 'd777f320a1c818eb07847d474723e2c30fb90e01',
+      email: 'riverliway@gmail.com',
+      type: 'typo',
+      scope: 'mockscope',
+      subject: 'mocked typo commit'
+    }]
+
+    expect(getCommitsByType('typo')).toStrictEqual(parsedCommits)
+    expect(retrieveRawCommits).toBeCalledTimes(1)
+  })
+
+  test('Double paren scope', () => {
+    const parsedCommits = [{
+      hash: '7332bb22234e84c735dcda62d007811e2acbe798',
+      email: 'riverliway@gmail.com',
+      type: 'style',
+      scope: '(parenscope)',
+      subject: 'double parens'
+    }]
+
+    expect(getCommitsByType('style')).toStrictEqual(parsedCommits)
+    expect(retrieveRawCommits).toBeCalledTimes(1)
+  })
+
+  test('Parsed chore commits', () => {
+    const parsedCommits = [{
+      hash: 'd777f320a1c818eb07847d474723e2c30fb90e01',
+      email: 'riverliway@gmail.com',
+      type: 'typo',
+      scope: 'mockscope',
+      subject: 'mocked typo commit'
+    }]
+
+    expect(getCommitsByType('typo')).toStrictEqual(parsedCommits)
+    expect(retrieveRawCommits).toBeCalledTimes(1)
+  })
+
+  test('Not found type is empty array', () => {
+    expect(getCommitsByType('UNUSED TYPE')).toStrictEqual([])
+    expect(retrieveRawCommits).toBeCalledTimes(1)
+  })
 })
 
-test('Parsed typo commits', () => {
-  const parsedCommits = [{
-    hash: 'd777f320a1c818eb07847d474723e2c30fb90e01',
-    email: 'riverliway@gmail.com',
-    type: 'typo',
-    scope: 'mockscope',
-    subject: 'mocked typo commit'
-  }]
+describe('Parse commit', () => {
+  test('fails on empty string', () => {
+    expect(() => parseCommit('')).toThrowError('invalid commit format')
+  })
 
-  expect(getCommitsByType('typo')).toStrictEqual(parsedCommits)
-  expect(retrieveRawCommits).toBeCalledTimes(1)
+  test('fails on no spaces', () => {
+    expect(() => parseCommit('nospaces')).toThrowError('invalid commit format')
+  })
+
+  test('fails on one space', () => {
+    expect(() => parseCommit('one spaceonly')).toThrowError('invalid commit format')
+  })
+
+  test('fails on no semicolon', () => {
+    expect(() => parseCommit('this has no semicolon')).toThrowError('invalid commit format')
+  })
+
+  test('fails on only open paren', () => {
+    expect(() => parseCommit('this has single(: open paren')).toThrowError('invalid commit format')
+  })
+
+  test('works without scope', () => {
+    const parsedCommit = {
+      hash: 'hash',
+      email: 'email',
+      type: 'type',
+      subject: 'this is a message'
+    }
+    expect(parseCommit('hash email type: this is a message')).toEqual(parsedCommit)
+  })
+
+  test('works without scope with parens', () => {
+    const parsedCommit = {
+      hash: 'hash',
+      email: 'email',
+      type: 'type',
+      scope: '',
+      subject: 'this is a message'
+    }
+    expect(parseCommit('hash email type(): this is a message')).toEqual(parsedCommit)
+  })
+
+  test('works with scope', () => {
+    const parsedCommit = {
+      hash: 'hash',
+      email: 'email',
+      type: 'type',
+      scope: 'scope',
+      subject: 'this is a message'
+    }
+    expect(parseCommit('hash email type(scope): this is a message')).toEqual(parsedCommit)
+  })
 })
 
-test('Double paren scope', () => {
-  const parsedCommits = [{
-    hash: '7332bb22234e84c735dcda62d007811e2acbe798',
-    email: 'riverliway@gmail.com',
-    type: 'style',
-    scope: '(parenscope)',
-    subject: 'double parens'
-  }]
-
-  expect(getCommitsByType('style')).toStrictEqual(parsedCommits)
-  expect(retrieveRawCommits).toBeCalledTimes(1)
+test('Commit parsing fails on bad raw commit', () => {
+  testCommitParser.reset()
+  mockedCommits.push(6)
+  expect(() => getCommitsByType('feat')).toThrowError('commit.indexOf is not a function')
 })
 
-test('Parsed chore commits', () => {
-  const parsedCommits = [{
-    hash: 'd777f320a1c818eb07847d474723e2c30fb90e01',
-    email: 'riverliway@gmail.com',
-    type: 'typo',
-    scope: 'mockscope',
-    subject: 'mocked typo commit'
-  }]
-
-  expect(getCommitsByType('typo')).toStrictEqual(parsedCommits)
-  expect(retrieveRawCommits).toBeCalledTimes(1)
-})
-
-test('Not found type is empty array', () => {
-  expect(getCommitsByType('UNUSED TYPE')).toStrictEqual([])
-  expect(retrieveRawCommits).toBeCalledTimes(1)
-})
-
-const mockedCommits = [
+const mockedCommits: Array<string | number> = [
   'd777f320a1c818eb07847d474723e2c30fb90e01 riverliway@gmail.com feat(#1): mocked feature commit',
   'dafed8ea28de9706d3f9d68195a3d3711e5c9970 riverliway@gmail.com feat(#2): mocked feature commit',
   'c96870a1e925de3755fdd01811dd81db464a28d8 riverliway@gmail.com feat(#3): mocked feature commit',

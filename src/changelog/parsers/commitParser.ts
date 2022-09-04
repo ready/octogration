@@ -88,7 +88,7 @@ function parseCommit (commit: string): Commit {
   const hash = commit.substring(0, endHashLocation)
   const emailAndMessage = commit.substring(endHashLocation + 1)
   const endEmailLocation = emailAndMessage.indexOf(' ')
-  if (endHashLocation === -1) throw new Error('invalid commit format')
+  if (endEmailLocation === -1) throw new Error('invalid commit format')
 
   const email = emailAndMessage.substring(0, endEmailLocation)
   const message = emailAndMessage.substring(endEmailLocation + 1)
@@ -123,6 +123,7 @@ function parseCommit (commit: string): Commit {
 }
 
 export const testCommitParser = {
+  parseCommit,
   reset: () => {
     retrieved = false
     commitsByType = new Map<string, Commit[]>()

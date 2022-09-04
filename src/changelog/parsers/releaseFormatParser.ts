@@ -53,3 +53,10 @@ const readMarkdownFormat = (): string =>
 <!-- prBody -->
 
 <!-- commitLog -->`
+
+export const testReleaseFormatParser = {
+  reset: () => {
+    formatFile = ''
+    readFile = false
+  }
+}
