@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-git rev-parse --abbrev-ref HEAD | grep -v -q "river/succeed-on-file-exist" && npm run ci
+git rev-parse --abbrev-ref HEAD | grep -v -q "main" && npm run ci
