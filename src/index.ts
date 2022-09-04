@@ -17,7 +17,7 @@ Valid subprocesses are
  */
 function callSubprocess (subprocess: string): void {
   switch (subprocess) {
-    case 'changelog': changelog(); break
+    case 'changelog': void changelog(); break
     case 'badges': void updateBadges(); break
     default: help()
   }
