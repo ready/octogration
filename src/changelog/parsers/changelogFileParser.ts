@@ -41,5 +41,5 @@ function readChangelogFile (): ChangelogPost[] {
 function writeChangelogFile (posts: ChangelogPost[]): void {
   const CHANGELOG_FILE = getPackageJson().config.changelogFileName
   const file = JSON.stringify(posts)
-  writeFileSync(CHANGELOG_FILE, file, { flag: 'wx' })
+  writeFileSync(CHANGELOG_FILE, file, { flag: 'w' })
 }
