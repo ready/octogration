@@ -24,4 +24,8 @@
   <img alt="typescriptVersion" src="https://img.shields.io/static/v1?label=TS%20Version&color=5c80f7&labelColor=555555&logo=TypeScript&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=4.7.4" />
 </p>
 
-This repository contains Ready's scripts to automate Github integrations. It currently is not published.
+---
+
+Octogration is a package designed to hook into Github's Octokit API and automate metadata about the project it is installed on.
+It is used on this repository to dynamically update the readme badges, handle the package version, and produce the changelog.
+All of this is done without requiring any developer attention.
