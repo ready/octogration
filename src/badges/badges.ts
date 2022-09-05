@@ -1,4 +1,6 @@
 import { getSource, setSource, writeSources } from '../utils/readmeParser'
+import { getPackageJson } from '../utils/packageJson'
+
 import { prepareVersionBadge } from './preparers/versionBadge'
 import { prepareTestsBadge } from './preparers/testsBadge'
 import { prepareCoverageBadge } from './preparers/coverageBadge'
@@ -10,7 +12,6 @@ import { prepareDeprecationsBadge } from './preparers/deprecationsBadge'
 import { prepareStaleBranchesBadge } from './preparers/staleBranchesBadge'
 import { prepareNeglectedPrsBadge } from './preparers/neglectedPRsBadge'
 import { prepareLastProdBadge } from './preparers/lastProdBadge'
-import { getPackageJson } from '../utils/packageJson'
 import { preparePackageVersionBadge } from './preparers/packageVersionBadge'
 
 const HELP_MSG = `
@@ -37,7 +38,8 @@ enum ValidBadgeType {
   Linter = 'linter'
 }
 
-const preparers = new Map<ValidBadgeType, (oldBadge: string) => (string | Promise<string>)>()
+type Preparer = (oldBadge: string) => (string | Promise<string>)
+const preparers = new Map<ValidBadgeType, Preparer>()
 preparers.set(ValidBadgeType.Version, prepareVersionBadge)
 preparers.set(ValidBadgeType.StaleBranches, prepareStaleBranchesBadge)
 preparers.set(ValidBadgeType.NeglectedPRs, prepareNeglectedPrsBadge)
@@ -75,11 +77,7 @@ export async function updateBadges (): Promise<void> {
  * @param originalSource - the old version of the badge
  */
 async function updateBadge (badgeName: ValidBadgeType, originalSource: string): Promise<void> {
-  const preparer = preparers.get(badgeName)
-  if (preparer === undefined) {
-    console.error(`Preparer not found for ${badgeName}`)
-    return
-  }
+  const preparer = preparers.get(badgeName) as Preparer
 
   try {
     const newSource = await preparer(originalSource)
@@ -94,7 +92,9 @@ async function updateBadge (badgeName: ValidBadgeType, originalSource: string): 
  * so they need to be updated separately
  */
 function updatePackageVersionBadges (): void {
-  const updateDeps = (deps: { [key: string]: string }): void => {
+  const updateDeps = (deps: { [key: string]: string } | undefined): void => {
+    if (deps === undefined) return
+
     for (const [name, version] of Object.entries(deps)) {
       const badgeName = `${name}Version`
       const originalSource = getSource(badgeName)
@@ -105,8 +105,8 @@ function updatePackageVersionBadges (): void {
     }
   }
 
-  updateDeps(getPackageJson().dependencies)
-  updateDeps(getPackageJson().devDependencies)
+  updateDeps(getPackageJson()?.dependencies)
+  updateDeps(getPackageJson()?.devDependencies)
 }
 
 /**
@@ -120,7 +120,6 @@ function parseParams (params: string[]): ValidBadgeType[] {
     return validBadgeTypes
   } else if (params.length !== 4) {
     help()
-    return []
   }
 
   const badgeNames = params[3].split(',')
@@ -132,7 +131,6 @@ function parseParams (params: string[]): ValidBadgeType[] {
     })
   } catch {
     help()
-    return []
   }
 }
 
@@ -140,7 +138,7 @@ function parseParams (params: string[]): ValidBadgeType[] {
  * Prints the help message to console with a list of all valid badge types
  * and then exits with a failing status code
  */
-function help (): void {
+function help (): never {
   const badgeNames = Object.values(ValidBadgeType).map(v => v.toString())
   const helpMessage = badgeNames.reduce((message, next) => `${message}\n * ${next}`, HELP_MSG)
   console.log(helpMessage)
