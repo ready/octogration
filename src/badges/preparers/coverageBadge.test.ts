@@ -8,7 +8,7 @@ const mockedPackageJson = {
         labelColor: '555555',
         primaryColor: '33ab53',
         secondaryColor: 'cf3b36',
-        logo: 'Buffer',
+        logo: 'mocked logo',
         logoColor: 'ffffff',
         logoWidth: '14',
         style: 'for-the-badge'
