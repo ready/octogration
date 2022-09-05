@@ -77,6 +77,7 @@ describe('Coverage badge', () => {
     mockedThrowError = true
     const preparedBadge = prepareCoverageBadge()
     expect(preparedBadge.includes('message=0%')).toBe(true)
+    expect(console.error).toBeCalled()
   })
 })
 
@@ -112,3 +113,15 @@ jest.mock('fs', () => ({
     }
   }))
 }))
+
+// Mock console error
+let consoleSpy: jest.SpyInstance
+beforeAll(() => {
+  consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+afterAll(() => {
+  consoleSpy.mockRestore()
+})
+afterEach(() => {
+  consoleSpy.mockClear()
+})
