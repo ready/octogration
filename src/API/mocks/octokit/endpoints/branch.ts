@@ -24,7 +24,7 @@ export const mockedBranchData: MockedBranchData[] = [
     date: (new Date(Date.now() - 24 * 3600 * 1000)).toISOString()
   }, {
     name: 'river/dev',
-    date: (new Date('8/22/21')).toISOString()
+    date: (new Date(Date.now() - 24 * 3600 * 1000 * 2)).toISOString()
   }
 ].map(b => ({ name: b.name, commit: { commit: { date: b.date } } }))
 
@@ -55,4 +55,8 @@ export function executeBranchEndpoint (request: OctokitRequest): OctokitResponse
     status: 200,
     data: branch
   }
+}
+
+export const testBranches = {
+  addBranchRequest: (pr: MockedBranchData) => mockedBranchData.push(pr)
 }

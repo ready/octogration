@@ -52,3 +52,7 @@ function boolString (bool: string | undefined): boolean | undefined {
   if (bool === 'false') return false
   return undefined
 }
+
+export const testListBranches = {
+  addBranchRequest: (pr: MockedBranch) => mockedBranchData.push(pr)
+}
