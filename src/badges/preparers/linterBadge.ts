@@ -19,8 +19,7 @@ export function prepareLinterBadge (): string {
  * @returns a number representing how many linter errors there are
  */
 function retrieveLinterErrors (): number {
-  // Shell must be enabled for piping between processes
   const process = spawnSync('npm', ['run', 'lint'])
   const output = process.stdout.toString()
-  return parseInt(output.trim())
+  return output.split('\n').length - 1
 }
