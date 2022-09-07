@@ -55,3 +55,7 @@ async function getBranchNames (): Promise<string[]> {
   const branches = await octokit.request(endpoint)
   return branches.data.map((b: any) => b.name)
 }
+
+export const testStaleBranchesBadge = {
+  reset: () => octokit.resetCache()
+}

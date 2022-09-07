@@ -85,3 +85,7 @@ export function executePullsEndpoint (request: OctokitRequest): OctokitResponse<
     data: stateFiltered
   }
 }
+
+export const testPulls = {
+  addMockedPullRequest: (pr: MockedPR) => mockedPullData.push(pr)
+}
