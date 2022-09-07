@@ -50,4 +50,8 @@ export class OctokitWrapper {
     }
     return this.caches[cacheKey]
   }
+
+  resetCache (): void {
+    this.caches = {}
+  }
 }
