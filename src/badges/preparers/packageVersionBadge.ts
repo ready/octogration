@@ -36,14 +36,18 @@ function getConfig (packageName: string): BadgeConfig {
   if (!(badgeName in badgeConfigs)) return defaultConfig
 
   const givenConfig = badgeConfigs[badgeName]
-  if (!('label' in givenConfig)) givenConfig.label = defaultConfig.label
-  if (!('labelColor' in givenConfig)) givenConfig.labelColor = defaultConfig.labelColor
-  if (!('primaryColor' in givenConfig)) givenConfig.primaryColor = defaultConfig.primaryColor
-  if (!('secondaryColor' in givenConfig)) givenConfig.secondaryColor = defaultConfig.secondaryColor
-  if (!('logo' in givenConfig)) givenConfig.logo = defaultConfig.logo
-  if (!('logoColor' in givenConfig)) givenConfig.logoColor = defaultConfig.logoColor
-  if (!('logoWidth' in givenConfig)) givenConfig.logoWidth = defaultConfig.logoWidth
-  if (!('style' in givenConfig)) givenConfig.style = defaultConfig.style
+  const checkField = (fieldName: keyof BadgeConfig): void => {
+    if (!(fieldName in givenConfig)) (givenConfig as any)[fieldName] = defaultConfig[fieldName]
+  }
+
+  checkField('label')
+  checkField('labelColor')
+  checkField('primaryColor')
+  checkField('secondaryColor')
+  checkField('logo')
+  checkField('logoColor')
+  checkField('logoWidth')
+  checkField('style')
 
   return givenConfig
 }

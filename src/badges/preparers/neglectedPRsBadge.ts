@@ -23,16 +23,10 @@ export async function prepareNeglectedPrsBadge (): Promise<string> {
  * @returns the number of open PRs without a review for 4 or more days
  */
 async function countNeglectedPrs (): Promise<number> {
-  try {
-    const prIds = await getOldPrNumbers()
-    const prReviewStatuses = await Promise.all(prIds.map(async pr => await hasPrBeenReviewed(pr)))
-    const notReviewed = prReviewStatuses.filter(status => !status)
-    return notReviewed.length
-  } catch (e) {
-    // If there is an error, we want to fail gracefully
-    console.error(e)
-    return 0
-  }
+  const prIds = await getOldPrNumbers()
+  const prReviewStatuses = await Promise.all(prIds.map(async pr => await hasPrBeenReviewed(pr)))
+  const notReviewed = prReviewStatuses.filter(status => !status)
+  return notReviewed.length
 }
 
 /**
@@ -65,4 +59,8 @@ async function hasPrBeenReviewed (prNumber: string): Promise<boolean> {
   const search = 'per_page=1'
   const prs = await octokit.request(`GET /repos/${repo}/pulls/${prNumber}/reviews?${search}`)
   return prs.data.length !== 0
+}
+
+export const testNeglectedPRsBadge = {
+  reset: () => octokit.resetCache()
 }
