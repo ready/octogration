@@ -27,7 +27,7 @@ describe('Linter badge', () => {
   test('is not 0 on multiple lines', () => {
     mockedLinterOutput = 'hi\nthese\nare\nerrors'
     const badge = prepareLinterBadge()
-    expect(badge.includes('message=3')).toBe(true)
+    expect(badge.includes('message=4')).toBe(true)
   })
 
   test('does not catch error', () => {

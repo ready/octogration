@@ -21,5 +21,7 @@ export function prepareLinterBadge (): string {
 function retrieveLinterErrors (): number {
   const process = spawnSync('npm', ['run', 'lint'])
   const output = process.stdout.toString()
-  return output.split('\n').length - 1
+  const lines = output.split('\n')
+  const legitLines = lines.filter(l => l.trim() !== '' && !l.startsWith('>'))
+  return legitLines.length
 }
