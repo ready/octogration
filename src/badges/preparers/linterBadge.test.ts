@@ -24,10 +24,10 @@ describe('Linter badge', () => {
     expect(badge.includes('message=0')).toBe(true)
   })
 
-  test('is 0 on multiple lines', () => {
-    mockedLinterOutput = '15'
+  test('is not 0 on multiple lines', () => {
+    mockedLinterOutput = 'hi\nthese\nare\nerrors'
     const badge = prepareLinterBadge()
-    expect(badge.includes('message=15')).toBe(true)
+    expect(badge.includes('message=3')).toBe(true)
   })
 
   test('does not catch error', () => {
@@ -42,7 +42,7 @@ jest.mock('../../utils/packageJson', () => ({
 }))
 
 // Mock linter command
-let mockedLinterOutput = '0'
+let mockedLinterOutput = ''
 let mockedThrowError = false
 jest.mock('child_process', () => ({
   spawnSync: jest.fn().mockImplementation((_cmd: string) => ({
