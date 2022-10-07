@@ -11,8 +11,6 @@ updates:
       interval: "daily"
       time: "09:00"
       timezone: "America/Los_Angeles"
-    ignore:
-      - dependency-name: "antd"
     commit-message:
       prefix: "chore"
     reviewers:
