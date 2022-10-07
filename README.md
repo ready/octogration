@@ -206,15 +206,15 @@ Each badge config uses the same format, as described below. All colors are 6 dig
 
 ```json
 "badgeName": {
-  label: "The text to display on the badge on the left",
-  labelColor: "Color of left background",
-  primaryColor: "Color of right background",
-  secondaryColor: "Color of right background when event triggers (different per badge)",
-  gradient: [0, 100] // starting and ending values for gradient badges (different per badge)
-  logo: "base 64 image encoding or simpleicons.org name",
-  logoColor: "Color of logo (only used for some simpleicons)",
-  logoWidth: "Number of pixels to make the logo's width",
-  style: "Badge style for rendering, see shields.io for options"
+  "label": "The text to display on the badge on the left",
+  "labelColor": "Color of left background",
+  "primaryColor": "Color of right background",
+  "secondaryColor": "Color of right background when event triggers (different per badge)",
+  "gradient": "[number, number] // starting and ending values for gradient badges (different per badge)",
+  "logo": "base 64 image encoding or simpleicons.org name",
+  "logoColor": "Color of logo (only used for some simpleicons)",
+  "logoWidth": "Number of pixels to make the logo's width",
+  "style": "Badge style for rendering, see shields.io for options"
 }
 ```
 
@@ -226,14 +226,14 @@ Default:
 
 ```json
 "version": {
-  label: "Version",
-  labelColor: "555555",
-  primaryColor: "740e86",
-  secondaryColor: "740e86",
-  logo: // base 64 encoding of Ready's Logo
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Version",
+  "labelColor": "555555",
+  "primaryColor": "740e86",
+  "secondaryColor": "740e86",
+  "logo": "// base 64 encoding of Ready's Logo",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -245,14 +245,14 @@ Default:
 
 ```json
 "staleBranches": {
-  label: "Stale Branches",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  logo: "Git",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Stale Branches",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "logo": "Git",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -264,14 +264,14 @@ Default:
 
 ```json
 "neglectedPrs": {
-  label: "Neglected PRs",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  logo: "Git Extensions",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Neglected PRs",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "logo": "Git Extensions",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -283,15 +283,15 @@ Default:
 
 ```json
 "lastProd": {
-  label: "Last Prod",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  gradient: [60, 0],
-  logo: "Android Auto",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Last Prod",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "gradient": [60, 0],
+  "logo": "Android Auto",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -303,14 +303,14 @@ Default:
 
 ```json
 "tests": {
-  label: "Tests",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  logo: "TestCafe",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Tests",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "logo": "TestCafe",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -324,15 +324,15 @@ Default:
 
 ```json
 "coverage": {
-  label: "Coverage",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  gradient: [0, 100],
-  logo: "Buffer",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Coverage",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "gradient": [0, 100],
+  "logo": "Buffer",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -344,14 +344,14 @@ Default:
 
 ```json
 "linter": {
-  label: "Linter",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  logo: "Integromat",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Linter",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "logo": "Integromat",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -363,14 +363,14 @@ Default:
 
 ```json
 "vulnerabilities": {
-  label: "Vulnerabilities",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  logo: "Amazon Cloudwatch",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Vulnerabilities",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "logo": "Amazon Cloudwatch",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -382,14 +382,14 @@ Default:
 
 ```json
 "deprecations": {
-  label: "Deprecations",
-  labelColor: "555555",
-  primaryColor: "33ab53",
-  secondaryColor: "cf3b36",
-  logo: "Git LFS",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Deprecations",
+  "labelColor": "555555",
+  "primaryColor": "33ab53",
+  "secondaryColor": "cf3b36",
+  "logo": "Git LFS",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -401,14 +401,14 @@ Default:
 
 ```json
 "nodeVersion": {
-  label: "Node Version",
-  labelColor: "555555",
-  primaryColor: "5c80f7",
-  secondaryColor: "5c80f7",
-  logo: "Node.js",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "Node Version",
+  "labelColor": "555555",
+  "primaryColor": "5c80f7",
+  "secondaryColor": "5c80f7",
+  "logo": "Node.js",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -420,14 +420,14 @@ Default:
 
 ```json
 "npmVersion": {
-  label: "NPM Version",
-  labelColor: "555555",
-  primaryColor: "5c80f7",
-  secondaryColor: "5c80f7",
-  logo: "npm",
-  logoColor: "ffffff",
-  logoWidth: "14",
-  style: "for-the-badge"
+  "label": "NPM Version",
+  "labelColor": "555555",
+  "primaryColor": "5c80f7",
+  "secondaryColor": "5c80f7",
+  "logo": "npm",
+  "logoColor": "ffffff",
+  "logoWidth": "14",
+  "style": "for-the-badge"
 }
 ```
 
@@ -452,8 +452,8 @@ If you'd like to add a badge for React (as an example) and like the default conf
 
 ```json
 "reactVersion": {
-  label: "React Version",
-  logo: "React"
+  "label": "React Version",
+  "logo": "React"
 }
 ```
 
