@@ -459,6 +459,4 @@ If you'd like to add a badge for React (as an example) and like the default conf
 
 ## TODO:
 
-Add a license
-
 Create dummy repository with config options set up
