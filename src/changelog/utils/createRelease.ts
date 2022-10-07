@@ -28,7 +28,7 @@ export async function createRelease (body: string): Promise<void> {
   const repo = getRepo()
   const endpoint = `POST /repos/${repo}/releases`
   const response = await octokit.request(endpoint, data)
-  console.log('create release API response', response.status)
+  console.log('create release github API response', response.status)
 
   if (response.status !== 200) {
     console.error('Unable to create github release notes, data sent: ', data, 'and data returned', response.data)
