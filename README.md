@@ -68,7 +68,12 @@ Running Octogration via command line must be done inside of a GitHub action. It 
 
 Technically, Octogration can be called from any GitHub action, but we have some recommendations on a good place to put it. There are only a handful of formal requirements for the use inside of a GitHub action:
 
-* All packages must be installed by `npm install` to run Octogration. If the deprecations badge is being used, then the 
+* All packages must be installed by `npm install` to run Octogration. If the deprecations badge is being used, then the standard error output of this command must be saved by `npm install 2>./.github/data/install_log.txt` . This is because currently NPM doesn't have any other way to check for package deprecations.
+* All executions of the Octogration packages must have the github API token loaded in the environment. This is automatically encrypted by Github Actions and will never by seen by the Octogration package.
+
+### Configuration Options
+
+There are a number of configuration options that 
 
 ## TODO:
 
