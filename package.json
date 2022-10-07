@@ -26,7 +26,7 @@
     "Github"
   ],
   "author": "Ready",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ready/octogration/issues"
   },
@@ -49,22 +49,22 @@
   },
   "@ready/octogration": {
     "commitSections": {
-      "Features": [
+      "⚒️ Features": [
         "feat",
         "perf"
       ],
-      "Bug Fixes": [
+      "🐞 Bug Fixes": [
         "fix"
       ],
-      "Cleaning": [
+      "🧹 Cleaning": [
         "refact",
         "docs",
         "style"
       ],
-      "Tests": [
+      "✅ Tests": [
         "test"
       ],
-      "Meta": [
+      "⚙️ Meta": [
         "build",
         "ci"
       ]

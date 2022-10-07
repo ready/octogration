@@ -457,8 +457,6 @@ If you'd like to add a badge for React (as an example) and like the default conf
 }
 ```
 
-## TODO:
+## Contributing
 
-Add a license
-
-Create dummy repository with config options set up
+We welcome ideas and implementations from all sources! Please fill out our templates when creating issues or pull requests to the best of your ability.
