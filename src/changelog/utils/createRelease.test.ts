@@ -6,7 +6,7 @@ test('Create release works on valid body', async () => {
   expect(console.error).not.toBeCalled()
 })
 
-test('Create release fails on invalid body', async () => {
+test('Create release fails on invalid title', async () => {
   mockedChangelogTitle = 10
   await createRelease('this is a valid body')
   expect(console.error).toBeCalled()
