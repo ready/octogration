@@ -57,6 +57,11 @@ jobs:
         run: node ./lib/index.js badges
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Create changelog
+        run: node ./lib/index.js changelog ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send dynamic badges commit to github
         run: |
@@ -64,7 +69,3 @@ jobs:
           git commit -nm "chore: update dynamic badges"
           git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
 
-      - name: Create changelog
-        run: node ./lib/index.js changelog ${{ github.event.pull_request.number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
