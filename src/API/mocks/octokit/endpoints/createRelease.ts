@@ -14,7 +14,7 @@ import { OctokitResponse, OctokitRequest } from '../mockedOctokit'
  */
 export function executeCreateReleaseEndpoint (request: OctokitRequest): OctokitResponse<boolean> {
   const goodResponse = { status: 200, data: true }
-  const badResponse = { status: 200, data: false }
+  const badResponse = { status: 400, data: false }
 
   if (request.type !== 'POST') return badResponse
 
