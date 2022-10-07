@@ -2,6 +2,7 @@ import { getGitRemoteURL } from '../../utils/gitRemoteOrigin'
 import { getPackageJson } from '../../utils/packageJson'
 import { Commit, getAllCommits, getCommitsByType, RawCommit } from '../parsers/commitParser'
 import { getGithubUserInfo, GithubUserInfo } from '../utils/getGithubInfo'
+import htmlifyMarkdown from '../utils/htmlifyMarkdown'
 
 /**
  * Checks the package JSON config to find the section headers and type sorting
@@ -85,7 +86,7 @@ const htmlifyCommit = (userInfo: GithubUserInfo, commit: Commit): string =>
   <span>
     <code><a href="${getGitRemoteURL()}/commit/${commit.hash}">${commit.hash.substring(0, 7)}</a></code>
     <b>${commit.type}</b>${commit.scope === undefined ? '' : `(${commit.scope})`}:
-    ${commit.subject}
+    ${htmlifyMarkdown(commit.subject)}
   </span>
 </div>`
 
@@ -102,6 +103,6 @@ const htmlifyRawCommit = (userInfo: GithubUserInfo, commit: RawCommit): string =
    </a>
    <span>
      <code><a href="${getGitRemoteURL()}/commit/${commit.hash}">${commit.hash.substring(0, 7)}</a></code>
-     ${commit.message}
+     ${htmlifyMarkdown(commit.message)}
    </span>
  </div>`
