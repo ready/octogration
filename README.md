@@ -198,6 +198,14 @@ Accepts a string.
 
 Default: `"changelogFileName": "automatic_changelog.json"`
 
+#### writeEmptyChangelogs
+
+Flag to write all changelog posts, even empty ones. If this flag is `false` and both the title & body of the post are empty, then this post does not get written to file. The title & body being empty can be changed by the `includePRTitle[Dev,Prod]`  and  `includePRBody[Dev,Prod]` config options.
+
+Accepts a boolean.
+
+Default: `"writeEmptyChangelogs": true`
+
 #### badgeConfigs
 
 This is a group of more configuration options for each badge. There are several badges that are recognized by Octogration and the option to include the version of any dependency in your project.
