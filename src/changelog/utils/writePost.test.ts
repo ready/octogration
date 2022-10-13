@@ -31,6 +31,15 @@ test('Having writeChangelogToFile config option disabled prevents writing posts'
   expect(appendToChangelogFile).not.toBeCalled()
 })
 
+test('Having writeEmptyChangelogs config option disabled prevents writing posts', async () => {
+  mockedWriteConfig = true
+  mockedWriteEmptyConfig = false
+  mockedPrTitle = ''
+  mockedPrBody = ''
+  await writeChangelogPost()
+  expect(appendToChangelogFile).not.toBeCalled()
+})
+
 // Mock system time
 jest.useFakeTimers().setSystemTime(1661959195485)
 
@@ -44,11 +53,13 @@ jest.mock('../parsers/changelogFileParser', () => ({
 
 // Mock package JSON
 let mockedWriteConfig = true
+let mockedWriteEmptyConfig = true
 jest.mock('../../utils/packageJson', () => ({
   getPackageJson: () => ({
     version: '1.2.3',
     config: {
-      writeChangelogToFile: mockedWriteConfig
+      writeChangelogToFile: mockedWriteConfig,
+      writeEmptyChangelogs: mockedWriteEmptyConfig
     }
   })
 }))
