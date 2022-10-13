@@ -28,6 +28,7 @@ interface OctogrationConfig {
   includePrBodyProd: boolean
   writeChangelogToFile: boolean
   changelogFileName: string
+  writeEmptyChangelogs: boolean
 }
 
 export interface BadgeConfig {
@@ -89,7 +90,8 @@ export const defaultConfig: OctogrationConfig = {
   includePrBodyDev: true,
   includePrBodyProd: true,
   writeChangelogToFile: true,
-  changelogFileName: 'automatic_changelog.json'
+  changelogFileName: 'automatic_changelog.json',
+  writeEmptyChangelogs: true
 }
 
 /**
@@ -220,6 +222,7 @@ function validateIncludePrContent (config: any): void {
 function validateChangelogFile (config: any): void {
   if (!isValidField(config, 'writeChangelogToFile', 'string')) config.writeChangelogToFile = defaultConfig.writeChangelogToFile
   if (!isValidField(config, 'changelogFileName', 'string')) config.changelogFileName = defaultConfig.changelogFileName
+  if (!isValidField(config, 'writeEmptyChangelogs', 'boolean')) config.writeEmptyChangelogs = defaultConfig.writeEmptyChangelogs
 }
 
 /**
