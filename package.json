@@ -80,7 +80,8 @@
       }
     },
     "includePrTitleDev": false,
-    "includePrBodyDev": false
+    "includePrBodyDev": false,
+    "writeEmptyChangelogs": false
   },
   "commitlint": {
     "rules": {
