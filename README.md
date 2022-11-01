@@ -101,6 +101,14 @@ There are a number of configuration options that Octogration will read from your
 
 Each configuration name, accepted values, and default values are listed below.
 
+You can also create a `.octogrationdata` file in the same directory as your `package.json` file which will override any settings in `package.json`. The `.octogrationdata` file is a JSON file with just the configuration in it, like so:
+
+```json
+{
+  "configName": "value"
+}
+```
+
 #### dateTimeLocal
 
 Used for formatting the timestamp in the changelog releases. 
