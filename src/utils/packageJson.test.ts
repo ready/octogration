@@ -78,6 +78,14 @@ test('Setting config to nonobject yields default config', () => {
   expect(packageJson).toEqual(defaultPackageJson)
 })
 
+test('Setting config to subconfig with nonobject yields default config', () => {
+  mockedMinimalPackageJson['@ready/octogration'] = {
+    '@ready/octogration': 'config'
+  }
+  const packageJson = getPackageJson()
+  expect(packageJson).toEqual(defaultPackageJson)
+})
+
 test('Not setting commit section yields default false value', () => {
   mockedMinimalPackageJson['@ready/octogration'] = {}
   const commitSections = getPackageJson().config.commitSections
