@@ -22,13 +22,20 @@ const mockedMinimalPackageJson = {
 }
 
 jest.mock('fs', () => ({
-  readFileSync: jest.fn().mockImplementation((cmd: string) => {
-    if (cmd !== 'package.json') {
+  readFileSync: jest.fn().mockImplementation((fn: string) => {
+    if (fn !== 'package.json' && fn !== '.octogrationdata') {
       throw new Error('Unexpected file')
     }
 
     return {
-      toString: () => JSON.stringify(mockedMinimalPackageJson)
+      toString: () => {
+        if (fn === 'package.json') return JSON.stringify(mockedMinimalPackageJson)
+        const p: any = mockedMinimalPackageJson
+        return JSON.stringify(p['@ready/octogration'])
+      }
     }
+  }),
+  existsSync: jest.fn().mockImplementation((fn: string): boolean => {
+    return fn === 'package.json'
   })
 }))

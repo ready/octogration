@@ -1,0 +1,36 @@
+{
+    "commitSections": {
+      "⚒️ Features": [
+        "feat",
+        "perf"
+      ],
+      "🐞 Bug Fixes": [
+        "fix"
+      ],
+      "🧹 Cleaning": [
+        "refact",
+        "docs",
+        "style"
+      ],
+      "✅ Tests": [
+        "test"
+      ],
+      "⚙️ Meta": [
+        "build",
+        "ci"
+      ]
+    },
+    "badgeConfigs": {
+      "typescriptVersion": {
+        "label": "TS Version",
+        "logo": "TypeScript"
+      },
+      "jestVersion": {
+        "label": "Jest Version",
+        "logo": "Jest"
+      }
+    },
+    "includePrTitleDev": false,
+    "includePrBodyDev": false,
+    "writeEmptyChangelogs": false
+  }

@@ -10,6 +10,7 @@ import { evaluatePrTitle } from '../variables/prTitle'
  */
 export async function writeChangelogPost (): Promise<void> {
   const writeChangelogToFile = getPackageJson().config.writeChangelogToFile
+  const writeEmptyChangelogs = getPackageJson().config.writeEmptyChangelogs
   if (!writeChangelogToFile) return
 
   const prTitle = await evaluatePrTitle()
@@ -20,6 +21,10 @@ export async function writeChangelogPost (): Promise<void> {
     env: evaluateEnvDeploy(),
     timestamp: (new Date()).toISOString()
   }
+
+  // If this is an empty changelog, and that is disabled in the config
+  // then do not write this changelog to file
+  if (!writeEmptyChangelogs && post.title === '' && post.body === '') return
 
   appendToChangelogFile(post)
 }
