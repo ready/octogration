@@ -146,8 +146,8 @@ afterEach(() => {
 
 // Mock file system
 jest.mock('fs', () => ({
-  readFileSync: jest.fn().mockImplementation((cmd: string) => {
-    if (cmd === 'README.md') {
+  readFileSync: jest.fn().mockImplementation((fn: string) => {
+    if (fn === 'README.md') {
       return {
         toString: () => `
           <img alt="version" src="" />
@@ -165,16 +165,19 @@ jest.mock('fs', () => ({
         `
       }
     }
-    if (cmd === 'package.json') {
+    if (fn === 'package.json') {
       return {
         toString: () => '{"devDependencies":{"package":"^1.2.3"}}'
       }
     }
     throw new Error('Unexpected file')
   }),
-  writeFileSync: jest.fn().mockImplementation((cmd: string, content: string) => {
-    if (cmd !== 'README.md') {
+  writeFileSync: jest.fn().mockImplementation((fn: string, _content: string): void => {
+    if (fn !== 'README.md') {
       throw new Error('Unexpected file')
     }
+  }),
+  existsSync: jest.fn().mockImplementation((fn: string): boolean => {
+    return fn === 'README.md' || fn === 'package.json'
   })
 }))

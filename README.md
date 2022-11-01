@@ -3,15 +3,15 @@
 </p>
 <h1 align="center" style="margin-top: 0px;">
   Octogration &nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="version" src="https://img.shields.io/static/v1?label=Version&color=740e86&labelColor=555555&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAggAAAIIBsKhZvgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFsSURBVCiRjZK9S9VxFMY/53df7EVocchBuIMtZtDUEA0N/QlKtIRUY2IOpYvQVIOLQZvU0OAiIlFDYM130oiIhMhRLmZBinC7eu+n5fuzy7036pnO23PO4TwHekA9p75S19TzvWo6Cf3qQ7XuHzTUJ+qZXoRMvanWUvEXdVy9pn5KsV11Si3kpLK6mpI/1Qdqua1pnzqj7qWaFbUU6ilgH1gG7kVE7fGsw8qjaHHiCKbn5uOrOggsAGNAfzE1zoCTEVG7P7lxwxaLwGkDCnB14vq72xGxnIZkAEU6sP1j7cr30odvlYHxzaPD5mH14+LA3kHtctroGF1EgHpjp7K5/XRoa2u38DcFsu4LswE02kK/size/5O4tDTzDGIUeA2sNpvNkWp1/oV6Fqi0TbCkrqsvk3+xQ45ykiiXY10t5clMvZTshfwBkl9U76qf1Ttq15Z5k1vpzVrqW3X0v44TEc+BC8AboN5xqGP8BvQuJ7II6OtVAAAAAElFTkSuQmCC&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0.15.0" />
+  <img alt="version" src="https://img.shields.io/static/v1?label=Version&color=740e86&labelColor=555555&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAggAAAIIBsKhZvgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFsSURBVCiRjZK9S9VxFMY/53df7EVocchBuIMtZtDUEA0N/QlKtIRUY2IOpYvQVIOLQZvU0OAiIlFDYM130oiIhMhRLmZBinC7eu+n5fuzy7036pnO23PO4TwHekA9p75S19TzvWo6Cf3qQ7XuHzTUJ+qZXoRMvanWUvEXdVy9pn5KsV11Si3kpLK6mpI/1Qdqua1pnzqj7qWaFbUU6ilgH1gG7kVE7fGsw8qjaHHiCKbn5uOrOggsAGNAfzE1zoCTEVG7P7lxwxaLwGkDCnB14vq72xGxnIZkAEU6sP1j7cr30odvlYHxzaPD5mH14+LA3kHtctroGF1EgHpjp7K5/XRoa2u38DcFsu4LswE02kK/size/5O4tDTzDGIUeA2sNpvNkWp1/oV6Fqi0TbCkrqsvk3+xQ45ykiiXY10t5clMvZTshfwBkl9U76qf1Ttq15Z5k1vpzVrqW3X0v44TEc+BC8AboN5xqGP8BvQuJ7II6OtVAAAAAElFTkSuQmCC&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0.16.0" />
 </h1>
 <p align="center">
   <img alt="staleBranches" src="https://img.shields.io/static/v1?label=Stale%20Branches&color=33ab53&labelColor=555555&logo=Git&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
   <img alt="neglectedPrs" src="https://img.shields.io/static/v1?label=Neglected%20PRs&color=33ab53&labelColor=555555&logo=Git%20Extensions&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
-  <img alt="lastProd" src="https://img.shields.io/static/v1?label=Last%20Prod&color=33ab53&labelColor=555555&logo=Android%20Auto&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=10/7/22" />
+  <img alt="lastProd" src="https://img.shields.io/static/v1?label=Last%20Prod&color=33ab53&labelColor=555555&logo=Android%20Auto&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=11/1/22" />
 </p>
 <p align="center">
-  <img alt="tests" src="https://img.shields.io/static/v1?label=Tests&color=33ab53&labelColor=555555&logo=TestCafe&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=557" /> &nbsp;
+  <img alt="tests" src="https://img.shields.io/static/v1?label=Tests&color=33ab53&labelColor=555555&logo=TestCafe&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=559" /> &nbsp;
   <img alt="coverage" src="https://img.shields.io/static/v1?label=Coverage&color=33ab53&labelColor=555555&logo=Buffer&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=100%" /> &nbsp;
   <img alt="linter" src="https://img.shields.io/static/v1?label=Linter&color=33ab53&labelColor=555555&logo=Integromat&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
   <img alt="vulnerabilities" src="https://img.shields.io/static/v1?label=Vulnerabilities&color=33ab53&labelColor=555555&logo=Amazon%20Cloudwatch&logoColor=ffffff&logoWidth=14&style=for-the-badge&message=0" /> &nbsp;
@@ -100,6 +100,14 @@ There are a number of configuration options that Octogration will read from your
 ```
 
 Each configuration name, accepted values, and default values are listed below.
+
+You can also create a `.octogrationdata` file in the same directory as your `package.json` file which will override any settings in `package.json`. The `.octogrationdata` file is a JSON file with just the configuration in it, like so:
+
+```json
+{
+  "configName": "value"
+}
+```
 
 #### dateTimeLocal
 
@@ -197,6 +205,14 @@ The filename of the changelog file when it gets written to. Only used if `writeC
 Accepts a string.
 
 Default: `"changelogFileName": "automatic_changelog.json"`
+
+#### writeEmptyChangelogs
+
+Flag to write all changelog posts, even empty ones. If this flag is `false` and both the title & body of the post are empty, then this post does not get written to file. The title & body being empty can be changed by the `includePRTitle[Dev,Prod]`  and  `includePRBody[Dev,Prod]` config options.
+
+Accepts a boolean.
+
+Default: `"writeEmptyChangelogs": true`
 
 #### badgeConfigs
 

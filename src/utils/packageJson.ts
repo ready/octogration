@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { readFileSync, existsSync } from 'fs'
 import { getDefaultBadgeConfigs } from './badgeConfig'
 
 export interface PackageJson {
@@ -28,6 +28,7 @@ interface OctogrationConfig {
   includePrBodyProd: boolean
   writeChangelogToFile: boolean
   changelogFileName: string
+  writeEmptyChangelogs: boolean
 }
 
 export interface BadgeConfig {
@@ -63,6 +64,12 @@ export function getPackageJson (): PackageJson {
  */
 function readPackageJson (): PackageJson {
   const packageJson = JSON.parse(readFileSync('package.json').toString())
+  if (existsSync('.octogrationdata')) {
+    const config = JSON.parse(readFileSync('.octogrationdata').toString())
+    delete packageJson['@ready/octogration']
+    return { ...packageJson, config: validateConfig(config) }
+  }
+
   const config = validateConfig(packageJson)
   delete packageJson['@ready/octogration']
   return { ...packageJson, config }
@@ -89,7 +96,8 @@ export const defaultConfig: OctogrationConfig = {
   includePrBodyDev: true,
   includePrBodyProd: true,
   writeChangelogToFile: true,
-  changelogFileName: 'automatic_changelog.json'
+  changelogFileName: 'automatic_changelog.json',
+  writeEmptyChangelogs: true
 }
 
 /**
@@ -99,7 +107,8 @@ export const defaultConfig: OctogrationConfig = {
  */
 function validateConfig (packageJson: any): OctogrationConfig {
   const name = '@ready/octogration'
-  const packageConfig = name in packageJson ? packageJson[name] : {}
+  const pckJson = typeof packageJson === 'object' ? packageJson : {}
+  const packageConfig = name in pckJson ? pckJson[name] : pckJson
   const config = typeof packageConfig === 'object' ? packageConfig : {}
 
   validateDatetime(config)
@@ -220,6 +229,7 @@ function validateIncludePrContent (config: any): void {
 function validateChangelogFile (config: any): void {
   if (!isValidField(config, 'writeChangelogToFile', 'string')) config.writeChangelogToFile = defaultConfig.writeChangelogToFile
   if (!isValidField(config, 'changelogFileName', 'string')) config.changelogFileName = defaultConfig.changelogFileName
+  if (!isValidField(config, 'writeEmptyChangelogs', 'boolean')) config.writeEmptyChangelogs = defaultConfig.writeEmptyChangelogs
 }
 
 /**

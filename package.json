@@ -1,6 +1,6 @@
 {
   "name": "@ready.net/octogration",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Scripts to automate github integrations via Octokit",
   "main": "lib/index.js",
   "bin": {
@@ -10,7 +10,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --coverage --config jestconfig.json",
     "testSummary": "jest --coverage --config jestconfig.json --reporters=\"summary\"",
     "lint": "ts-standard 2> /dev/null",
     "build": "tsc",
@@ -40,105 +40,11 @@
     "jest": "^28.1.3",
     "madge": "^5.0.1",
     "ts-jest": "^28.0.8",
-    "ts-standard": "^11.0.0",
+    "ts-standard": "^12.0.1",
     "typescript": "^4.7.4"
   },
   "dependencies": {
     "@octokit/action": "^4.0.6",
     "marked": "^4.1.1"
-  },
-  "@ready/octogration": {
-    "commitSections": {
-      "⚒️ Features": [
-        "feat",
-        "perf"
-      ],
-      "🐞 Bug Fixes": [
-        "fix"
-      ],
-      "🧹 Cleaning": [
-        "refact",
-        "docs",
-        "style"
-      ],
-      "✅ Tests": [
-        "test"
-      ],
-      "⚙️ Meta": [
-        "build",
-        "ci"
-      ]
-    },
-    "badgeConfigs": {
-      "typescriptVersion": {
-        "label": "TS Version",
-        "logo": "TypeScript"
-      },
-      "jestVersion": {
-        "label": "Jest Version",
-        "logo": "Jest"
-      }
-    },
-    "includePrTitleDev": false,
-    "includePrBodyDev": false
-  },
-  "commitlint": {
-    "rules": {
-      "subject-max-length": [
-        1,
-        "always",
-        100
-      ],
-      "subject-empty": [
-        2,
-        "never"
-      ],
-      "subject-exclamation-mark": [
-        2,
-        "never"
-      ],
-      "subject-full-stop": [
-        2,
-        "never",
-        "."
-      ],
-      "subject-case": [
-        2,
-        "never",
-        [
-          "sentence-case",
-          "start-case",
-          "pascal-case",
-          "upper-case"
-        ]
-      ],
-      "type-case": [
-        2,
-        "always",
-        "lower-case"
-      ],
-      "type-empty": [
-        2,
-        "never"
-      ],
-      "type-enum": [
-        2,
-        "always",
-        [
-          "build",
-          "chore",
-          "ci",
-          "docs",
-          "feat",
-          "fix",
-          "perf",
-          "refact",
-          "revert",
-          "style",
-          "test",
-          "typo"
-        ]
-      ]
-    }
   }
 }
