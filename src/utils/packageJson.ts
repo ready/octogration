@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { readFileSync, existsSync } from 'fs'
 import { getDefaultBadgeConfigs } from './badgeConfig'
 
 export interface PackageJson {
@@ -64,6 +64,12 @@ export function getPackageJson (): PackageJson {
  */
 function readPackageJson (): PackageJson {
   const packageJson = JSON.parse(readFileSync('package.json').toString())
+  if (existsSync('.octogrationdata')) {
+    const config = JSON.parse(readFileSync('.octogrationdata').toString())
+    delete packageJson['@ready/octogration']
+    return { ...packageJson, config: validateConfig(config) }
+  }
+
   const config = validateConfig(packageJson)
   delete packageJson['@ready/octogration']
   return { ...packageJson, config }
@@ -101,7 +107,8 @@ export const defaultConfig: OctogrationConfig = {
  */
 function validateConfig (packageJson: any): OctogrationConfig {
   const name = '@ready/octogration'
-  const packageConfig = name in packageJson ? packageJson[name] : {}
+  const pckJson = typeof packageJson === 'object' ? packageJson : {}
+  const packageConfig = name in pckJson ? pckJson[name] : pckJson
   const config = typeof packageConfig === 'object' ? packageConfig : {}
 
   validateDatetime(config)
