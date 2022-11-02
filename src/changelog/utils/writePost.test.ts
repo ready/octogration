@@ -25,7 +25,22 @@ test('The pr title will not include markdown header', async () => {
   })
 })
 
+test('Overriding true from PR body writes changelog', async () => {
+  mockedWriteConfig = false
+  mockedPrBody = '<!-- changelogFile=true -->\nbody'
+  await writeChangelogPost()
+  expect(appendToChangelogFile).toBeCalled()
+})
+
+test('Overriding false from PR body does not changelog', async () => {
+  mockedWriteConfig = true
+  mockedPrBody = '<!-- changelogFile=false -->\nbody'
+  await writeChangelogPost()
+  expect(appendToChangelogFile).not.toBeCalled()
+})
+
 test('Having writeChangelogToFile config option disabled prevents writing posts', async () => {
+  mockedPrBody = 'No markdown body'
   mockedWriteConfig = false
   await writeChangelogPost()
   expect(appendToChangelogFile).not.toBeCalled()
