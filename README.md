@@ -192,7 +192,9 @@ Default: `"includePrBodyProd": true`
 
 #### writeChangelogToFile
 
-Flag to write information about the release to file. Writes the title & body of the PR creating the changelog, the version, the environement, and the timestamp to a JSON file. 
+Flag to write information about the release to file. Writes the title & body of the PR creating the changelog, the version, the environement, and the timestamp to a JSON file.
+
+This configuration option can be overridden by an individual PR. `<!-- changelogFile=true -->` or `<!-- changelogFile=false -->` in its own line in the body of a pull request will use that setting instead of this configuration option.
 
 Accepts a boolean.
 
