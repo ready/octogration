@@ -38,7 +38,6 @@ async function createChangelog (): Promise<void> {
         replaceVariable(variable, value)
       }
     } catch (e) {
-      console.error('oh no')
       console.error(e)
     }
   }))
