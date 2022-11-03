@@ -71,6 +71,11 @@ Technically, Octogration can be called from any GitHub action, but we have some 
 
 * All packages must be installed by `npm install` to run Octogration. If the deprecations badge is being used, then the standard error output of this command must be saved by `npm install 2>./.github/data/install_log.txt` . This is because currently NPM doesn't have any other way to check for package deprecations.
 * All executions of the Octogration packages must have the github API token loaded in the environment. This is automatically encrypted by Github Actions and will never by seen by the Octogration package.
+* If you have branch protection on any of your branches, there is additional setup required. Technically, the execution of the Octogration package does not require this, but the scripts to run the package in an github action will.
+  * Choose an admin in your repository (or create a new bot account and add it as an admin)
+  * Generate a PAT in the admin account and set it as a repository secret
+  * Add the PAT to the checkout and push commands in your github action
+
 
 #### Add `testSummary` Script
 
