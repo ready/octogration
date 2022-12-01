@@ -1,6 +1,6 @@
 name: versionMinor
 
-# This workflow runs whenever a pull request is opened from main into stage
+# This workflow runs whenever a pull request is opened from main into prod
 # It updates the minor version number, the dynamic badges, and release changelog
 
 on:
@@ -8,7 +8,7 @@ on:
     types:
       - opened
     branches:
-      - stage
+      - prod
 
 concurrency:
   group: octogration
