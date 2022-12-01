@@ -1,6 +1,6 @@
 name: prodDeploy
 
-# This workflow runs whenever a branch gets merged into prod from stage
+# This workflow runs whenever a branch gets merged into prod from main
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   prod_release:
-    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'stage'
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
