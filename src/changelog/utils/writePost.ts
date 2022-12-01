@@ -40,7 +40,7 @@ export async function writeChangelogPost (): Promise<void> {
  * @returns true or false if an override signal exists, undefined if not
  */
 function getOverride (prBody: string): boolean | undefined {
-  const lines = prBody.split('\n')
+  const lines = prBody.split('\n').map(l => l.trim())
   if (lines.includes('<!-- changelogFile=true -->')) return true
   if (lines.includes('<!-- changelogFile=false -->')) return false
   return undefined

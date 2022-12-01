@@ -1,6 +1,6 @@
 name: versionMinor
 
-# This workflow runs whenever a pull request is opened from main into stage
+# This workflow runs whenever a pull request is opened from main into prod
 # It updates the minor version number, the dynamic badges, and release changelog
 
 on:
@@ -8,7 +8,7 @@ on:
     types:
       - opened
     branches:
-      - stage
+      - prod
 
 concurrency:
   group: octogration
@@ -22,6 +22,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          token: ${{ secrets.OCTO_PAT }}
       - uses: actions/setup-node@v2
         with:
           node-version: 16
@@ -38,8 +39,8 @@ jobs:
       - name: Configure github
         run: |
           git fetch
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
+          git config user.email "octogration@ready.net"
+          git config user.name "Octogration"
           git checkout main
 
       - name: Upgrade version of project
@@ -47,8 +48,8 @@ jobs:
 
       - name: Send version upgrade commit to github
         run: |
-          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+          git push "https://octogration:${{ secrets.OCTO_PAT }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
+          git push "https://octogration:${{ secrets.OCTO_PAT }}@github.com/$GITHUB_REPOSITORY.git" --tags
 
       - run: npm install
 
@@ -66,7 +67,7 @@ jobs:
         run: |
           git add .
           git commit -nm "chore: update dynamic badges"
-          git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git push "https://octogration:${{ secrets.OCTO_PAT }}@github.com/$GITHUB_REPOSITORY.git"
 
       - uses: OSDKDev/unlock-issues@v1.1
         with:
