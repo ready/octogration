@@ -25,4 +25,4 @@ jobs:
 
     - run: npm run ci
 
-    - run: node .github/workflows/ensureCoverage.mjs
+    - run: ts-node .github/workflows/ensureCoverage.ts
