@@ -27,4 +27,4 @@ jobs:
 
     - run: npm run testSummary
 
-    - run: ts-node .github/workflows/ensureCoverage.ts
+    - run: npx ts-node .github/workflows/ensureCoverage.ts
