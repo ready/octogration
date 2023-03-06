@@ -10,7 +10,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "test": "jest --coverage --onlyChanged --config jestconfig.json",
+    "test": "jest --onlyChanged --config jestconfig.json",
     "testSummary": "jest --coverage --config jestconfig.json --reporters=\"summary\"",
     "lint": "ts-standard 2> /dev/null && tsc --noEmit",
     "build": "tsc",
