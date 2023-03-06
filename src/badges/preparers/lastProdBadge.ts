@@ -25,11 +25,9 @@ export function prepareLastProdBadge (oldBadge: string): string {
  */
 function getLastProdDate (oldBadge: string): string {
   try {
-    const isProdRelease = oldBadge.endsWith('%%~prod')
-
     // If this release is a production release,
     // then today is the newest release
-    if (isProdRelease) {
+    if (oldBadge.endsWith('%%~prod')) {
       return todayLocalDate()
     }
 
