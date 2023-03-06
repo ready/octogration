@@ -1,4 +1,4 @@
-import { formatFileHasVariable, getFormatFile, replaceVariable } from './parsers/releaseFormatParser'
+import { formatFileHasVariable, replaceVariables } from './parsers/releaseFormatParser'
 import { createRelease } from './utils/createRelease'
 import { evaluateBadges } from './variables/badges'
 import { evaluateBranch } from './variables/branch'
@@ -22,27 +22,47 @@ knownVariables.set('branch', evaluateBranch)
 knownVariables.set('badges', evaluateBadges)
 knownVariables.set('prTitle', evaluatePrTitle)
 knownVariables.set('prBody', evaluatePrBody)
-knownVariables.set('commitLog', evaluateCommitLog)
 
 /**
  * Evaluates every variable in the format file and replaces them
  */
 async function createChangelog (): Promise<void> {
-  const variables = [...knownVariables.keys()]
+  let body = ''
+  let minimizeLevel = 0
+
+  do {
+    body = await evaluateChangelog(minimizeLevel)
+    minimizeLevel++
+  } while (body.length >= 125000)
+
+  await createRelease(body)
+}
+
+/**
+ * Evaluates every variable in the format file and replaces them
+ * @param minimizeLevel - how much minimization should be done
+ */
+async function evaluateChangelog (minimizeLevel: number): Promise<string> {
+  const variables = [...knownVariables.keys(), 'commitLog']
+  const values: any = {}
+
   await Promise.all(variables.map(async variable => {
     try {
-      const evaluator = knownVariables.get(variable) as Evaluator
-
       if (formatFileHasVariable(variable)) {
-        const value = await evaluator()
-        replaceVariable(variable, value)
+        if (variable === 'commitLog') {
+          values[variable] = await evaluateCommitLog(minimizeLevel)
+        } else {
+          const evaluator = knownVariables.get(variable) as Evaluator
+          values[variable] = await evaluator()
+        }
       }
     } catch (e) {
       console.error(e)
     }
+    values[variable] = ''
   }))
 
-  await createRelease(getFormatFile())
+  return replaceVariables(values)
 }
 
 /**
