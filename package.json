@@ -12,7 +12,7 @@
   "scripts": {
     "test": "jest --coverage --config jestconfig.json",
     "testSummary": "jest --coverage --config jestconfig.json --reporters=\"summary\"",
-    "lint": "ts-standard 2> /dev/null",
+    "lint": "ts-standard 2> /dev/null && tsc --noEmit",
     "build": "tsc",
     "prepare": "npm run build && husky install",
     "ci": "npm run lint && npm test"
