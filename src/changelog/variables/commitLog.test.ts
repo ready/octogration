@@ -3,7 +3,7 @@ import { testCommitParser } from '../parsers/commitParser'
 
 describe('Commit log with sections', () => {
   test('does not have unused section header', async () => {
-    const commitLog = await evaluateCommitLog()
+    const commitLog = await evaluateCommitLog(0)
     expect(commitLog.includes('# Bug Fixes')).toBe(false)
     expect(commitLog.includes('# Tests')).toBe(false)
     expect(commitLog.includes('# Meta')).toBe(false)
@@ -11,14 +11,19 @@ describe('Commit log with sections', () => {
   })
 
   test('does have used section headers', async () => {
-    const commitLog = await evaluateCommitLog()
+    const commitLog = await evaluateCommitLog(0)
     expect(commitLog.includes('# Features')).toBe(true)
     expect(commitLog.includes('# Cleaning')).toBe(true)
     expect(console.log).not.toBeCalled()
   })
 
+  test('displays disclaimer when commits are removed', async () => {
+    const commitLog = await evaluateCommitLog(2)
+    expect(commitLog.includes('Some commits have not been included')).toBe(true)
+  })
+
   test('does not have chore or typos', async () => {
-    const commitLog = await evaluateCommitLog()
+    const commitLog = await evaluateCommitLog(0)
     expect(commitLog.includes('<b>chore</b>')).toBe(false)
     expect(commitLog.includes('<b>typo</b>')).toBe(false)
     expect(console.log).not.toBeCalled()
@@ -31,10 +36,30 @@ describe('Commit log with sections', () => {
       'd9981a24dc470401f9fce814bbd1bbb70efb1080 riverliway@gmail.com chore: this is the last mock commit',
       'd777f320a1c818eb07847d474723e2c30fb90e01 riverliway@gmail.com typo(mockscope): mocked typo commit'
     ]
-    const commitLog = await evaluateCommitLog()
+    const commitLog = await evaluateCommitLog(0)
     expect(commitLog).toBe('')
     expect(console.log).toBeCalledWith('Skipping: No significant changes have been added to this release')
     expect(process.exit).toBeCalled()
+  })
+
+  test('Does not include alt text when minified', async () => {
+    mockedRawCommits = [
+      'c96870a1e925de3755fdd01811dd81db464a28d8 riverliway@gmail.com feat(#3): mocked feature commit',
+      'a4ef2cc53d993f5e03cf0be8237d2cfc21d09240 riverliway@gmail.com feat(): mocked empty scope feature commit',
+      'aa90c29f92b29c8f2ba900ba3cebbeca12d1076b riverliway@gmail.com feat: mocked emptier scope feature commit'
+    ]
+    const commitLog = await evaluateCommitLog(2)
+    expect(commitLog.includes('alt="')).toBe(false)
+  })
+
+  test('Limits number of commits included in minification', async () => {
+    mockedRawCommits = [
+      'aa90c29f92b29c8f2ba900ba3cebbeca12d1076b riverliway@gmail.com feat: mocked emptier scope feature commit',
+      'c96870a1e925de3755fdd01811dd81db464a28d8 riverliway@gmail.com feat(#3): mocked feature commit',
+      'a4ef2cc53d993f5e03cf0be8237d2cfc21d09240 riverliway@gmail.com feat(): mocked empty scope feature commit'
+    ]
+    const commitLog = await evaluateCommitLog(2)
+    expect(commitLog.split('<div>').length).toBe(2)
   })
 })
 
@@ -54,8 +79,18 @@ describe('Commit log without sections', () => {
       'b569e67f71744d08669e62c4c85ec7c821272f5b riverliway@gmail.com v0.0.1'
     ]
     mockedCommitSections = false
-    const commitLog = await evaluateCommitLog()
+    const commitLog = await evaluateCommitLog(0)
     expect(commitLog.includes('# ')).toBe(false)
+  })
+
+  test('displays disclaimer when commits are removed', async () => {
+    const commitLog = await evaluateCommitLog(2)
+    expect(commitLog.includes('Some commits have not been included')).toBe(true)
+  })
+
+  test('Does not include alt text when minified', async () => {
+    const commitLog = await evaluateCommitLog(2)
+    expect(commitLog.includes('alt="')).toBe(false)
   })
 })
 
