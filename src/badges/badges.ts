@@ -29,6 +29,7 @@ enum ValidBadgeType {
   StaleBranches = 'staleBranches',
   NeglectedPRs = 'neglectedPrs',
   LastProd = 'lastProd',
+  SoftLastProd = 'softLastProd',
   Tests = 'tests',
   Coverage = 'coverage',
   Vulnerabilities = 'vulnerabilities',
@@ -43,7 +44,8 @@ const preparers = new Map<ValidBadgeType, Preparer>()
 preparers.set(ValidBadgeType.Version, prepareVersionBadge)
 preparers.set(ValidBadgeType.StaleBranches, prepareStaleBranchesBadge)
 preparers.set(ValidBadgeType.NeglectedPRs, prepareNeglectedPrsBadge)
-preparers.set(ValidBadgeType.LastProd, prepareLastProdBadge)
+preparers.set(ValidBadgeType.LastProd, b => prepareLastProdBadge(b + '%%~prod'))
+preparers.set(ValidBadgeType.SoftLastProd, prepareLastProdBadge)
 preparers.set(ValidBadgeType.Tests, prepareTestsBadge)
 preparers.set(ValidBadgeType.Coverage, prepareCoverageBadge)
 preparers.set(ValidBadgeType.Vulnerabilities, prepareVulnerabilitiesBadge)
@@ -59,10 +61,12 @@ export async function updateBadges (): Promise<void> {
   const badgesToUpdate = parseParams(process.argv)
 
   await Promise.all(badgesToUpdate.map(async badgeName => {
-    const originalSource = getSource(badgeName)
+    const modBadgeName = badgeName === ValidBadgeType.SoftLastProd ? ValidBadgeType.LastProd : badgeName
+    const originalSource = getSource(modBadgeName)
 
     if (originalSource !== undefined) {
-      await updateBadge(badgeName, originalSource)
+      const preparer = preparers.get(badgeName) as Preparer
+      await updateBadge(modBadgeName, originalSource, preparer)
     }
   }))
 
@@ -75,10 +79,9 @@ export async function updateBadges (): Promise<void> {
  * Updates the badge and sets it in the readme
  * @param badgeName - the name of the badge to update
  * @param originalSource - the old version of the badge
+ * @param preparer - the preparer for this badge
  */
-async function updateBadge (badgeName: ValidBadgeType, originalSource: string): Promise<void> {
-  const preparer = preparers.get(badgeName) as Preparer
-
+async function updateBadge (badgeName: ValidBadgeType, originalSource: string, preparer: Preparer): Promise<void> {
   try {
     const newSource = await preparer(originalSource)
     setSource(badgeName, newSource)
@@ -117,7 +120,7 @@ function updatePackageVersionBadges (): void {
 function parseParams (params: string[]): ValidBadgeType[] {
   const validBadgeTypes = Object.values(ValidBadgeType)
   if (params.length === 3) {
-    return validBadgeTypes
+    return validBadgeTypes.filter(b => b !== ValidBadgeType.LastProd)
   } else if (params.length !== 4) {
     help()
   }

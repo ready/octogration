@@ -300,7 +300,7 @@ Default:
 
 ##### lastProd
 
-The date of the last production release. Calculates the `age` as the number of days since the last production release. The gradient config option here says to use the `secondaryColor` for an age of `60` or greater and use `primaryColor` for an age of `0` or less. An age between those values will interpolate between those colors. By default, an age of `30` will be yellow (halfway between the green and red colors.
+The date of the last production release. Calculates the `age` as the number of days since the last production release. The gradient config option here says to use the `secondaryColor` for an age of `60` or greater and use `primaryColor` for an age of `0` or less. An age between those values will interpolate between those colors. By default, an age of `30` will be yellow (halfway between the green and red colors. The `lastProd` badge behaves differently depending if you update it by the default "all" setting or calling it explicity. Running `npx octogration badges lastProd` will reset it as if it were a production deploy, while `npx octogration badges` will not reset the date, but will still update the color of the badge.
 
 Default:
 
