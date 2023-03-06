@@ -19,13 +19,13 @@ export function prepareLastProdBadge (oldBadge: string): string {
 
 /**
  * Determines if this release is production or not and returns the date of the last prod
- * @param oldBadge - the badge that is currently in the readme
+ * @param oldBadge - the badge that is currently in the readme,
+ * with '-prod' or '-none' appended
  * @returns the date of the last production release in 1/1/11 format
  */
 function getLastProdDate (oldBadge: string): string {
   try {
-    const version = getPackageJson().version
-    const isProdRelease = version.split('.')[2] === '0'
+    const isProdRelease = oldBadge.endsWith('%%~prod')
 
     // If this release is a production release,
     // then today is the newest release
