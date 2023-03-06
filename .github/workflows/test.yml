@@ -23,6 +23,8 @@ jobs:
 
     - run: npm install
 
-    - run: npm run ci
+    - run: npm run lint
 
-    - run: node .github/workflows/ensureCoverage.mjs
+    - run: npm run testSummary
+
+    - run: npx ts-node .github/workflows/ensureCoverage.ts
