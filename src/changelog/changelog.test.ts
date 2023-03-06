@@ -1,5 +1,4 @@
 import { changelog } from './changelog'
-import { testReleaseFormatParser } from './parsers/releaseFormatParser'
 import { createRelease } from './utils/createRelease'
 import { evaluateBadges } from './variables/badges'
 import { evaluateBranch } from './variables/branch'
@@ -76,5 +75,4 @@ afterAll(() => {
 })
 afterEach(() => {
   jest.clearAllMocks()
-  testReleaseFormatParser.reset()
 })

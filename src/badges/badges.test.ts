@@ -55,7 +55,7 @@ test('Calls all preparers when there is no list', async () => {
 })
 
 test('Calls some preparers when there is a list', async () => {
-  process.argv = ['npx', 'octogration', 'badges', 'tests,coverage,linter,version']
+  process.argv = ['npx', 'octogration', 'badges', 'tests,coverage,linter,version,lastProd']
   await updateBadges()
   expect(console.log).not.toBeCalled()
   expect(console.error).not.toBeCalled()
@@ -66,6 +66,7 @@ test('Calls some preparers when there is a list', async () => {
   expect(prepareCoverageBadge).toBeCalled()
   expect(prepareLinterBadge).toBeCalled()
   expect(preparePackageVersionBadge).toBeCalled()
+  expect(prepareLastProdBadge).toBeCalled()
 
   expect(prepareVulnerabilitiesBadge).not.toBeCalled()
   expect(prepareNodeVersionBadge).not.toBeCalled()
@@ -73,7 +74,6 @@ test('Calls some preparers when there is a list', async () => {
   expect(prepareDeprecationsBadge).not.toBeCalled()
   expect(prepareStaleBranchesBadge).not.toBeCalled()
   expect(prepareNeglectedPrsBadge).not.toBeCalled()
-  expect(prepareLastProdBadge).not.toBeCalled()
 })
 
 test('Works when invalid badge in list', async () => {
