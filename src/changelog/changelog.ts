@@ -35,6 +35,8 @@ async function createChangelog (): Promise<void> {
     minimizeLevel++
   } while (body.length >= 125000)
 
+  console.warn('!!body', body)
+
   await createRelease(body)
 }
 
@@ -51,6 +53,7 @@ async function evaluateChangelog (minimizeLevel: number): Promise<string> {
       if (formatFileHasVariable(variable)) {
         if (variable === 'commitLog') {
           values[variable] = await evaluateCommitLog(minimizeLevel)
+          console.warn('!!commitLog', values[variable])
         } else {
           const evaluator = knownVariables.get(variable) as Evaluator
           values[variable] = await evaluator()
