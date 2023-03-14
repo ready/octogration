@@ -58,8 +58,8 @@ async function evaluateChangelog (minimizeLevel: number): Promise<string> {
       }
     } catch (e) {
       console.error(e)
+      values[variable] = ''
     }
-    values[variable] = ''
   }))
 
   return replaceVariables(values)
