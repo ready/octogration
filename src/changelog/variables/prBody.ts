@@ -18,7 +18,9 @@ export async function evaluatePrBody (): Promise<string> {
 
   try {
     const number = process.argv[3]
-    return await retrieveGithubPrBody(number)
+    const body = await retrieveGithubPrBody(number)
+    if (body === undefined || body === null) return ''
+    return body
   } catch {
     return ''
   }
@@ -29,7 +31,7 @@ export async function evaluatePrBody (): Promise<string> {
  * @param number - the id of the PR to lookup
  * @returns the body of the PR in markdown
  */
-async function retrieveGithubPrBody (number: string): Promise<string> {
+async function retrieveGithubPrBody (number: string): Promise<string | undefined> {
   const request = `GET /repos/${getRepo()}/pulls/${number}`
   const pullInfo = await octokit.request(request)
   return pullInfo.data.body
