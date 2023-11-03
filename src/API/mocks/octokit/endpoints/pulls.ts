@@ -12,7 +12,7 @@ export interface MockedPR {
     ref: string
   }
   title: string
-  body: string
+  body: string | undefined
 }
 
 export const mockedPullData: MockedPR[] = [
@@ -61,6 +61,15 @@ export const mockedPullData: MockedPR[] = [
     base: { ref: 'some-branch4' },
     title: 'Mocked PR title 13',
     body: 'Mocked PR body 13'
+  }, {
+    id: 29,
+    submitted_at: (new Date()).toISOString(),
+    state: 'open',
+    reviewAuthors: [],
+    head: { ref: 'some-branch' },
+    base: { ref: 'main' },
+    title: 'Mocked PR title 1',
+    body: undefined
   }
 ]
 
