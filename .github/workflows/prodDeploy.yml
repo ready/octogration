@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Ensure correct npm version
         run: npm i --location=global npm@8.3.1 --registry=https://registry.npmjs.org
